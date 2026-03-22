@@ -1,1 +1,979 @@
-index.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenClaw智能铁道机车探伤机器人系统</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+    :root {
+      --r-background-color: #0a0e27;
+      --r-main-font: 'Noto Sans SC', sans-serif;
+      --r-heading-font: 'Noto Sans SC', sans-serif;
+      --r-main-color: #e0e0e0;
+      --r-heading-color: #4FC3F7;
+      --r-link-color: #4FC3F7;
+      --r-main-size: 18px;
+    }
+    * { box-sizing: border-box; }
+    .reveal .slides { text-align: left; }
+    .reveal .slides section {
+      height: 100%;
+      padding: 20px 40px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    .reveal .slides section .bg-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2;
+      z-index: 0;
+    }
+    .reveal .slides section .content-wrapper {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .reveal .slides section .content-image {
+      position: absolute;
+      right: 2%; top: 15%;
+      width: 35%;
+      opacity: 0.38;
+      z-index: 1;
+      filter: drop-shadow(0 4px 20px rgba(0, 212, 255, 0.3));
+      transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
+    }
+    .reveal .slides section .content-image:hover {
+      transform: translateY(-10px) scale(1.05) rotateZ(-1deg);
+      filter: drop-shadow(0 20px 40px rgba(0, 212, 255, 0.5));
+      opacity: 0.6;
+    }
+    .reveal .slides section h1 {
+      font-size: 2em; font-weight: 700;
+      color: #ffffff; margin-bottom: 0.2em;
+      text-shadow: 0 0 30px rgba(79, 195, 247, 0.5);
+      line-height: 1.2;
+    }
+    .reveal .slides section h2 {
+      font-size: 1.3em; font-weight: 700;
+      color: #4FC3F7; margin-bottom: 0.3em;
+      text-shadow: 0 0 20px rgba(79, 195, 247, 0.4);
+      line-height: 1.3;
+    }
+    .reveal .slides section h3 {
+      font-size: 1.1em; font-weight: 500;
+      color: #81D4FA; margin-bottom: 0.3em;
+      line-height: 1.4;
+    }
+    .reveal .slides section p {
+      font-size: 0.7em; line-height: 1.35;
+      color: #e0e0e0; margin-bottom: 0.4em;
+    }
+    .reveal .slides section ul {
+      font-size: 0.65em; line-height: 1.4;
+      color: #bdbdbd; margin-left: 1em;
+    }
+    .reveal .slides section li { margin-bottom: 0.2em; }
+    .reveal .slides section .text-content {
+      width: 58%; font-size: 0.9em; line-height: 1.4;
+    }
+    .reveal .slides section .text-content p { font-size: 1em; }
+    .reveal .slides section .section-title {
+      text-align: center; padding: 20px;
+    }
+    .reveal .slides section .section-title h1 {
+      font-size: 2.2em; margin-bottom: 0.2em;
+    }
+    .reveal .slides section .section-title h2 {
+      font-size: 1.6em; color: #4FC3F7;
+    }
+    .reveal .slides section .toc-content {
+      font-size: 0.95em; line-height: 2;
+      color: #ffffff;
+    }
+    .reveal .slides section .toc-content strong { color: #FFD700; }
+    .cover-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+    }
+    .cover-content h1 {
+      font-size: 2.8em; margin-bottom: 0.3em;
+      text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+    .cover-content h2 {
+      font-size: 1.5em; color: #81D4FA;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+    #cover-video {
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; left: 0;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .reveal .slides section.cover-slide {
+      background: transparent;
+      overflow: hidden;
+    }
+    .reveal .slides section.cover-slide .video-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent;
+      z-index: 1;
+    }
+    .reveal .slides section.cover-slide .cover-content {
+      position: relative;
+      z-index: 2;
+    }
+    .highlight { color: #4FC3F7; font-weight: 500; }
+    .text-small { font-size: 0.6em !important; line-height: 1.3 !important; }
+    .text-xsmall { font-size: 0.55em !important; line-height: 1.25 !important; }
+    .columns-2 { display: flex; gap: 30px; }
+    .columns-2 .col { flex: 1; }
+    .columns-3 { display: flex; gap: 20px; }
+    .columns-3 .col { flex: 1; }
+    .page-number {
+      position: absolute;
+      bottom: 15px; right: 20px;
+      font-size: 0.6em; color: #666;
+      z-index: 10;
+    }
+    .ending-content { text-align: center; }
+    .ending-content h1 { font-size: 3em; margin-bottom: 0.5em; }
+    .reveal .slides section .fragment {
+      opacity: 0; visibility: hidden;
+    }
+    .reveal .slides section .fragment.visible {
+      opacity: 1; visibility: visible;
+    }
+    .reveal .progress { color: #4FC3F7; height: 3px; }
+    .reveal .controls { color: #4FC3F7; }
+    .bg-gradient-1 { background: linear-gradient(135deg, #0a0e27 0%, #1a237e 50%, #0d47a1 100%); }
+    .bg-gradient-2 { background: linear-gradient(135deg, #0a0e27 0%, #1b3a5f 50%, #0a2540 100%); }
+    .bg-gradient-3 { background: linear-gradient(135deg, #0a0e27 0%, #2d1b4e 50%, #1a0a2e 100%); }
+    .bg-gradient-4 { background: linear-gradient(135deg, #0a0e27 0%, #004d40 50%, #00695c 100%); }
+    .text-box {
+      border: 1px solid rgba(79, 195, 247, 0.4);
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      background: rgba(10, 14, 39, 0.6);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 15px rgba(79, 195, 247, 0.1), inset 0 0 10px rgba(79, 195, 247, 0.05);
+      animation: breatheGlow 3s ease-in-out infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .text-box:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(79, 195, 247, 0.3), 0 0 30px rgba(79, 195, 247, 0.2), inset 0 0 15px rgba(79, 195, 247, 0.1);
+      border-color: rgba(79, 195, 247, 0.8);
+    }
+    @keyframes breatheGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(79, 195, 247, 0.1), inset 0 0 10px rgba(79, 195, 247, 0.05); border-color: rgba(79, 195, 247, 0.4); }
+      50% { box-shadow: 0 0 25px rgba(79, 195, 247, 0.25), inset 0 0 15px rgba(79, 195, 247, 0.1); border-color: rgba(79, 195, 247, 0.6); }
+    }
+    .text-box.animate-in { animation: boxAssemble 0.6s ease-out forwards, breatheGlow 3s ease-in-out infinite; }
+    .text-box.animate-out { animation: boxScatter 0.4s ease-in forwards; }
+    @keyframes boxAssemble {
+      0% { opacity: 0; transform: translate(-300px, -150px) rotateY(-60deg) scale(0.2); }
+      50% { opacity: 1; transform: translate(20px, 10px) rotateY(8deg) scale(1.05); }
+      100% { opacity: 1; transform: translate(0, 0) rotateY(0) scale(1); }
+    }
+    @keyframes boxScatter {
+      0% { opacity: 1; transform: translate(0, 0) rotateY(0) scale(1); }
+      100% { opacity: 0; transform: translate(300px, 150px) rotateY(60deg) scale(0.2); }
+    }
+    .content-image.animate-in { animation: imageSlideIn 0.7s ease-out forwards; }
+    .content-image.animate-out { animation: imageSlideOut 0.4s ease-in forwards; }
+    @keyframes imageSlideIn {
+      0% { opacity: 0; transform: translateX(500px) rotateY(-80deg) scale(0.1); }
+      50% { opacity: 0.8; transform: translateX(-20px) rotateY(10deg) scale(1.08); }
+      100% { opacity: 0.4; transform: translateX(0) rotateY(0) scale(1); }
+    }
+    @keyframes imageSlideOut {
+      0% { opacity: 0.4; transform: translateX(0) rotateY(0) scale(1); }
+      100% { opacity: 0; transform: translateX(-500px) rotateY(-60deg) scale(0.1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class="cover-slide" data-background-video="outputs/cover-loop.mp4" data-background-video-loop data-background-video-muted data-autoplay>
+        <div class="video-overlay"></div>
+        <div class="cover-content">
+          <h1>OpenClaw智能铁道机车探伤机器人系统</h1>
+          <h2>AI革命从数字走向物理世界</h2>
+        </div>
+        <div class="page-number">1 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-02.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-02.png');"></div>
+        <img class="content-image" src="outputs/images/slide-02.png" alt="目录配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">目录</h2>
+          <div class="text-content toc-content" data-appearance="fade-in">
+            <p><strong>一、系统概述：</strong>具身智能的铁路运维新范式</p>
+            <p><strong>二、系统架构设计：</strong>具身智能的技术基础</p>
+            <p><strong>三、系统工作流程：</strong>OpenClaw自主智能的工作方式</p>
+            <p><strong>四、技术亮点：</strong>OpenClaw具身智能的核心优势</p>
+            <p><strong>五、系统局限性分析与改进方向</strong></p>
+            <p><strong>六、工业级升级方案：</strong>迈向更高性能的具身智能</p>
+            <p><strong>七、成本与效益分析</strong></p>
+          </div>
+        </div>
+        <div class="page-number">2 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-03.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-03.png');"></div>
+        <img class="content-image" src="outputs/images/slide-03.png" alt="第一章配图">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第一章</h1>
+          <h2>系统概述：具身智能的铁路运维新范式</h2>
+        </div>
+        <div class="page-number">3 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-04.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-04.png');"></div>
+        <img class="content-image" src="outputs/images/slide-04.png" alt="系统简介配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">1.1 系统简介：AI突破数字边界，进入物理世界</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>想象一下，如果AI能够跳出电脑屏幕，直接与物理世界互动会怎样？OpenClaw智能铁道机车探伤机器人系统正在将这一变为现实！</p>
+            <p>这是一款革命性的铁路设备智能检测系统，融合了AI视觉、红外和激光雷达三位一体技术，通过多传感器融合，对铁道机车底部关键部位进行全方位、高精度缺陷检测，确保铁路运输安全。其核心创新在于采用了<span class="highlight">OpenClaw具身智能控制中枢架构</span>，实现了AI从"数字世界"走向"物理世界"的重大突破。</p>
+          </div>
+        </div>
+        <div class="page-number">4 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-05.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-05.png');"></div>
+        <img class="content-image" src="outputs/images/slide-05.png" alt="核心创新配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">核心创新：OpenClaw具身智能技术——赋予AI真正的"身体"</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>您是否听说过最近爆火的"龙虾"智能编程工具？OpenClaw正是这项革命性技术的杰出应用！我们没有将其局限在虚拟世界，而是创新性地将其<span class="highlight">植根于机器人主板</span>，为AI装上了"脚"（移动执行系统）和"眼睛"（传感器系统），实现了真正的具身智能。</p>
+            <p>这就像什么？就像给了AI一副真实的"身体"，让它能够直接感知和改变物理世界！与传统系统"AI模型困在电脑里"截然不同，OpenClaw实现了<span class="highlight">AI从数字世界走向物理世界</span>的跨越，让AI不再是被动执行命令的工具，而是能够<span class="highlight">自主决策、自主反应</span>的智能体。</p>
+          </div>
+        </div>
+        <div class="page-number">5 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-06.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-06.png');"></div>
+        <img class="content-image" src="outputs/images/slide-06.png" alt="云端本地处理配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">云端与本地处理</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>无论是云端还是本地处理，OpenClaw都能实现自主决策和反应，但处理方式有所不同：雏形版大部分数据交由云端处理，而工业版则实现了所有数据的本地处理，这代表了机器人控制技术的重大突破，是AI具身智能应用领域的革命性创新。</p>
+          </div>
+        </div>
+        <div class="page-number">6 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-07.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
+        <img class="content-image" src="outputs/images/slide-07.png" alt="系统定位配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">1.2 系统定位：重新定义铁路智能检测</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <ul>
+              <li>面向铁路运维、机车检修等场景的<span class="highlight">下一代智能检测解决方案</span></li>
+              <li>以<span class="highlight">具身智能、自主决策、从数字走向物理</span>为核心竞争优势</li>
+              <li>提供从云端AI到本地具身智能的完整技术路线</li>
+              <li>差异化定位：基于OpenClaw具身智能控制中枢的<span class="highlight">"具身智能"检测系统</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">7 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-07.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
+        <img class="content-image" src="outputs/images/slide-07.png" alt="工作环境配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">1.3 工作环境与基本功能</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">工作环境：</span>机车底部地沟</p>
+            <p><span class="highlight">主要功能：</span>通过多传感器融合实现机车底部故障检测</p>
+            <p><span class="highlight">检测方式：</span>采用视觉、红外和激光雷达三重融合检测技术</p>
+            <p><span class="highlight">操作模式：</span>OpenClaw自主移动检测与远程监控相结合</p>
+          </div>
+        </div>
+        <div class="page-number">8 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-08.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
+        <img class="content-image" src="outputs/images/slide-08.png" alt="第二章配图">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第二章</h1>
+          <h2>系统架构设计：具身智能的技术基础</h2>
+        </div>
+        <div class="page-number">9 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-11.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
+        <img class="content-image" src="outputs/images/slide-11.png" alt="核心控制系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">2.1.1 核心控制系统：OpenClaw智能控制中枢</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">OpenClaw具身智能主板：</span></p>
+            <ul>
+              <li>基于树莓派5/Jetson Orin NX的主控单元</li>
+              <li>集成OpenClaw智能编程IDE和决策引擎</li>
+              <li><span class="highlight">本地AI处理核心：</span>搭载嵌入式AI大模型，实现本地智能决策</li>
+              <li><span class="highlight">自主决策模块：</span>不是简单执行程序，而是自主分析和反应</li>
+              <li>本地缓存和预处理关键数据</li>
+              <li><span class="highlight">具身智能硬件接口：</span>为AI模型提供与物理世界交互的接口</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">10 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-13.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-13.png');"></div>
+        <img class="content-image" src="outputs/images/slide-13.png" alt="移动执行系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">移动执行系统（AI的"脚"）</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">电机驱动模块：</span>控制机器人行走（启停、转向、速度）</p>
+            <p><span class="highlight">舵机驱动系统：</span>控制三个传感器（视觉、红外、激光雷达）的俯仰和旋转</p>
+            <p><span class="highlight">精密机械结构：</span>确保传感器稳定性和检测精度</p>
+          </div>
+        </div>
+        <div class="page-number">11 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-25.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-25.png');"></div>
+        <img class="content-image" src="outputs/images/slide-25.png" alt="测距系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">2.1.2 传感器系统（AI的"眼睛"）— 测距系统</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">测距系统（AI的"空间感知器官"）：</span></p>
+            <ul>
+              <li>激光雷达模块，就像AI的触须和耳朵，感知空间距离</li>
+              <li>高精度测距和建图能力，让AI能够"听见"和"触摸"周围环境</li>
+              <li>支持复杂环境感知和避障，为AI提供立体空间意识</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">12 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-36.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-36.png');"></div>
+        <img class="content-image" src="outputs/images/slide-36.png" alt="视觉系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">视觉系统（AI的"眼睛"）</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <ul>
+              <li>CSI接口连接工业摄像头，就像AI的瞳孔</li>
+              <li>基于OpenCV和深度学习实现图像识别，让AI能够"看见"世界</li>
+              <li>支持高速图像采集和预处理，提供清晰的视觉信息</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">13 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-37.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
+        <img class="content-image" src="outputs/images/slide-37.png" alt="热成像系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">热成像系统（AI的"热感知器官"）</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <ul>
+              <li>红外探测模块，就像AI的皮肤神经末梢，能感知温度变化</li>
+              <li>高精度温度采集和补偿算法，让AI具有"触觉"般的温度感知</li>
+              <li>支持实时热成像分析和异常检测，帮助AI感知环境的"冷暖"</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">14 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-40.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
+        <img class="content-image" src="outputs/images/slide-40.png" alt="姿态与定位系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">2.1.3 姿态与定位系统</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">姿态补偿系统：</span></p>
+            <ul>
+              <li>IMU姿态补偿模块，实时检测设备姿态</li>
+              <li>高精度姿态解算和补偿算法</li>
+              <li>确保检测数据准确性和一致性</li>
+            </ul>
+            <p><span class="highlight">位置定位系统：</span></p>
+            <ul>
+              <li>角度编码器，精确记录检测位置和角度</li>
+              <li>支持绝对位置和相对位置检测</li>
+              <li>提供高分辨率位置反馈</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">15 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-01.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-01.png');"></div>
+        <img class="content-image" src="outputs/images/slide-50.png" alt="软件系统架构配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">2.2 软件系统架构：OpenClaw智能核心</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">自主决策引擎：</span></p>
+            <ul>
+              <li><span class="highlight">嵌入式AI大模型：</span>集成轻量级Claude"龙虾"等先进模型，实现本地智能处理</li>
+              <li><span class="highlight">感知-决策-执行闭环：</span>实时感知环境、分析并做出决策，直接控制硬件执行</li>
+              <li><span class="highlight">自主学习能力：</span>通过持续运行积累经验，不断优化决策和控制策略</li>
+              <li><span class="highlight">环境适应能力：</span>根据实时环境状态动态调整行为参数</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">16 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-03.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-03.png');"></div>
+        <img class="content-image" src="outputs/images/slide-50.png" alt="智能编程IDE配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">智能编程IDE功能</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <ul>
+              <li><span class="highlight">自主代码生成：</span>根据环境数据，动态生成并执行控制代码</li>
+              <li><span class="highlight">智能决策引擎：</span>基于感知数据，进行实时分析和决策</li>
+              <li><span class="highlight">自适应学习：</span>通过持续运行不断优化控制策略和代码逻辑</li>
+              <li><span class="highlight">自我进化能力：</span>根据运行结果和反馈，自动调整和优化代码行为</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">17 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-02.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-02.png');"></div>
+        <img class="content-image" src="outputs/images/slide-02.png" alt="第三章配图">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第三章</h1>
+          <h2>系统工作流程：OpenClaw自主智能的工作方式</h2>
+        </div>
+        <div class="page-number">18 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-08.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
+        <img class="content-image" src="outputs/images/slide-08.png" alt="检测扫描配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.1.1 智能检测区域扫描与故障识别</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>当机器人到达机车底部的第一块检测区域时，OpenClaw智能控制中枢<span class="highlight">自主决定</span>启动最佳检测序列，而不是简单执行预设程序。</p>
+            <p>首先，CSI摄像头和红外探测装置同时对该区域进行全方位扫描。CSI摄像头捕捉大量高清图像，OpenClaw的<span class="highlight">本地AI模型</span>实时分析这些图像，将其与内置的故障特征库进行比对，<span class="highlight">自主判断</span>是否存在松动脱落的螺栓、断裂的开口销，磨损的车轮踏面和破损的线缆绝缘层等问题。</p>
+          </div>
+        </div>
+        <div class="page-number">19 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-08.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
+        <img class="content-image" src="outputs/images/slide-08.png" alt="红外温度检测配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">红外温度检测</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>同时，红外探测装置检测该区域的温度分布，OpenClaw<span class="highlight">自主分析</span>这些温度数据，识别热轴故障、制动抱死、闸瓦偏磨等温度异常问题。</p>
+          </div>
+        </div>
+        <div class="page-number">20 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-22.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-22.png');"></div>
+        <img class="content-image" src="outputs/images/slide-22.png" alt="三维建模配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.1.2 三维环境建模与数据融合</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>在CSI摄像头完成扫描后，所有图像数据会立即传输给OpenClaw控制系统。OpenClaw基于内置的大模型数据库，将这些图像与该区域健康状态下的标准图像进行智能对比分析，准确总结出存在的各种明显故障。</p>
+            <p>几乎同一时间，机器人开始移动，OpenClaw<span class="highlight">自主控制</span>移动装置，借助IMU姿态补偿和角度编码器的精确控制，沿着检测区域缓缓前行。激光雷达左右摆动进行180°持续扫描，收集成千上万个数据点，形成精确的三维点云图，为机车底部区域提供详细"内部结构"视图。</p>
+          </div>
+        </div>
+        <div class="page-number">21 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-08.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
+        <img class="content-image" src="outputs/images/slide-08.png" alt="多源数据融合配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.1.3 多源数据融合分析：智能交叉验证</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw将三类关键数据进行精确对齐和融合分析：CSI图像分析的故障结果、激光雷达的三维结构图，以及红外探测的温度分布信息。</p>
+            <p>对于红外探测装置发现的温度异常点，系统会在三维图中精确定位该位置，并结合CSI图像分析结果，交叉验证故障性质。例如，如果红外探测发现某处异常发热，而图像分析显示该位置有电气连接松动，OpenClaw可以<span class="highlight">自主判断</span>这可能是由于接触电阻增大导致的热故障。</p>
+          </div>
+        </div>
+        <div class="page-number">22 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-08.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
+        <img class="content-image" src="outputs/images/slide-08.png" alt="智能决策配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.1.4 智能决策与结果输出：自主诊断与应对</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>当上述步骤未发现明显故障时，系统会进入"深度体检"阶段。红外探测装置会对该区域进行更细致的温度分布分析，寻找潜在问题，如热轴故障、制动系统异常或电气系统过热等。</p>
+            <p>OpenClaw将所有传感器数据进行综合分析，基于内置大模型数据库和专家知识库，对发现的异常做出准确诊断，并提供针对性的解决方案。更关键的是，OpenClaw不仅能发现问题，还能<span class="highlight">自主决定最佳应对措施</span>，根据故障类型和严重程度，调整检测策略、优化移动路径，甚至调整传感器参数。</p>
+          </div>
+        </div>
+        <div class="page-number">23 / 50</div>
+      </section>
+      <section class="bg-gradient-3">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.2.1 传感器数据流向</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">数据采集阶段：</span></p>
+            <ul>
+              <li>各传感器按照设定频率采集环境数据</li>
+              <li>数据通过ADC转换和初步滤波</li>
+              <li>附加时间戳和状态信息</li>
+            </ul>
+            <p><span class="highlight">数据预处理阶段：</span></p>
+            <ul>
+              <li>OpenClaw对接收数据进行格式化和标准化</li>
+              <li>进行去噪、滤波和特征提取</li>
+              <li>数据对齐和同步处理</li>
+            </ul>
+            <p><span class="highlight">智能分析阶段：</span></p>
+            <ul>
+              <li>本地AI模型进行初步分析和判断</li>
+              <li>决定本地处理或上传云端</li>
+              <li>数据压缩和打包准备传输</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">24 / 50</div>
+      </section>
+      <section class="bg-gradient-3">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.2.2 云端数据流向</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">数据上传阶段：</span></p>
+            <ul>
+              <li>上传预处理后的数据</li>
+              <li>采用优先级和压缩算法优化传输</li>
+              <li>支持断点续传和重传机制</li>
+            </ul>
+            <p><span class="highlight">云端分析阶段：</span></p>
+            <ul>
+              <li>云端AI模型对数据进行深度分析</li>
+              <li>识别缺陷和异常情况</li>
+              <li>生成检测报告和控制建议</li>
+            </ul>
+            <p><span class="highlight">结果返回阶段：</span></p>
+            <ul>
+              <li>分析结果返回OpenClaw</li>
+              <li>采用结构化数据格式</li>
+              <li>包含置信度和建议操作</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">25 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-26.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-26.png');"></div>
+        <img class="content-image" src="outputs/images/slide-26.png" alt="控制代码生成配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">3.2.3 控制代码生成与执行：从智能决策到物理行动</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">智能解析阶段：</span>OpenClaw解析云端返回的分析结果，结合当前环境和系统状态，确定需要执行的具体操作。</p>
+            <p><span class="highlight">代码生成阶段：</span>根据控制需求生成相应代码，选择合适的控制算法和参数，优化代码以适应当前环境。</p>
+            <p><span class="highlight">代码执行阶段：</span>生成的代码被即时编译并执行，控制指令发送至硬件驱动系统，监控执行状态和结果。</p>
+            <p><span class="highlight">反馈优化阶段：</span>采集执行结果和系统状态，评估控制效果和代码性能，必要时调整和优化代码。</p>
+          </div>
+        </div>
+        <div class="page-number">26 / 50</div>
+      </section>
+      <section class="bg-gradient-4">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第四章</h1>
+          <h2>技术亮点：OpenClaw具身智能的核心优势</h2>
+        </div>
+        <div class="page-number">27 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-04.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-04.png');"></div>
+        <img class="content-image" src="outputs/images/slide-04.png" alt="自主决策配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">4.1 自主决策能力：从被动执行到主动思考</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw最大的技术亮点在于其<span class="highlight">自主决策能力</span>。不同于传统的机器人系统只能按照预设程序执行，OpenClaw能够：</p>
+            <ul>
+              <li><span class="highlight">实时分析环境：</span>基于多传感器数据，实时理解工作环境和状态</li>
+              <li><span class="highlight">自主制定计划：</span>根据检测任务和当前状况，自主制定最优检测路径和方法</li>
+              <li><span class="highlight">动态调整策略：</span>根据检测进展和发现的问题，动态调整检测策略和参数</li>
+              <li><span class="highlight">应对突发情况：</span>遇到障碍物、环境变化或异常情况时，能够自主应对和调整</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">28 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-05.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-05.png');"></div>
+        <img class="content-image" src="outputs/images/slide-05.png" alt="本地化AI配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">4.2 本地化AI处理：突破云端处理的局限</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw采用<span class="highlight">本地化AI处理架构</span>，将AI模型直接运行在机器人主板上，带来了显著优势：</p>
+            <ul>
+              <li><span class="highlight">超低延迟：</span>决策和行动延迟降至毫秒级，远低于云端处理模式</li>
+              <li><span class="highlight">高可靠性：</span>不依赖网络连接，即使在网络中断时也能正常工作</li>
+              <li><span class="highlight">数据安全：</span>敏感数据在本地处理，不经过云端，提高数据安全性</li>
+              <li><span class="highlight">实时学习：</li>
+              <li>本地积累的经验可以实时用于优化决策模型</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">29 / 50</div>
+      </section>
+      <section class="bg-gradient-4">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">4.3 多模态融合感知：全方位理解环境</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw能够融合多种传感器数据，形成对环境的全方位理解：</p>
+            <ul>
+              <li><span class="highlight">视觉感知：</span>高分辨率视觉识别，能够检测各种表面缺陷</li>
+              <li><span class="highlight">温度感知：</span>红外热成像，能够发现温度异常</li>
+              <li><span class="highlight">距离感知：</span>激光雷达，能够精确测距和建图</li>
+              <li><span class="highlight">姿态感知：</span>IMU，能够了解自身姿态和状态</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">30 / 50</div>
+      </section>
+      <section class="bg-gradient-4">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">4.4 自主学习能力：持续进化的智能</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw具有<span class="highlight">自主学习能力</span>，能够从经验中学习和改进：</p>
+            <ul>
+              <li><span class="highlight">故障模式学习：</span>通过积累检测案例，不断丰富和完善故障识别能力</li>
+              <li><span class="highlight">环境适应：</span>适应不同的车型、线路和环境条件</li>
+              <li><span class="highlight">策略优化：</span>根据检测效果，不断优化检测路径和方法</li>
+              <li><span class="highlight">错误自修正：</span>当某种方法效果不佳时，能够自主调整和尝试新方法</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">31 / 50</div>
+      </section>
+      <section class="bg-gradient-1">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第五章</h1>
+          <h2>系统局限性分析与改进方向</h2>
+        </div>
+        <div class="page-number">32 / 50</div>
+      </section>
+      <section class="bg-gradient-1">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">5.1 分析处理能力局限性</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">云端依赖性问题：</span>数据交由云端大模型处理而非专门的故障案例数据库，导致故障判断和解决方案不够准确。</p>
+            <p><span class="highlight">改进方向：</span>建立专门的铁路故障案例数据库，开发针对机车底部检测的专用AI模型，结合专家系统提高判断准确性，增强本地处理能力。</p>
+          </div>
+        </div>
+        <div class="page-number">33 / 50</div>
+      </section>
+      <section class="bg-gradient-1">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">5.2 硬件性能局限性</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">工业级标准差距：</span>硬件达不到工业水平要求，耐环境能力、稳定性、寿命等方面存在不足。</p>
+            <p><span class="highlight">改进方向：</span>采用工业级组件和设计，加强机械结构设计和散热系统，提高电磁兼容性和抗干扰能力。</p>
+          </div>
+        </div>
+        <div class="page-number">34 / 50</div>
+      </section>
+      <section class="bg-gradient-1">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">5.3 算法与软件局限性</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">AI算法精度问题：</span>AI检测算法精度有待提升，对复杂背景和光照条件下的识别能力有限。</p>
+            <p><span class="highlight">改进方向：</span>增加训练数据量和多样性，优化算法模型结构，开发针对特定缺陷的专用算法。</p>
+          </div>
+        </div>
+        <div class="page-number">35 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-36.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-36.png');"></div>
+        <img class="content-image" src="outputs/images/slide-36.png" alt="系统集成局限性配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">5.4 系统集成与兼容性局限性</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">与现有系统集成困难：</span>与铁路现有检修系统集成存在障碍，数据格式和通信协议不统一。</p>
+            <p><span class="highlight">改进方向：</span>开发标准化数据接口，支持多种通信协议和数据格式，与现有系统建立数据转换机制。</p>
+          </div>
+        </div>
+        <div class="page-number">36 / 50</div>
+      </section>
+      <section class="bg-gradient-2">
+        <div class="content-wrapper section-title" data-appearance="fade-in">
+          <h1>第六章</h1>
+          <h2>工业级升级方案：迈向更高性能的具身智能</h2>
+        </div>
+        <div class="page-number">37 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-37.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
+        <img class="content-image" src="outputs/images/slide-37.png" alt="工业级传感器配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.1.1 工业级传感器应用</h2>
+          <div class="text-content text-xsmall" data-appearance="fade-in">
+            <p><span class="highlight">高分辨率工业相机：</span>华睿科技A5B57MU200，2500万像素，30fps；高帧率和低噪声设计；支持多种触发和同步模式；工作温度范围：-40°C至+70°C；防护等级：IP67</p>
+            <p><span class="highlight">红外热成像相机：</span>海康威视DV-RS32，640×512热分辨率；高精度温度测量能力（±0.5°C）；宽温范围和抗干扰设计；非接触温度检测，远距离测量</p>
+            <p><span class="highlight">高性能激光雷达：</span>镭神智能CX128S2，128线，测距精度±2cm；高密度点云采集；强抗干扰能力和远距探测；工作温度范围：-40°C至+70°C</p>
+          </div>
+        </div>
+        <div class="page-number">38 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-11.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
+        <img class="content-image" src="outputs/images/slide-11.png" alt="增强型执行系统配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.1.2 增强型执行系统</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">OpenClaw Pro智能控制中枢：</span></p>
+            <ul>
+              <li>基于Jetson Orin NX 16GB平台，提供100 TOPS AI算力</li>
+              <li>集成OpenClaw智能编程IDE增强版</li>
+              <li>支持更复杂的代码生成和AI推理</li>
+              <li>工作温度范围：-40°C至+70°C</li>
+            </ul>
+            <p><span class="highlight">高功率执行系统：</span></p>
+            <ul>
+              <li>大扭矩电机驱动，适应各种铁路环境</li>
+              <li>精密机械臂，实现多角度灵活检测</li>
+              <li>增强型稳定系统，确保检测精度</li>
+              <li>防护等级：IP67</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">39 / 50</div>
+      </section>
+      <section class="bg-gradient-2">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.1.3 多传感器阵列设计</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">多视觉系统：</span>增加至3-5个不同角度的摄像头；实现多区域同时检测；提高检测覆盖率和redundancy</p>
+            <p><span class="highlight">多激光雷达：</span>采用2-4个激光雷达形成阵列；实现全方位环境感知；提高测量的精度和可靠性</p>
+            <p><span class="highlight">辅助传感器：</span>增加超声波传感器近距离检测；添加应变片检测结构应力；集成更多环境传感器</p>
+          </div>
+        </div>
+        <div class="page-number">40 / 50</div>
+      </section>
+      <section class="bg-gradient-2">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.2.1 工业级软件架构</h2>
+          <div class="text-content text-xsmall" data-appearance="fade-in">
+            <p><span class="highlight">分层架构设计：</span>设备抽象层（统一设备接口，隐藏硬件细节）；数据处理层（多传感器数据对齐和同步）；服务管理层（设备状态管理，任务调度）；API接口层（标准化RESTful API接口）</p>
+            <p><span class="highlight">实时数据处理：</span>多线程处理架构；OpenCL并行计算加速；TensorRT引擎优化AI推理；GPU加速计算优化</p>
+            <p><span class="highlight">专业数据库系统：</span>铁路故障专用案例数据库；故障模式识别和预警系统；历史数据分析和趋势预测</p>
+          </div>
+        </div>
+        <div class="page-number">41 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-40.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
+        <img class="content-image" src="outputs/images/slide-40.png" alt="AI算法升级配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.2.2 AI算法升级</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">改进型YOLOv8s算法：</span>针对铁路缺陷检测优化的网络结构；增强对小缺陷和低对比度缺陷的检测能力；提高复杂背景下的检测精度；轻量化模型设计，适应边缘设备</p>
+            <p><span class="highlight">多传感器融合算法：</span>基于卡尔曼滤波的数据融合；多源数据的不确定性量化；自适应融合权重调整；融合结果的一致性检查</p>
+            <p><span class="highlight">专业故障诊断专家系统：</span>铁路故障诊断知识库；故障树推理机制；基于案例的推理系统；故障解决方案推荐</p>
+          </div>
+        </div>
+        <div class="page-number">42 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-07.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
+        <img class="content-image" src="outputs/images/slide-07.png" alt="性能指标配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.3.1 关键性能指标提升</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">检测精度：</span>从目前的85-90%提升至99%以上；通过多传感器融合和专业AI模型实现</p>
+            <p><span class="highlight">处理速度：</span>从目前的5-10fps提升至30fps以上；通过边缘计算和硬件加速实现</p>
+            <p><span class="highlight">环境适应性：</span>工作温度范围从-20°C至+50°C扩展至-40°C至+70°C；通过工业级组件和热管理设计实现</p>
+            <p><span class="highlight">防护等级：</span>从IP54提升至IP67；通过密封设计和特殊材料实现</p>
+          </div>
+        </div>
+        <div class="page-number">43 / 50</div>
+      </section>
+      <section class="bg-gradient-2">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.3.2 自主能力提升</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">自主决策率：</span>从目前的70%提升至95%以上；通过增强型OpenClaw Pro实现</p>
+            <p><span class="highlight">学习能力：</span>从有限的固定模板提升至持续学习；通过在线学习和经验积累实现</p>
+            <p><span class="highlight">适应性：</span>增强对不同车型和环境的适应能力；通过自适应参数调整和自组织实现</p>
+          </div>
+        </div>
+        <div class="page-number">44 / 50</div>
+      </section>
+      <section class="bg-gradient-3">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.4.1 升级成本估算</h2>
+          <div class="text-content text-xsmall" data-appearance="fade-in">
+            <p><span class="highlight">硬件成本：</span></p>
+            <ul>
+              <li>工业级传感器和组件成本：约80,000元/套</li>
+              <li>增强型执行系统成本：约40,000元/套</li>
+              <li>边缘计算平台成本：约25,000元/套</li>
+              <li>机械结构和防护设计成本：约15,000元/套</li>
+              <li>其他辅助系统成本：约5,000元/套</li>
+              <li><strong>总硬件成本：约165,000元/套</strong></li>
+            </ul>
+            <p><span class="highlight">软件成本：</span>专业AI模型开发成本：约30,000元/套；<strong>总软件成本：约30,000元/套</strong></p>
+            <p><strong>总升级成本：约195,000元/套</strong></p>
+          </div>
+        </div>
+        <div class="page-number">45 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-06.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-06.png');"></div>
+        <img class="content-image" src="outputs/images/slide-06.png" alt="效益分析配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">6.4.2 效益分析</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">直接经济效益：</span></p>
+            <ul>
+              <li>检测效率提升：每次检测时间从10分钟缩短至3分钟，节省70%时间</li>
+              <li>人力成本节约：减少人工检测需求，每次检测节约约2人小时</li>
+              <li>故障提前发现：减少因故障导致的列车延误和维修成本</li>
+              <li>设备寿命延长：精准检测和预防性维护延长设备寿命</li>
+            </ul>
+            <p><span class="highlight">间接经济效益：</span></p>
+            <ul>
+              <li>提高铁路运输安全性和可靠性</li>
+              <li>提升检修工作效率和质量</li>
+              <li>降低人工检测的安全风险</li>
+              <li>积累故障数据和经验，优化维护策略</li>
+            </ul>
+          </div>
+        </div>
+        <div class="page-number">46 / 50</div>
+      </section>
+      <section class="bg-gradient-3">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">投资回报分析</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>假设每次人工检测成本约200元，机器人检测成本约50元，每次节约150元</p>
+            <p>每天检测10趟列车，每年约300个工作日，总节约成本约<span class="highlight">135万元</span></p>
+            <p>投资回收期约<span class="highlight">1.4年</span>，之后开始净收益</p>
+          </div>
+        </div>
+        <div class="page-number">47 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-49.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-49.png');"></div>
+        <img class="content-image" src="outputs/images/slide-49.png" alt="结论配图">
+        <div class="content-wrapper">
+          <h2 data-appearance="fade-in">结论</h2>
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p>OpenClaw智能铁道机车探伤机器人系统代表了AI从"数字世界"走向"物理世界"的重大突破，是具身智能技术在铁路运维领域的创新应用。通过将OpenClaw"龙虾"智能编程工具部署在机器人主板上，我们实现了AI从被动执行程序到自主决策、自主反应的转变。</p>
+            <p><span class="highlight">突破性的技术架构：</span>OpenClaw+机器人的组合实现了本地化AI处理，突破了传统云端处理的局限，提供了超低延迟、高可靠性的智能决策能力。这种"从数字世界走向物理世界"的技术革新，标志着人工智能应用方式的重大转变。</p>
+            <p><span class="highlight">全方位的感知能力：</span>通过视觉、红外、激光雷达等多传感器的融合，OpenClaw能够全方位理解检测环境，准确识别各种故障。</p>
+          </div>
+        </div>
+        <div class="page-number">48 / 50</div>
+      </section>
+      <section style="background-image: url('outputs/images/slide-49.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-49.png');"></div>
+        <img class="content-image" src="outputs/images/slide-49.png" alt="未来展望配图">
+        <div class="content-wrapper">
+          <div class="text-content text-small" data-appearance="fade-in">
+            <p><span class="highlight">自主决策能力：</span>不同于传统的自动化系统，OpenClaw能够根据实时环境自主调整检测策略，应对各种复杂情况。</p>
+            <p><span class="highlight">持续学习进化：</span>OpenClaw具有自主学习能力，能够从经验中学习，不断优化检测算法和决策策略。</p>
+            <p>未来，随着OpenClaw技术的不断发展和完善，智能铁道机车探伤机器人系统将在铁路运维中发挥越来越重要的作用，为铁路运输安全提供更加可靠、高效的保障，同时也将推动具身智能技术在更多领域的应用和发展。我们相信，OpenClaw系统将继续引领AI从数字世界走向物理世界的技术潮流，开创智能机器人应用的新纪元。</p>
+          </div>
+        </div>
+        <div class="page-number">49 / 50</div>
+      </section>
+      <section class="bg-gradient-4">
+        <div class="content-wrapper ending-content" data-appearance="fade-in">
+          <h1>谢谢观看</h1>
+          <h2>OpenClaw智能铁道机车探伤机器人系统</h2>
+          <h3>AI革命 · 从数字走向物理世界</h3>
+          <p style="margin-top: 40px; font-size: 0.9em; color: #81D4FA;">Web PPT 制作人：机车车辆25-5王政杰</p>
+          <p style="font-size: 0.9em; color: #81D4FA;">项目负责人：机车车辆25-5王政杰</p>
+        </div>
+        <div class="page-number">50 / 50</div>
+      </section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      controls: true,
+      progress: true,
+      center: false,
+      plugins: [ Appearance ]
+    });
+    Reveal.on('slidechanged', function(event) {
+      var currentSection = event.currentSlide;
+      var previousSection = event.previousSlide;
+      if (event.indexh === 0) {
+        var coverSection = document.querySelector('.cover-slide');
+        var videoEl = coverSection ? coverSection.querySelector('video') : null;
+        if (videoEl) {
+          videoEl.currentTime = 0;
+          videoEl.play();
+        }
+      }
+      if (previousSection) {
+        var oldBoxes = previousSection.querySelectorAll('.text-box');
+        var oldImages = previousSection.querySelectorAll('.content-image');
+        oldBoxes.forEach(function(box) {
+          box.classList.remove('animate-in');
+          box.classList.add('animate-out');
+        });
+        oldImages.forEach(function(img) {
+          img.classList.remove('animate-in');
+          img.classList.add('animate-out');
+        });
+      }
+      if (currentSection) {
+        var textBoxes = currentSection.querySelectorAll('.text-box');
+        var contentImages = currentSection.querySelectorAll('.content-image');
+        textBoxes.forEach(function(box, index) {
+          box.style.opacity = '0';
+          box.classList.remove('animate-out');
+          setTimeout(function() {
+            box.classList.add('animate-in');
+          }, 100 + index * 80);
+        });
+        contentImages.forEach(function(img, index) {
+          img.style.opacity = '0';
+          img.classList.remove('animate-out');
+          setTimeout(function() {
+            img.classList.add('animate-in');
+          }, 200 + index * 100);
+        });
+      }
+    });
+    Reveal.on('fragmentshown', function(event) {
+      anime({
+        targets: event.fragment,
+        opacity: [0, 1],
+        translateY: [20, 0],
+        duration: 400,
+        easing: 'easeOutQuad'
+      });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.reveal .slides section .text-content p, .reveal .slides section .text-content ul').forEach(function(el) {
+        if (!el.classList.contains('text-box')) {
+          el.classList.add('text-box');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
