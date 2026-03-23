@@ -1,0 +1,357 @@
+{
+  "title": "OpenClaw智能铁道机车探伤机器人系统",
+  "total_slides": 45,
+  "video_prompt": "A futuristic robot inspecting a railway locomotive undercarriage, blue neon lights, sci-fi style, particles floating, cinematic atmosphere, loopable video background, dark theme with cyan and blue glow",
+  "slides": [
+    {
+      "slide_number": 1,
+      "page_type": "cover",
+      "content": "OpenClaw智能铁道机车探伤机器人系统\nAI革命从数字走向物理世界",
+      "background_prompt": "Abstract futuristic blue particle background, neon light trails, dark theme, technology atmosphere, cinematic lighting, digital particles flowing",
+      "prompt": "Futuristic AI robot with multiple sensors scanning railway locomotive undercarriage, industrial environment, blue thermal vision overlay, LiDAR point cloud visualization, sci-fi concept art"
+    },
+    {
+      "slide_number": 2,
+      "page_type": "content",
+      "content": "目录\n一、系统概述：具身智能的铁路运维新范式\n二、系统架构设计：具身智能的技术基础\n三、系统工作流程：OpenClaw自主智能的工作方式\n四、技术亮点：OpenClaw具身智能的核心优势\n五、系统局限性分析与改进方向\n六、工业级升级方案：迈向更高性能的具身智能\n七、成本与效益分析",
+      "background_prompt": "Abstract blue circuit board pattern, digital network nodes, technology grid background, dark blue theme with glowing connections",
+      "prompt": "Seven chapter icons arranged in a clean layout, each representing: system overview, architecture, workflow, technical highlights, limitations, upgrades, cost analysis, minimalist infographic style"
+    },
+    {
+      "slide_number": 3,
+      "page_type": "section",
+      "content": "第一章\n系统概述：具身智能的铁路运维新范式",
+      "background_prompt": "Abstract blue technology abstract background with glowing lines, futuristic digital atmosphere, dark theme with cyan highlights",
+      "prompt": "A railway locomotive standing in a maintenance depot, industrial scene with soft blue ambient lighting, undercarriage visible, modern technology atmosphere"
+    },
+    {
+      "slide_number": 4,
+      "page_type": "content",
+      "content": "1.1 系统简介：AI突破数字边界，进入物理世界\n\n想象一下，如果AI能够跳出电脑屏幕，直接与物理世界互动会怎样？OpenClaw智能铁道机车探伤机器人系统正在将这一变为现实！\n\n这是一款革命性的铁路设备智能检测系统，融合了AI视觉、红外和激光雷达三位一体技术，通过多传感器融合，对铁道机车底部关键部位进行全方位、高精度缺陷检测，确保铁路运输安全。其核心创新在于采用了OpenClaw具身智能控制中枢架构，实现了AI从\"数字世界\"走向\"物理世界\"的重大突破。",
+      "background_prompt": "Abstract digital transformation concept, binary code flowing into physical robot form, blue and cyan gradient, technology evolution visualization",
+      "prompt": "AI algorithm transforming from digital screen into a physical robot body, digital particles converting to mechanical parts, futuristic illustration showing AI embodied intelligence"
+    },
+    {
+      "slide_number": 5,
+      "page_type": "content",
+      "content": "核心创新：OpenClaw具身智能技术——赋予AI真正的\"身体\"\n\n您是否听说过最近爆火的\"龙虾\"智能编程工具？OpenClaw正是这项革命性技术的杰出应用！我们没有将其局限在虚拟世界，而是创新性地将其植根于机器人主板，为AI装上了\"脚\"（移动执行系统）和\"眼睛\"（传感器系统），实现了真正的具身智能。\n\n这就像什么？就像给了AI一副真实的\"身体\"，让它能够直接感知和改变物理世界！与传统系统\"AI模型困在电脑里\"截然不同，OpenClaw实现了AI从数字世界走向物理世界的跨越，让AI不再是被动执行命令的工具，而是能够自主决策、自主反应的智能体。",
+      "background_prompt": "Abstract neural network connecting to robotic hardware, blue glowing synapses, artificial intelligence visualization with mechanical elements",
+      "prompt": "OpenClaw motherboard with neural network patterns, embedded AI chip glowing blue, robotic control circuit board, technology hardware close-up, detailed engineering illustration"
+    },
+    {
+      "slide_number": 6,
+      "page_type": "content",
+      "content": "无论是云端还是本地处理，OpenClaw都能实现自主决策和反应，但处理方式有所不同：雏形版大部分数据交由云端处理，而工业版则实现了所有数据的本地处理，这代表了机器人控制技术的重大突破，是AI具身智能应用领域的革命性创新。",
+      "background_prompt": "Cloud computing icon with local processing icon, data flow visualization, blue digital theme, distributed computing diagram",
+      "prompt": "Cloud server icon connected to local robot brain icon, data streams flowing between cloud and edge, distributed AI processing diagram, clean infographic style"
+    },
+    {
+      "slide_number": 7,
+      "page_type": "content",
+      "content": "1.2 系统定位：重新定义铁路智能检测\n\n面向铁路运维、机车检修等场景的下一代智能检测解决方案\n以具身智能、自主决策、从数字走向物理为核心竞争优势\n提供从云端AI到本地具身智能的完整技术路线\n差异化定位：基于OpenClaw具身智能控制中枢的\"具身智能\"检测系统",
+      "background_prompt": "Abstract positioning diagram with crosshairs, target on railway system, blue precision targeting visualization",
+      "prompt": "Railway system with smart detection positioning marker, railroad tracks converging to inspection point, modern railway technology concept, strategic positioning illustration"
+    },
+    {
+      "slide_number": 8,
+      "page_type": "content",
+      "content": "1.3 工作环境与基本功能\n\n工作环境：机车底部地沟\n\n主要功能：通过多传感器融合实现机车底部故障检测\n\n检测方式：采用视觉、红外和激光雷达三重融合检测技术\n\n操作模式：OpenClaw自主移动检测与远程监控相结合",
+      "background_prompt": "Abstract underground maintenance pit environment, blue industrial atmosphere, maintenance depot cross-section view",
+      "prompt": "Railway locomotive undercarriage in maintenance pit, inspection robot scanning the bottom of train, industrial maintenance environment, workers monitoring remotely on screens"
+    },
+    {
+      "slide_number": 9,
+      "page_type": "section",
+      "content": "第二章\n系统架构设计：具身智能的技术基础",
+      "background_prompt": "Abstract blue architecture blueprint, system design schematic, technology construction diagram with glowing elements",
+      "prompt": "Complex robot system architecture diagram showing control center, sensor arrays, and actuator systems, technical blueprint style with blue highlights"
+    },
+    {
+      "slide_number": 10,
+      "page_type": "content",
+      "content": "2.1.1 核心控制系统：OpenClaw智能控制中枢\n\nOpenClaw具身智能主板：\n基于树莓派5/Jetson Orin NX的主控单元\n集成OpenClaw智能编程IDE和决策引擎\n本地AI处理核心：搭载嵌入式AI大模型，实现本地智能决策\n自主决策模块：不是简单执行程序，而是自主分析和反应\n本地缓存和预处理关键数据\n具身智能硬件接口：为AI模型提供与物理世界交互的接口",
+      "background_prompt": "Abstract control center schematic, central processing unit visualization, blue circuit board with central hub",
+      "prompt": "Raspberry Pi 5 and Jetson Orin NX circuit board close-up, AI processing chip highlighted, embedded system motherboard, detailed technology hardware photography"
+    },
+    {
+      "slide_number": 11,
+      "page_type": "content",
+      "content": "移动执行系统（AI的\"脚\"）：\n\n电机驱动模块：控制机器人行走（启停、转向、速度）\n\n舵机驱动系统：控制三个传感器（视觉、红外、激光雷达）的俯仰和旋转\n\n精密机械结构：确保传感器稳定性和检测精度",
+      "background_prompt": "Abstract motor control system, blue mechanical engineering diagram, actuator visualization",
+      "prompt": "Precision motor driver and servo mechanism for robot movement, mechanical gears and actuators, high-tech engineering components, detailed industrial machinery"
+    },
+    {
+      "slide_number": 12,
+      "page_type": "content",
+      "content": "2.1.2 传感器系统（AI的\"眼睛\"）\n\n测距系统（AI的\"空间感知器官\"）：\n激光雷达模块，就像AI的触须和耳朵，感知空间距离\n高精度测距和建图能力，让AI能够\"听见\"和\"触摸\"周围环境\n支持复杂环境感知和避障，为AI提供立体空间意识",
+      "background_prompt": "Abstract LiDAR visualization, 3D point cloud rendering, blue spatial sensing technology",
+      "prompt": "LiDAR sensor scanning environment, 3D point cloud display showing detected objects, spatial mapping visualization, autonomous navigation sensor technology"
+    },
+    {
+      "slide_number": 13,
+      "page_type": "content",
+      "content": "视觉系统（AI的\"眼睛\"）：\n\nCSI接口连接工业摄像头，就像AI的瞳孔\n基于OpenCV和深度学习实现图像识别，让AI能够\"看见\"世界\n支持高速图像采集和预处理，提供清晰的视觉信息",
+      "background_prompt": "Abstract industrial camera interface, computer vision visualization, blue digital eye concept",
+      "prompt": "Industrial CSI camera module close-up, machine vision lens with digital overlay, quality inspection camera technology, precision optical sensor"
+    },
+    {
+      "slide_number": 14,
+      "page_type": "content",
+      "content": "热成像系统（AI的\"热感知器官\"）：\n\n红外探测模块，就像AI的皮肤神经末梢，能感知温度变化\n高精度温度采集和补偿算法，让AI具有\"触觉\"般的温度感知\n支持实时热成像分析和异常检测，帮助AI感知环境的\"冷暖\"",
+      "background_prompt": "Abstract thermal imaging visualization, heat map overlay, infrared spectrum analysis",
+      "prompt": "Thermal infrared camera detecting heat signatures on railway components, heat map overlay showing temperature distribution, industrial thermal imaging equipment"
+    },
+    {
+      "slide_number": 15,
+      "page_type": "content",
+      "content": "2.1.3 姿态与定位系统\n\n姿态补偿系统：\nIMU姿态补偿模块，实时检测设备姿态\n高精度姿态解算和补偿算法\n确保检测数据准确性和一致性\n\n位置定位系统：\n角度编码器，精确记录检测位置和角度\n支持绝对位置和相对位置检测\n提供高分辨率位置反馈",
+      "background_prompt": "Abstract IMU sensor visualization, orientation tracking diagram, blue gyroscope display",
+      "prompt": "IMU sensor chip and angle encoder module, inertial measurement unit technology, precision positioning encoder with digital readout, motion tracking hardware"
+    },
+    {
+      "slide_number": 16,
+      "page_type": "content",
+      "content": "2.2 软件系统架构：OpenClaw智能核心\n\n自主决策引擎：\n嵌入式AI大模型：集成轻量级Claude\"龙虾\"等先进模型，实现本地智能处理\n感知-决策-执行闭环：实时感知环境、分析并做出决策，直接控制硬件执行\n自主学习能力：通过持续运行积累经验，不断优化决策和控制策略\n环境适应能力：根据实时环境状态动态调整行为参数",
+      "background_prompt": "Abstract AI decision engine visualization, neural network decision tree, autonomous reasoning system diagram",
+      "prompt": "AI decision engine neural network visualization, autonomous decision tree flowchart, intelligent reasoning system with multiple inputs, blue technology illustration"
+    },
+    {
+      "slide_number": 17,
+      "page_type": "content",
+      "content": "智能编程IDE功能：\n\n自主代码生成：根据环境数据，动态生成并执行控制代码\n智能决策引擎：基于感知数据，进行实时分析和决策\n自适应学习：通过持续运行不断优化控制策略和代码逻辑\n自我进化能力：根据运行结果和反馈，自动调整和优化代码行为",
+      "background_prompt": "Abstract code generation visualization, self-evolving code diagram, blue programming interface",
+      "prompt": "OpenClaw IDE interface showing code being generated, programming interface with AI suggestions, self-evolving code visualization, intelligent development environment"
+    },
+    {
+      "slide_number": 18,
+      "page_type": "section",
+      "content": "第三章\n系统工作流程：OpenClaw自主智能的工作方式",
+      "background_prompt": "Abstract workflow diagram, process flow visualization, blue circular process with arrows",
+      "prompt": "Robot inspection workflow sequence diagram, step-by-step detection process visualization, intelligent inspection procedure flowchart, modern industrial process illustration"
+    },
+    {
+      "slide_number": 19,
+      "page_type": "content",
+      "content": "3.1.1 智能检测区域扫描与故障识别\n\n当机器人到达机车底部的第一块检测区域时，OpenClaw智能控制中枢自主决定启动最佳检测序列，而不是简单执行预设程序。\n\n首先，CSI摄像头和红外探测装置同时对该区域进行全方位扫描。CSI摄像头捕捉大量高清图像，OpenClaw的本地AI模型实时分析这些图像，将其与内置的故障特征库进行比对，自主判断是否存在松动脱落的螺栓、断裂的开口销，磨损的车轮踏面和破损的线缆绝缘层等问题。",
+      "background_prompt": "Abstract scanning visualization, detection grid overlay, blue inspection scanning pattern",
+      "prompt": "Robot camera scanning railway undercarriage, fault detection grid overlay showing analyzed areas, bolts and components being inspected, AI vision detection visualization"
+    },
+    {
+      "slide_number": 20,
+      "page_type": "content",
+      "content": "同时，红外探测装置检测该区域的温度分布，OpenClaw自主分析这些温度数据，识别热轴故障、制动抱死、闸瓦偏磨等温度异常问题。",
+      "background_prompt": "Abstract thermal analysis visualization, temperature distribution map, blue heat signature analysis",
+      "prompt": "Thermal camera detecting temperature anomalies on railway brake system, heat distribution map showing hot spots, thermal inspection of wheel bearings and brakes"
+    },
+    {
+      "slide_number": 21,
+      "page_type": "content",
+      "content": "3.1.2 三维环境建模与数据融合\n\n在CSI摄像头完成扫描后，所有图像数据会立即传输给OpenClaw控制系统。OpenClaw基于内置的大模型数据库，将这些图像与该区域健康状态下的标准图像进行智能对比分析，准确总结出存在的各种明显故障。\n\n几乎同一时间，机器人开始移动，OpenClaw自主控制移动装置，借助IMU姿态补偿和角度编码器的精确控制，沿着检测区域缓缓前行。激光雷达左右摆动进行180°持续扫描，收集成千上万个数据点，形成精确的三维点云图，为机车底部区域提供详细\"内部结构\"视图。",
+      "background_prompt": "Abstract 3D point cloud rendering, LiDAR mapping visualization, blue three-dimensional scanning",
+      "prompt": "LiDAR 3D point cloud of railway undercarriage, detailed three-dimensional mapping of components, precise spatial scanning visualization, industrial 3D modeling technology"
+    },
+    {
+      "slide_number": 22,
+      "page_type": "content",
+      "content": "3.1.3 多源数据融合分析：智能交叉验证\n\nOpenClaw将三类关键数据进行精确对齐和融合分析：CSI图像分析的故障结果、激光雷达的三维结构图，以及红外探测的温度分布信息。\n\n对于红外探测装置发现的温度异常点，系统会在三维图中精确定位该位置，并结合CSI图像分析结果，交叉验证故障性质。例如，如果红外探测发现某处异常发热，而图像分析显示该位置有电气连接松动，OpenClaw可以自主判断这可能是由于接触电阻增大导致的热故障。",
+      "background_prompt": "Abstract data fusion diagram, multiple data streams merging, blue multi-source analysis visualization",
+      "prompt": "Three data streams converging: visual image analysis, 3D LiDAR structure, and thermal temperature map, data fusion interface showing cross-validation, intelligent inspection analysis dashboard"
+    },
+    {
+      "slide_number": 23,
+      "page_type": "content",
+      "content": "3.1.4 智能决策与结果输出：自主诊断与应对\n\n当上述步骤未发现明显故障时，系统会进入\"深度体检\"阶段。红外探测装置会对该区域进行更细致的温度分布分析，寻找潜在问题，如热轴故障、制动系统异常或电气系统过热等。\n\nOpenClaw将所有传感器数据进行综合分析，基于内置大模型数据库和专家知识库，对发现的异常做出准确诊断，并提供针对性的解决方案。更关键的是，OpenClaw不仅能发现问题，还能自主决定最佳应对措施，根据故障类型和严重程度，调整检测策略、优化移动路径，甚至调整传感器参数。",
+      "background_prompt": "Abstract diagnostic decision tree, autonomous diagnosis interface, blue intelligent analysis screen",
+      "prompt": "AI diagnostic interface showing fault analysis results, autonomous decision-making screen with multiple options, intelligent troubleshooting dashboard, diagnosis recommendation display"
+    },
+    {
+      "slide_number": 24,
+      "page_type": "content",
+      "content": "3.2.1 传感器数据流向\n\n数据采集阶段：\n各传感器按照设定频率采集环境数据\n数据通过ADC转换和初步滤波\n附加时间戳和状态信息\n\n数据预处理阶段：\nOpenClaw对接收数据进行格式化和标准化\n进行去噪、滤波和特征提取\n数据对齐和同步处理\n\n智能分析阶段：\n本地AI模型进行初步分析和判断\n决定本地处理或上传云端\n数据压缩和打包准备传输",
+      "background_prompt": "Abstract data flow diagram, sensor data pipeline, blue streaming data visualization",
+      "prompt": "Sensor data flow pipeline diagram, ADC conversion and filtering stages, data preprocessing pipeline, real-time data streaming visualization with timestamps"
+    },
+    {
+      "slide_number": 25,
+      "page_type": "content",
+      "content": "3.2.2 云端数据流向\n\n数据上传阶段：\n上传预处理后的数据\n采用优先级和压缩算法优化传输\n支持断点续传和重传机制\n\n云端分析阶段：\n云端AI模型对数据进行深度分析\n识别缺陷和异常情况\n生成检测报告和控制建议\n\n结果返回阶段：\n分析结果返回OpenClaw\n采用结构化数据格式\n包含置信度和建议操作",
+      "background_prompt": "Abstract cloud computing diagram, cloud server data processing, blue cloud upload visualization",
+      "prompt": "Cloud server receiving inspection data, cloud AI analysis processing, result feedback loop to robot, distributed computing architecture diagram"
+    },
+    {
+      "slide_number": 26,
+      "page_type": "content",
+      "content": "3.2.3 控制代码生成与执行：从智能决策到物理行动\n\n智能解析阶段：\nOpenClaw解析云端返回的分析结果\n结合当前环境和系统状态\n确定需要执行的具体操作\n\n代码生成阶段：\n根据控制需求生成相应代码\n选择合适的控制算法和参数\n优化代码以适应当前环境\n\n代码执行阶段：\n生成的代码被即时编译并执行\n控制指令发送至硬件驱动系统\n监控执行状态和结果\n\n反馈优化阶段：\n采集执行结果和系统状态\n评估控制效果和代码性能\n必要时调整和优化代码",
+      "background_prompt": "Abstract code execution pipeline, command generation to hardware control, blue automated programming flow",
+      "prompt": "Code generation and execution workflow, AI writing control code in real-time, compiled instructions sent to motor drivers, feedback loop optimization cycle, programming automation interface"
+    },
+    {
+      "slide_number": 27,
+      "page_type": "section",
+      "content": "第四章\n技术亮点：OpenClaw具身智能的核心优势",
+      "background_prompt": "Abstract technology highlights showcase, innovation breakthrough visualization, blue shining star elements",
+      "prompt": "Four technology highlight icons: autonomous decision, local AI processing, multi-modal fusion, self-learning capability, arranged in showcase layout, modern tech presentation style"
+    },
+    {
+      "slide_number": 28,
+      "page_type": "content",
+      "content": "4.1 自主决策能力：从被动执行到主动思考\n\nOpenClaw最大的技术亮点在于其自主决策能力。不同于传统的机器人系统只能按照预设程序执行，OpenClaw能够：\n\n实时分析环境：基于多传感器数据，实时理解工作环境和状态\n自主制定计划：根据检测任务和当前状况，自主制定最优检测路径和方法\n动态调整策略：根据检测进展和发现的问题，动态调整检测策略和参数\n应对突发情况：遇到障碍物、环境变化或异常情况时，能够自主应对和调整\n\n这种自主决策能力使OpenClaw控制的机器人不再是简单执行程序的工具，而是能够自主思考和反应的智能体，真正实现了AI从数字世界向物理世界的跨越。",
+      "background_prompt": "Abstract autonomous thinking visualization, AI brain with decision tree, blue neural decision network",
+      "prompt": "Autonomous AI brain making decisions, multiple sensor inputs processed into action decisions, intelligent robot thinking visualization, proactive decision-making concept illustration"
+    },
+    {
+      "slide_number": 29,
+      "page_type": "content",
+      "content": "4.2 本地化AI处理：突破云端处理的局限\n\nOpenClaw采用本地化AI处理架构，将AI模型直接运行在机器人主板上，带来了显著优势：\n\n超低延迟：决策和行动延迟降至毫秒级，远低于云端处理模式\n高可靠性：不依赖网络连接，即使在网络中断时也能正常工作\n数据安全：敏感数据在本地处理，不经过云端，提高数据安全性\n实时学习：本地积累的经验可以实时用于优化决策模型\n\n这种本地化处理方式使机器人能够实现真正的自主性，不再受限于网络连接和云端响应时间，完美体现了\"从数字世界走向物理世界\"的技术理念。",
+      "background_prompt": "Abstract edge computing visualization, local AI processing unit, blue embedded system diagram",
+      "prompt": "Edge computing AI chip on robot motherboard, local processing without cloud dependency, embedded AI inference engine, standalone intelligent processing unit"
+    },
+    {
+      "slide_number": 30,
+      "page_type": "content",
+      "content": "4.3 多模态融合感知：全方位理解环境\n\nOpenClaw能够融合多种传感器数据，形成对环境的全方位理解：\n\n视觉感知：高分辨率视觉识别，能够检测各种表面缺陷\n温度感知：红外热成像，能够发现温度异常\n距离感知：激光雷达，能够精确测距和建图\n姿态感知：IMU，能够了解自身姿态和状态\n\n通过多模态数据融合，OpenClaw能够比单一传感器更准确、更全面地理解检测环境，提高检测的准确性和可靠性。",
+      "background_prompt": "Abstract multi-modal sensing fusion, four sensor types converging, blue data integration visualization",
+      "prompt": "Four sensor modalities integrated: visual camera, thermal infrared, LiDAR distance, and IMU orientation, multi-modal fusion dashboard showing unified environmental understanding, sensor fusion technology"
+    },
+    {
+      "slide_number": 31,
+      "page_type": "content",
+      "content": "4.4 自主学习能力：持续进化的智能\n\nOpenClaw具有自主学习能力，能够从经验中学习和改进：\n\n故障模式学习：通过积累检测案例，不断丰富和完善故障识别能力\n环境适应：适应不同的车型、线路和环境条件\n策略优化：根据检测效果，不断优化检测路径和方法\n错误自修正：当某种方法效果不佳时，能够自主调整和尝试新方法\n\n这种自主学习能力使OpenClaw系统能够随时间推移不断进化，提高检测性能和可靠性。",
+      "background_prompt": "Abstract self-learning neural network, machine learning improvement cycle, blue evolving AI visualization",
+      "prompt": "AI system learning from experience, neural network improving over time, accumulated knowledge database growing, self-evolution cycle visualization, intelligent system improvement diagram"
+    },
+    {
+      "slide_number": 32,
+      "page_type": "section",
+      "content": "第五章\n系统局限性分析与改进方向",
+      "background_prompt": "Abstract limitation analysis diagram, problem identification visualization, blue analysis with warning elements",
+      "prompt": "Four limitation analysis icons: processing capability, hardware performance, algorithm accuracy, system integration, problem identification dashboard, limitation assessment interface"
+    },
+    {
+      "slide_number": 33,
+      "page_type": "content",
+      "content": "5.1 分析处理能力局限性\n\n云端依赖性问题：数据交由云端大模型处理而非专门的故障案例数据库，导致故障判断和解决方案不够准确。\n\n改进方向：建立专门的铁路故障案例数据库，开发针对机车底部检测的专用AI模型，结合专家系统提高判断准确性，增强本地处理能力。",
+      "background_prompt": "Abstract cloud dependency problem, local vs cloud processing comparison, blue problem analysis visualization",
+      "prompt": "Cloud dependency weakness diagram, comparison between cloud processing and local specialized database, railway fault case database concept, dedicated AI model for train inspection"
+    },
+    {
+      "slide_number": 34,
+      "page_type": "content",
+      "content": "5.2 硬件性能局限性\n\n工业级标准差距：硬件达不到工业水平要求，耐环境能力、稳定性、寿命等方面存在不足。\n\n改进方向：采用工业级组件和设计，加强机械结构设计和散热系统，提高电磁兼容性和抗干扰能力。",
+      "background_prompt": "Abstract industrial hardware upgrade, rugged design comparison, blue industrial engineering",
+      "prompt": "Industrial-grade hardware components comparison, rugged enclosure design, enhanced heat dissipation system, electromagnetic compatibility improvement, durable industrial components"
+    },
+    {
+      "slide_number": 35,
+      "page_type": "content",
+      "content": "5.3 算法与软件局限性\n\nAI算法精度问题：AI检测算法精度有待提升，对复杂背景和光照条件下的识别能力有限。\n\n改进方向：增加训练数据量和多样性，优化算法模型结构，开发针对特定缺陷的专用算法。",
+      "background_prompt": "Abstract algorithm improvement visualization, AI training data expansion, blue machine learning enhancement",
+      "prompt": "AI algorithm training process, diverse railway defect dataset expansion, specialized defect detection algorithm, algorithm model optimization interface, machine learning improvement"
+    },
+    {
+      "slide_number": 36,
+      "page_type": "content",
+      "content": "5.4 系统集成与兼容性局限性\n\n与现有系统集成困难：与铁路现有检修系统集成存在障碍，数据格式和通信协议不统一。\n\n改进方向：开发标准化数据接口，支持多种通信协议和数据格式，与现有系统建立数据转换机制。",
+      "background_prompt": "Abstract system integration diagram, protocol conversion, blue connectivity visualization",
+      "prompt": "System integration architecture, multiple communication protocols connecting, standardized data interface development, legacy system compatibility bridge, railway maintenance system connection"
+    },
+    {
+      "slide_number": 37,
+      "page_type": "section",
+      "content": "第六章\n工业级升级方案：迈向更高性能的具身智能",
+      "background_prompt": "Abstract industrial upgrade blueprint, high-performance system design, blue engineering upgrade visualization",
+      "prompt": "Industrial-grade robot system upgrade blueprint, professional inspection equipment array, high-performance sensing system, rugged industrial robot design, advanced technology upgrade illustration"
+    },
+    {
+      "slide_number": 38,
+      "page_type": "content",
+      "content": "6.1.1 工业级传感器应用\n\n高分辨率工业相机：\n华睿科技A5B57MU200，2500万像素，30fps\n高帧率和低噪声设计\n支持多种触发和同步模式\n工作温度范围：-40°C至+70°C\n防护等级：IP67\n\n红外热成像相机：\n海康威视DV-RS32，640×512热分辨率\n高精度温度测量能力（±0.5°C）\n宽温范围和抗干扰设计\n非接触温度检测，远距离测量\n\n高性能激光雷达：\n镭神智能CX128S2，128线，测距精度±2cm\n高密度点云采集\n强抗干扰能力和远距探测\n工作温度范围：-40°C至+70°C",
+      "background_prompt": "Abstract industrial sensor technology, professional inspection sensors array, blue sensor technology showcase",
+      "prompt": "Industrial camera sensor array, high-resolution industrial camera module, thermal infrared imaging camera, high-performance LiDAR sensor, professional inspection sensor lineup"
+    },
+    {
+      "slide_number": 39,
+      "page_type": "content",
+      "content": "6.1.2 增强型执行系统\n\nOpenClaw Pro智能控制中枢：\n基于Jetson Orin NX 16GB平台\n提供100 TOPS AI算力\n集成OpenClaw智能编程IDE增强版\n支持更复杂的代码生成和AI推理\n工作温度范围：-40°C至+70°C\n内置高性能AI处理单元：专为具身智能优化的嵌入式AI芯片\n\n高功率执行系统：\n大扭矩电机驱动，适应各种铁路环境\n精密机械臂，实现多角度灵活检测\n增强型稳定系统，确保检测精度\n防护等级：IP67",
+      "background_prompt": "Abstract enhanced control system, Jetson Orin NX platform visualization, blue high-performance computing",
+      "prompt": "Jetson Orin NX 16GB computing platform, 100 TOPS AI performance chip, enhanced robot control motherboard, high-torque motor driver, precision robotic actuator, industrial control system"
+    },
+    {
+      "slide_number": 40,
+      "page_type": "content",
+      "content": "6.1.3 多传感器阵列设计\n\n多视觉系统：\n增加至3-5个不同角度的摄像头\n实现多区域同时检测\n提高检测覆盖率和redundancy\n\n多激光雷达：\n采用2-4个激光雷达形成阵列\n实现全方位环境感知\n提高测量的精度和可靠性\n\n辅助传感器：\n增加超声波传感器近距离检测\n添加应变片检测结构应力\n集成更多环境传感器",
+      "background_prompt": "Abstract multi-sensor array, sensor redundancy design, blue comprehensive sensing coverage",
+      "prompt": "Multiple camera angles configuration, 3-5 cameras covering all angles, LiDAR array with 2-4 units, ultrasonic sensor for close-range detection, strain gauge for structural stress, comprehensive sensor coverage diagram"
+    },
+    {
+      "slide_number": 41,
+      "page_type": "content",
+      "content": "6.2.1 工业级软件架构\n\n分层架构设计：\n设备抽象层：统一设备接口，隐藏硬件细节\n数据处理层：多传感器数据对齐和同步\n服务管理层：设备状态管理，任务调度\nAPI接口层：标准化RESTful API接口\n\n实时数据处理：\n多线程处理架构\nOpenCL并行计算加速\nTensorRT引擎优化AI推理\nGPU加速计算优化\n\n专业数据库系统：\n铁路故障专用案例数据库\n故障模式识别和预警系统\n历史数据分析和趋势预测",
+      "background_prompt": "Abstract software architecture layers, layered system design, blue software hierarchy diagram",
+      "prompt": "Software architecture layers diagram, device abstraction layer, data processing pipeline, service management interface, RESTful API documentation, real-time processing dashboard, specialized railway fault database interface"
+    },
+    {
+      "slide_number": 42,
+      "page_type": "content",
+      "content": "6.2.2 AI算法升级\n\n改进型YOLOv8s算法：\n针对铁路缺陷检测优化的网络结构\n增强对小缺陷和低对比度缺陷的检测能力\n提高复杂背景下的检测精度\n轻量化模型设计，适应边缘设备\n\n多传感器融合算法：\n基于卡尔曼滤波的数据融合\n多源数据的不确定性量化\n自适应融合权重调整\n融合结果的一致性检查\n\n专业故障诊断专家系统：\n铁路故障诊断知识库\n故障树推理机制\n基于案例的推理系统\n故障解决方案推荐",
+      "background_prompt": "Abstract AI algorithm upgrade, YOLOv8 neural network, blue deep learning visualization",
+      "prompt": "YOLOv8s neural network for railway defect detection, small defect detection enhancement, Kalman filter data fusion algorithm, expert system knowledge base interface, fault tree reasoning visualization"
+    },
+    {
+      "slide_number": 43,
+      "page_type": "content",
+      "content": "6.3.1 关键性能指标提升\n\n检测精度：\n从目前的85-90%提升至99%以上\n通过多传感器融合和专业AI模型实现\n\n处理速度：\n从目前的5-10fps提升至30fps以上\n通过边缘计算和硬件加速实现\n\n环境适应性：\n工作温度范围从-20°C至+50°C扩展至-40°C至+70°C\n通过工业级组件和热管理设计实现\n\n防护等级：\n从IP54提升至IP67\n通过密封设计和特殊材料实现",
+      "background_prompt": "Abstract performance metrics dashboard, improvement comparison charts, blue KPI visualization",
+      "prompt": "Performance metrics dashboard showing accuracy 99%, processing speed 30fps, temperature range -40 to 70°C, IP67 rating, before and after comparison charts, key performance indicator visualization"
+    },
+    {
+      "slide_number": 44,
+      "page_type": "content",
+      "content": "6.3.2 自主能力提升\n\n自主决策率：\n从目前的70%提升至95%以上\n通过增强型OpenClaw Pro实现\n\n学习能力：\n从有限的固定模板提升至持续学习\n通过在线学习和经验积累实现\n\n适应性：\n增强对不同车型和环境的适应能力\n通过自适应参数调整和自组织实现",
+      "background_prompt": "Abstract autonomous capability upgrade, self-improvement visualization, blue adaptive system",
+      "prompt": "Autonomous decision rate improvement dial, continuous learning capability diagram, adaptive parameter adjustment interface, self-organizing system visualization, enhanced adaptability comparison"
+    },
+    {
+      "slide_number": 45,
+      "page_type": "content",
+      "content": "6.4.1 升级成本估算\n\n硬件成本：\n工业级传感器和组件成本：约80000元/套\n增强型执行系统成本：约40000元/套\n边缘计算平台成本：约25000元/套\n机械结构和防护设计成本：约15000元/套\n其他辅助系统成本：约5000元/套\n总硬件成本：约165000元/套\n\n软件成本：\n专业AI模型开发成本：约30000元/套\n总软件成本：约30000元/套\n\n总升级成本：约195000元/套",
+      "background_prompt": "Abstract cost breakdown diagram, budget allocation chart, blue financial analysis visualization",
+      "prompt": "Cost breakdown pie chart: sensors 80000, actuators 40000, computing platform 25000, mechanical structure 15000, auxiliary systems 5000, total 195000 yuan, industrial upgrade budget allocation visualization"
+    },
+    {
+      "slide_number": 46,
+      "page_type": "content",
+      "content": "6.4.2 效益分析\n\n直接经济效益：\n检测效率提升：每次检测时间从10分钟缩短至3分钟，节省70%时间\n人力成本节约：减少人工检测需求，每次检测节约约2人小时\n故障提前发现：减少因故障导致的列车延误和维修成本\n设备寿命延长：精准检测和预防性维护延长设备寿命\n\n间接经济效益：\n提高铁路运输安全性和可靠性\n提升检修工作效率和质量\n降低人工检测的安全风险\n积累故障数据和经验，优化维护策略",
+      "background_prompt": "Abstract economic benefit analysis, ROI visualization, blue financial growth chart",
+      "prompt": "Economic benefit analysis showing time savings 70%, cost reduction per inspection, safety improvement, equipment lifespan extension, ROI calculation dashboard, railway efficiency improvement visualization"
+    },
+    {
+      "slide_number": 47,
+      "page_type": "content",
+      "content": "投资回报分析：\n\n假设每次人工检测成本约200元，机器人检测成本约50元，每次节约150元\n每天检测10趟列车，每年约300个工作日，总节约成本约135万元\n投资回收期约1.4年，之后开始净收益",
+      "background_prompt": "Abstract ROI calculation, investment return curve, blue financial projection",
+      "prompt": "ROI calculation showing 1.4 year payback period, investment return curve graph, annual savings 1.35 million yuan, net profit after payback, financial projection chart"
+    },
+    {
+      "slide_number": 48,
+      "page_type": "content",
+      "content": "结论\n\nOpenClaw智能铁道机车探伤机器人系统代表了AI从\"数字世界\"走向\"物理世界\"的重大突破，是具身智能技术在铁路运维领域的创新应用。通过将OpenClaw\"龙虾\"智能编程工具部署在机器人主板上，我们实现了AI从被动执行程序到自主决策、自主反应的转变。\n\n突破性的技术架构：OpenClaw+机器人的组合实现了本地化AI处理，突破了传统云端处理的局限，提供了超低延迟、高可靠性的智能决策能力。这种\"从数字世界走向物理世界\"的技术革新，标志着人工智能应用方式的重大转变。\n\n全方位的感知能力：通过视觉、红外、激光雷达等多传感器的融合，OpenClaw能够全方位理解检测环境，准确识别各种故障。",
+      "background_prompt": "Abstract conclusion showcase, breakthrough technology summary, blue achievement visualization",
+      "prompt": "Revolutionary robot system conclusion visual, AI embodied intelligence breakthrough, comprehensive sensing capability summary, technological achievement showcase, future vision illustration"
+    },
+    {
+      "slide_number": 49,
+      "page_type": "content",
+      "content": "自主决策能力：不同于传统的自动化系统，OpenClaw能够根据实时环境自主调整检测策略，应对各种复杂情况。\n\n持续学习进化：OpenClaw具有自主学习能力，能够从经验中学习，不断优化检测算法和决策策略。\n\n未来，随着OpenClaw技术的不断发展和完善，智能铁道机车探伤机器人系统将在铁路运维中发挥越来越重要的作用，为铁路运输安全提供更加可靠、高效的保障，同时也将推动具身智能技术在更多领域的应用和发展。我们相信，OpenClaw系统将继续引领AI从数字世界走向物理世界的技术潮流，开创智能机器人应用的新纪元。",
+      "background_prompt": "Abstract future vision, AI evolution path, blue forward-looking visualization",
+      "prompt": "Future vision of AI embodied intelligence, autonomous learning evolution, railway safety improvement, smart robot applications expansion, future technology outlook illustration"
+    },
+    {
+      "slide_number": 50,
+      "page_type": "ending",
+      "content": "谢谢观看\n\nOpenClaw智能铁道机车探伤机器人系统\nAI革命 · 从数字走向物理世界",
+      "background_prompt": "Abstract thank you ending screen, futuristic conclusion, blue glowing conclusion atmosphere",
+      "prompt": "Thank you closing screen with OpenClaw robot system branding, futuristic AI technology conclusion, railway innovation finale, professional ending slide with blue theme"
+    }
+  ]
+}
