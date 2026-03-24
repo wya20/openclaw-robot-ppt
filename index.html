@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenClaw智能铁道机车探伤机器人系统</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
 
@@ -694,7 +694,7 @@
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.1.2 三维环境建模与数据融合</h2>
           <div class="text-content text-small" data-appearance="fade-in">
-            <p>在CSI摄像头完成扫描后，所有图像数据会立即传输给 OpenClaw控制系统。OpenClaw基于内置的大模型数据库，将这些图像与该区域健康状态下的标准图像进行智能对比分析，准确总结出存在的各种明显故障。</p>
+            <p>在CSI摄像头完成扫描后，所有图像数据会立即传输给OpenClaw控制系统。OpenClaw基于内置的大模型数据库，将这些图像与该区域健康状态下的标准图像进行智能对比分析，准确总结出存在的各种明显故障。</p>
             <p>几乎同一时间，机器人开始移动，OpenClaw<span class="highlight">自主控制</span>移动装置，借助IMU姿态补偿和角度编码器的精确控制，沿着检测区域缓缓前行。激光雷达左右摆动进行180°持续扫描，收集成千上万个数据点，形成精确的三维点云图，为机车底部区域提供详细"内部结构"视图。</p>
           </div>
         </div>
@@ -1030,7 +1030,7 @@
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.3.2 自主能力提升</h2>
           <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">自主决策率：</span>从目前的70%提升至95%以上；通过增强型 OpenClaw Pro实现</p>
+            <p><span class="highlight">自主决策率：</span>从目前的70%提升至95%以上；通过增强型OpenClaw Pro实现</p>
             <p><span class="highlight">学习能力：</span>从有限的固定模板提升至持续学习；通过在线学习和经验积累实现</p>
             <p><span class="highlight">适应性：</span>增强对不同车型和环境的适应能力；通过自适应参数调整和自组织实现</p>
           </div>
@@ -1137,9 +1137,9 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://unpkg.com/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.js"></script>
+  <script src="https://unpkg.com/animejs@3.2.2/lib/anime.min.js"></script>
   <script>
     Reveal.initialize({
       hash: true,
