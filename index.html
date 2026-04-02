@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenClaw智能铁道机车探伤机器人系统</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/theme/black.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.css">
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
 
@@ -389,6 +390,28 @@
     .reveal .slides section {
       transition: transform 0.15s ease-out;
     }
+
+    #toc-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #toc-canvas:active {
+      cursor: default;
+    }
+
+    #toc-section .content-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    #toc-section {
+      overflow: visible !important;
+    }
   </style>
 </head>
 <body>
@@ -404,20 +427,11 @@
         <div class="page-number">1 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-02.png');">
+      <section id="toc-section" style="background-image: url('outputs/images/slide-02.png');">
         <div class="bg-overlay" style="background-image: url('outputs/images/slide-02.png');"></div>
-        <img class="content-image" src="outputs/images/slide-02.png" alt="目录配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">目录</h2>
-          <div class="text-content toc-content" data-appearance="fade-in">
-            <p><strong>一、系统概述：</strong>具身智能的铁路运维新范式</p>
-            <p><strong>二、系统架构设计：</strong>具身智能的技术基础</p>
-            <p><strong>三、系统工作流程：</strong>OpenClaw自主智能的工作方式</p>
-            <p><strong>四、技术亮点：</strong>OpenClaw具身智能的核心优势</p>
-            <p><strong>五、系统局限性分析与改进方向</strong></p>
-            <p><strong>六、工业级升级方案：</strong>迈向更高性能的具身智能</p>
-            <p><strong>七、成本与效益分析</strong></p>
-          </div>
+        <canvas id="toc-canvas"></canvas>
+        <div class="content-wrapper" style="pointer-events: none;">
+          <h2 data-appearance="fade-in" style="text-align: center; margin-bottom: 30px;">目录</h2>
         </div>
         <div class="page-number">2 / 50</div>
       </section>
@@ -502,9 +516,9 @@
         <div class="page-number">8 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-08.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
-        <img class="content-image" src="outputs/images/slide-08.png" alt="第二章配图">
+      <section style="background-image: url('outputs/images/slide-09.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-09.png');"></div>
+        <img class="content-image" src="outputs/images/slide-09.png" alt="第二章配图">
         <div class="content-wrapper section-title" data-appearance="fade-in">
           <h1>第二章</h1>
           <h2>系统架构设计：具身智能的技术基础</h2>
@@ -512,9 +526,9 @@
         <div class="page-number">9 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-11.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
-        <img class="content-image" src="outputs/images/slide-11.png" alt="核心控制系统配图">
+      <section style="background-image: url('outputs/images/slide-10.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-10.png');"></div>
+        <img class="content-image" src="outputs/images/slide-10.png" alt="核心控制系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">2.1.1 核心控制系统：OpenClaw智能控制中枢</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -532,9 +546,9 @@
         <div class="page-number">10 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-13.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-13.png');"></div>
-        <img class="content-image" src="outputs/images/slide-13.png" alt="移动执行系统配图">
+      <section style="background-image: url('outputs/images/slide-11.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
+        <img class="content-image" src="outputs/images/slide-11.png" alt="移动执行系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">移动执行系统（AI的"脚"）</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -546,9 +560,9 @@
         <div class="page-number">11 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-25.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-25.png');"></div>
-        <img class="content-image" src="outputs/images/slide-25.png" alt="测距系统配图">
+      <section style="background-image: url('outputs/images/slide-12.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-12.png');"></div>
+        <img class="content-image" src="outputs/images/slide-12.png" alt="测距系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">2.1.2 传感器系统（AI的"眼睛"）— 测距系统</h2>
           <div class="text-content text-medium" data-appearance="fade-in">
@@ -563,9 +577,9 @@
         <div class="page-number">12 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-36.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-36.png');"></div>
-        <img class="content-image" src="outputs/images/slide-36.png" alt="视觉系统配图">
+      <section style="background-image: url('outputs/images/slide-13.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-13.png');"></div>
+        <img class="content-image" src="outputs/images/slide-13.png" alt="视觉系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">视觉系统（AI的"眼睛"）</h2>
           <div class="text-content text-medium" data-appearance="fade-in">
@@ -579,9 +593,9 @@
         <div class="page-number">13 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-37.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
-        <img class="content-image" src="outputs/images/slide-37.png" alt="热成像系统配图">
+      <section style="background-image: url('outputs/images/slide-14.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-14.png');"></div>
+        <img class="content-image" src="outputs/images/slide-14.png" alt="热成像系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">热成像系统（AI的"热感知器官"）</h2>
           <div class="text-content text-medium" data-appearance="fade-in">
@@ -595,9 +609,9 @@
         <div class="page-number">14 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-40.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
-        <img class="content-image" src="outputs/images/slide-40.png" alt="姿态与定位系统配图">
+      <section style="background-image: url('outputs/images/slide-15.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-15.png');"></div>
+        <img class="content-image" src="outputs/images/slide-15.png" alt="姿态与定位系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">2.1.3 姿态与定位系统</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -618,9 +632,9 @@
         <div class="page-number">15 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-01.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-01.png');"></div>
-        <img class="content-image" src="outputs/images/slide-50.png" alt="软件系统架构配图">
+      <section style="background-image: url('outputs/images/slide-16.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-16.png');"></div>
+        <img class="content-image" src="outputs/images/slide-16.png" alt="软件系统架构配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">2.2 软件系统架构：OpenClaw智能核心</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -636,9 +650,9 @@
         <div class="page-number">16 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-03.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-03.png');"></div>
-        <img class="content-image" src="outputs/images/slide-50.png" alt="智能编程IDE配图">
+      <section style="background-image: url('outputs/images/slide-17.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-17.png');"></div>
+        <img class="content-image" src="outputs/images/slide-17.png" alt="智能编程IDE配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">智能编程IDE功能</h2>
           <div class="text-content text-medium" data-appearance="fade-in">
@@ -653,9 +667,9 @@
         <div class="page-number">17 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-02.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-02.png');"></div>
-        <img class="content-image" src="outputs/images/slide-02.png" alt="第三章配图">
+      <section style="background-image: url('outputs/images/slide-18.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-18.png');"></div>
+        <img class="content-image" src="outputs/images/slide-18.png" alt="第三章配图">
         <div class="content-wrapper section-title" data-appearance="fade-in">
           <h1>第三章</h1>
           <h2>系统工作流程：OpenClaw自主智能的工作方式</h2>
@@ -663,9 +677,9 @@
         <div class="page-number">18 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-08.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
-        <img class="content-image" src="outputs/images/slide-08.png" alt="检测扫描配图">
+      <section style="background-image: url('outputs/images/slide-19.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-19.png');"></div>
+        <img class="content-image" src="outputs/images/slide-19.png" alt="检测扫描配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.1.1 智能检测区域扫描与故障识别</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -676,9 +690,9 @@
         <div class="page-number">19 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-08.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
-        <img class="content-image" src="outputs/images/slide-08.png" alt="红外温度检测配图">
+      <section style="background-image: url('outputs/images/slide-20.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-20.png');"></div>
+        <img class="content-image" src="outputs/images/slide-20.png" alt="红外温度检测配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">红外温度检测</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -688,9 +702,9 @@
         <div class="page-number">20 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-22.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-22.png');"></div>
-        <img class="content-image" src="outputs/images/slide-22.png" alt="三维建模配图">
+      <section style="background-image: url('outputs/images/slide-21.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-21.png');"></div>
+        <img class="content-image" src="outputs/images/slide-21.png" alt="三维建模配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.1.2 三维环境建模与数据融合</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -701,9 +715,9 @@
         <div class="page-number">21 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-08.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
-        <img class="content-image" src="outputs/images/slide-08.png" alt="多源数据融合配图">
+      <section style="background-image: url('outputs/images/slide-22.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-22.png');"></div>
+        <img class="content-image" src="outputs/images/slide-22.png" alt="多源数据融合配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.1.3 多源数据融合分析：智能交叉验证</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -714,9 +728,9 @@
         <div class="page-number">22 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-08.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-08.png');"></div>
-        <img class="content-image" src="outputs/images/slide-08.png" alt="智能决策配图">
+      <section style="background-image: url('outputs/images/slide-23.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-23.png');"></div>
+        <img class="content-image" src="outputs/images/slide-23.png" alt="智能决策配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.1.4 智能决策与结果输出：自主诊断与应对</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -727,7 +741,8 @@
         <div class="page-number">23 / 50</div>
       </section>
 
-      <section class="bg-gradient-3">
+      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-24.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-24.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.2.1 传感器数据流向</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -754,7 +769,8 @@
         <div class="page-number">24 / 50</div>
       </section>
 
-      <section class="bg-gradient-3">
+      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-25.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-25.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">3.2.2 云端数据流向</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -796,7 +812,8 @@
         <div class="page-number">26 / 50</div>
       </section>
 
-      <section class="bg-gradient-4">
+      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-27.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-27.png');"></div>
         <div class="content-wrapper section-title" data-appearance="fade-in">
           <h1>第四章</h1>
           <h2>技术亮点：OpenClaw具身智能的核心优势</h2>
@@ -804,9 +821,9 @@
         <div class="page-number">27 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-04.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-04.png');"></div>
-        <img class="content-image" src="outputs/images/slide-04.png" alt="自主决策配图">
+      <section style="background-image: url('outputs/images/slide-28.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-28.png');"></div>
+        <img class="content-image" src="outputs/images/slide-28.png" alt="自主决策配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">4.1 自主决策能力：从被动执行到主动思考</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -822,9 +839,9 @@
         <div class="page-number">28 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-05.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-05.png');"></div>
-        <img class="content-image" src="outputs/images/slide-05.png" alt="本地化AI配图">
+      <section style="background-image: url('outputs/images/slide-29.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-29.png');"></div>
+        <img class="content-image" src="outputs/images/slide-29.png" alt="本地化AI配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">4.2 本地化AI处理：突破云端处理的局限</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -840,7 +857,8 @@
         <div class="page-number">29 / 50</div>
       </section>
 
-      <section class="bg-gradient-4">
+      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-30.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-30.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">4.3 多模态融合感知：全方位理解环境</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -856,7 +874,8 @@
         <div class="page-number">30 / 50</div>
       </section>
 
-      <section class="bg-gradient-4">
+      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-31.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-31.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">4.4 自主学习能力：持续进化的智能</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -872,7 +891,8 @@
         <div class="page-number">31 / 50</div>
       </section>
 
-      <section class="bg-gradient-1">
+      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-32.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-32.png');"></div>
         <div class="content-wrapper section-title" data-appearance="fade-in">
           <h1>第五章</h1>
           <h2>系统局限性分析与改进方向</h2>
@@ -880,7 +900,8 @@
         <div class="page-number">32 / 50</div>
       </section>
 
-      <section class="bg-gradient-1">
+      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-33.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-33.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">5.1 分析处理能力局限性</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -891,7 +912,8 @@
         <div class="page-number">33 / 50</div>
       </section>
 
-      <section class="bg-gradient-1">
+      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-34.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-34.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">5.2 硬件性能局限性</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -902,7 +924,8 @@
         <div class="page-number">34 / 50</div>
       </section>
 
-      <section class="bg-gradient-1">
+      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-35.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-35.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">5.3 算法与软件局限性</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -926,7 +949,8 @@
         <div class="page-number">36 / 50</div>
       </section>
 
-      <section class="bg-gradient-2">
+      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-37.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
         <div class="content-wrapper section-title" data-appearance="fade-in">
           <h1>第六章</h1>
           <h2>工业级升级方案：迈向更高性能的具身智能</h2>
@@ -934,9 +958,9 @@
         <div class="page-number">37 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-37.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
-        <img class="content-image" src="outputs/images/slide-37.png" alt="工业级传感器配图">
+      <section style="background-image: url('outputs/images/slide-38.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-38.png');"></div>
+        <img class="content-image" src="outputs/images/slide-38.png" alt="工业级传感器配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.1.1 工业级传感器应用</h2>
           <div class="text-content text-xsmall" data-appearance="fade-in">
@@ -948,9 +972,9 @@
         <div class="page-number">38 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-11.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
-        <img class="content-image" src="outputs/images/slide-11.png" alt="增强型执行系统配图">
+      <section style="background-image: url('outputs/images/slide-39.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-39.png');"></div>
+        <img class="content-image" src="outputs/images/slide-39.png" alt="增强型执行系统配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.1.2 增强型执行系统</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -973,7 +997,8 @@
         <div class="page-number">39 / 50</div>
       </section>
 
-      <section class="bg-gradient-2">
+      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-40.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.1.3 多传感器阵列设计</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -985,7 +1010,8 @@
         <div class="page-number">40 / 50</div>
       </section>
 
-      <section class="bg-gradient-2">
+      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-41.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-41.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.2.1 工业级软件架构</h2>
           <div class="text-content text-xsmall" data-appearance="fade-in">
@@ -997,9 +1023,9 @@
         <div class="page-number">41 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-40.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
-        <img class="content-image" src="outputs/images/slide-40.png" alt="AI算法升级配图">
+      <section style="background-image: url('outputs/images/slide-42.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-42.png');"></div>
+        <img class="content-image" src="outputs/images/slide-42.png" alt="AI算法升级配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.2.2 AI算法升级</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -1011,9 +1037,9 @@
         <div class="page-number">42 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-07.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
-        <img class="content-image" src="outputs/images/slide-07.png" alt="性能指标配图">
+      <section style="background-image: url('outputs/images/slide-43.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-43.png');"></div>
+        <img class="content-image" src="outputs/images/slide-43.png" alt="性能指标配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.3.1 关键性能指标提升</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -1026,7 +1052,8 @@
         <div class="page-number">43 / 50</div>
       </section>
 
-      <section class="bg-gradient-2">
+      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-44.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-44.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.3.2 自主能力提升</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -1038,7 +1065,8 @@
         <div class="page-number">44 / 50</div>
       </section>
 
-      <section class="bg-gradient-3">
+      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-45.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-45.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.4.1 升级成本估算</h2>
           <div class="text-content text-xsmall" data-appearance="fade-in">
@@ -1058,9 +1086,9 @@
         <div class="page-number">45 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-06.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-06.png');"></div>
-        <img class="content-image" src="outputs/images/slide-06.png" alt="效益分析配图">
+      <section style="background-image: url('outputs/images/slide-46.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-46.png');"></div>
+        <img class="content-image" src="outputs/images/slide-46.png" alt="效益分析配图">
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">6.4.2 效益分析</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -1083,7 +1111,8 @@
         <div class="page-number">46 / 50</div>
       </section>
 
-      <section class="bg-gradient-3">
+      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-47.png');">
+        <div class="bg-overlay" style="background-image: url('outputs/images/slide-47.png');"></div>
         <div class="content-wrapper">
           <h2 data-appearance="fade-in">投资回报分析</h2>
           <div class="text-content text-small" data-appearance="fade-in">
@@ -1137,9 +1166,9 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/reveal.js-appearance/plugin/appearance/appearance.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+  <script src="https://unpkg.com/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.js"></script>
+  <script src="https://unpkg.com/animejs@3.2.2/lib/anime.min.js"></script>
   <script>
     Reveal.initialize({
       hash: true,
@@ -1283,6 +1312,430 @@
           el.classList.add('text-box');
         }
       });
+    });
+  </script>
+
+  <script>
+    const tocData = [
+      { num: '一', title: '系统概述', desc: '具身智能的铁路运维新范式', slide: 3 },
+      { num: '二', title: '系统架构设计', desc: '具身智能的技术基础', slide: 9 },
+      { num: '三', title: '系统工作流程', desc: 'OpenClaw自主智能的工作方式', slide: 18 },
+      { num: '四', title: '技术亮点', desc: 'OpenClaw具身智能的核心优势', slide: 27 },
+      { num: '五', title: '系统局限性分析', desc: '与改进方向', slide: 32 },
+      { num: '六', title: '工业级升级方案', desc: '迈向更高性能的具身智能', slide: 37 },
+      { num: '七', title: '成本与效益分析', desc: '', slide: 45 }
+    ];
+
+    let scene, camera, renderer, cardMeshes = [], cardGroups = [];
+    let flyInComplete = false;
+    let currentRotationY = 0;
+    let flyStartTime = 0;
+    let targetRotationSpeed = 0;
+    let mouseInCenterCard = false;
+    let tocAnimationId = null;
+
+    function initTOC() {
+      const canvas = document.getElementById('toc-canvas');
+      if (!canvas) return;
+
+      if (tocAnimationId) {
+        cancelAnimationFrame(tocAnimationId);
+        tocAnimationId = null;
+      }
+
+      flyInComplete = false;
+      currentRotationY = 0;
+      targetRotationSpeed = 0;
+      mouseInCenterCard = false;
+      flyStartTime = Date.now();
+
+      if (scene) {
+        renderer.dispose();
+        while(scene.children.length > 0) {
+          const obj = scene.children[0];
+          if (obj.geometry) obj.geometry.dispose();
+          if (obj.material) {
+            if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+            else obj.material.dispose();
+          }
+          scene.remove(obj);
+        }
+        scene = null;
+      }
+
+      scene = new THREE.Scene();
+
+      const tocSection = document.getElementById('toc-section');
+      const tocWidth = tocSection ? tocSection.clientWidth : window.innerWidth;
+      const tocHeight = tocSection ? tocSection.clientHeight : window.innerHeight;
+
+      const aspect = tocWidth / tocHeight;
+      camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+      camera.position.set(0, 0, 10);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(tocWidth, tocHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      cardMeshes = [];
+      cardGroups = [];
+
+      const radius = 4.0;
+      const tiltAngle = 0;
+
+      tocData.forEach((item, i) => {
+        const angle = (i / tocData.length) * Math.PI * 2;
+        const x = Math.sin(angle) * radius;
+        const z = Math.cos(angle) * radius;
+
+        const group = new THREE.Group();
+        group.position.set(x, 0, z);
+
+        const cardWidth = 3.0;
+        const cardHeight = 1.8;
+
+        const cardGeom = new THREE.PlaneGeometry(cardWidth, cardHeight);
+
+        const canvas2d = document.createElement('canvas');
+        canvas2d.width = 700;
+        canvas2d.height = 400;
+        const ctx = canvas2d.getContext('2d');
+
+        ctx.fillStyle = 'rgba(10, 22, 40, 0.95)';
+        ctx.fillRect(0, 0, 700, 400);
+
+        const borderGrad = ctx.createLinearGradient(0, 0, 700, 400);
+        borderGrad.addColorStop(0, '#00d4ff');
+        borderGrad.addColorStop(0.5, '#7eb8ff');
+        borderGrad.addColorStop(1, '#00d4ff');
+        ctx.strokeStyle = borderGrad;
+        ctx.lineWidth = 6;
+        ctx.strokeRect(8, 8, 684, 384);
+
+        ctx.fillStyle = 'rgba(0, 212, 255, 0.08)';
+        ctx.fillRect(15, 15, 670, 370);
+
+        const numGrad = ctx.createLinearGradient(0, 0, 0, 120);
+        numGrad.addColorStop(0, '#FFD700');
+        numGrad.addColorStop(1, '#FFA500');
+        ctx.fillStyle = numGrad;
+        ctx.font = 'bold 100px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(item.num, 100, 120);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px sans-serif';
+        ctx.fillText(item.title, 400, 100);
+
+        ctx.fillStyle = '#7eb8ff';
+        ctx.font = 'bold 36px sans-serif';
+        ctx.fillText(item.desc || '', 400, 160);
+
+        ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(200, 190);
+        ctx.lineTo(600, 190);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(0, 212, 255, 0.12)';
+        ctx.fillRect(20, 210, 660, 160);
+
+        ctx.fillStyle = '#00d4ff';
+        ctx.font = 'bold 26px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('OpenClaw 智能铁道机车探伤机器人', 40, 260);
+
+        ctx.fillStyle = '#bdbdbd';
+        ctx.font = '24px sans-serif';
+        ctx.fillText('具身智能 · 自主决策 · 从数字走向物理', 40, 305);
+
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('点击进入 >>', 650, 355);
+
+        const texture = new THREE.CanvasTexture(canvas2d);
+        const cardMat = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.FrontSide,
+          transparent: true,
+          opacity: 0.3
+        });
+        const card = new THREE.Mesh(cardGeom, cardMat);
+        card.userData.startOpacity = 0.3;
+        card.userData.currentOpacity = 0.3;
+        group.add(card);
+
+        const borderGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(cardWidth + 0.05, cardHeight + 0.05, 0.02));
+        const borderMat = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.3 });
+        const border = new THREE.LineSegments(borderGeom, borderMat);
+        group.add(border);
+
+        group.userData = {
+          index: i,
+          slide: item.slide,
+          finalAngle: angle,
+          finalX: x,
+          finalZ: z,
+          startX: -8,
+          startY: 5,
+          startZ: -5,
+          flyDelay: i * 100,
+          scale: 0.3,
+          startScale: 0.3,
+          isClosest: false,
+          cardWidth: 280,
+          cardHeight: 160,
+          startOpacity: 0.3
+        };
+        group.scale.setScalar(0.3);
+
+        cardMeshes.push(card);
+        cardGroups.push(group);
+        scene.add(group);
+      });
+
+      const particlesGeom = new THREE.BufferGeometry();
+      const particleCount = 400;
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 20;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      }
+      particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particlesMat = new THREE.PointsMaterial({
+        color: 0x00d4ff,
+        size: 0.03,
+        transparent: true,
+        opacity: 0.4
+      });
+      const particles = new THREE.Points(particlesGeom, particlesMat);
+      scene.add(particles);
+
+      flyInComplete = false;
+      flyStartTime = Date.now();
+      currentRotationY = 0;
+
+      const canvas2d = document.getElementById('toc-canvas');
+      canvas2d.removeEventListener('mousemove', onTOCMouseMove);
+      canvas2d.removeEventListener('click', onTOCClick);
+      window.removeEventListener('resize', onTOCResize);
+      canvas2d.addEventListener('mousemove', onTOCMouseMove);
+      canvas2d.addEventListener('click', onTOCClick);
+      window.addEventListener('resize', onTOCResize);
+
+      animateTOC();
+    }
+
+    function onTOCMouseMove(e) {
+      if (!flyInComplete) return;
+
+      const rect = e.target.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const screenCenterX = rect.width / 2;
+
+      const closestIndex = getClosestCardIndex();
+      const closestGroup = cardGroups[closestIndex];
+
+      if (!closestGroup) return;
+
+      const cardScreenPos = worldToScreen(closestGroup.position);
+      if (!cardScreenPos) return;
+
+      const scaleFactor = renderer.domElement.width / rect.width;
+      const cardLeft = cardScreenPos.x / scaleFactor - 200;
+      const cardRight = cardScreenPos.x / scaleFactor + 200;
+
+      mouseInCenterCard = mouseX >= cardLeft && mouseX <= cardRight;
+
+      if (mouseInCenterCard) {
+        targetRotationSpeed = 0;
+      } else {
+        const distanceFromCenter = mouseX - screenCenterX;
+        const normalizedDist = Math.abs(distanceFromCenter) / (rect.width * 0.5);
+        const maxSpeed = 0.04;
+        const speed = Math.atan(normalizedDist * 3) / (Math.PI / 2) * maxSpeed;
+        targetRotationSpeed = Math.sign(distanceFromCenter) * speed;
+      }
+    }
+
+    function worldToScreen(position) {
+      if (!camera || !renderer) return null;
+      const vector = position.clone();
+      vector.project(camera);
+      const canvas = renderer.domElement;
+      return {
+        x: (vector.x * 0.5 + 0.5) * canvas.width,
+        y: (-vector.y * 0.5 + 0.5) * canvas.height
+      };
+    }
+
+    function onTOCClick(e) {
+      if (!flyInComplete) return;
+
+      const rect = e.target.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        -((e.clientY - rect.top) / rect.height) * 2 + 1
+      );
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(cardMeshes);
+      if (intersects.length > 0) {
+        const clickedMesh = intersects[0].object;
+        const clickedGroup = clickedMesh.parent;
+        const slideIndex = clickedGroup.userData.slide - 1;
+        if (Reveal && typeof Reveal.slide === 'function') {
+          Reveal.slide(slideIndex, 0, 0);
+        }
+      }
+    }
+
+    function onTOCResize() {
+      const canvas = document.getElementById('toc-canvas');
+      const tocSection = document.getElementById('toc-section');
+      if (!canvas || !camera || !renderer || !tocSection) return;
+      const tocWidth = tocSection.clientWidth;
+      const tocHeight = tocSection.clientHeight;
+      camera.aspect = tocWidth / tocHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(tocWidth, tocHeight);
+    }
+
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function animateTOC() {
+      if (!scene || !renderer) return;
+      tocAnimationId = requestAnimationFrame(animateTOC);
+
+      const now = Date.now();
+
+      if (!flyInComplete) {
+        let allComplete = true;
+
+        cardGroups.forEach((group, i) => {
+          const data = group.userData;
+          const elapsed = now - flyStartTime - data.flyDelay;
+
+          if (elapsed < 0) {
+            allComplete = false;
+            return;
+          }
+
+          const duration = 600;
+          const progress = Math.min(elapsed / duration, 1);
+          const easedProgress = easeOutBack(progress);
+
+          group.position.x = data.startX + (data.finalX - data.startX) * easedProgress;
+          const finalY = 3.5 * (1 - ((Math.cos(data.finalAngle) + 1) * 0.5)) - 1.2;
+          group.position.y = data.startY + (finalY - data.startY) * easedProgress;
+          group.position.z = data.startZ + (data.finalZ - data.startZ) * easedProgress;
+
+          const currentScale = data.startScale + (1.0 - data.startScale) * easedProgress;
+          group.scale.setScalar(currentScale);
+
+          const currentOpacity = data.startOpacity + (1.0 - data.startOpacity) * easedProgress;
+          group.children.forEach(child => {
+            if (child.material) {
+              child.material.opacity = currentOpacity;
+            }
+          });
+
+          if (progress < 1) allComplete = false;
+        });
+
+        if (allComplete) {
+          flyInComplete = true;
+          flyStartTime = now;
+          cardGroups.forEach(group => {
+            group.scale.setScalar(1.0);
+            group.userData.scale = 1.0;
+            group.children.forEach(child => {
+              if (child.material) {
+                child.material.opacity = 1.0;
+              }
+            });
+          });
+        }
+      }
+
+      cardGroups.forEach((group, i) => {
+        const data = group.userData;
+        const baseAngle = data.finalAngle + currentRotationY;
+
+        group.position.x = Math.sin(baseAngle) * 4.0;
+        group.position.z = Math.cos(baseAngle) * 4.0;
+
+        const tiltFactor = (Math.cos(baseAngle) + 1) * 0.5;
+        const yOffset = 3.5 * (1 - tiltFactor);
+        group.position.y = yOffset - 1.2;
+
+        group.lookAt(camera.position.x * 0.5, camera.position.y * 0.5, camera.position.z);
+
+        const worldAngle = baseAngle % (Math.PI * 2);
+        const normalizedAngle = worldAngle < 0 ? worldAngle + Math.PI * 2 : worldAngle;
+        const distFromCamera = Math.abs(Math.sin(normalizedAngle));
+
+        const isClosest = distFromCamera < 0.3 && i === getClosestCardIndex();
+        data.isClosest = isClosest;
+
+        const targetScale = isClosest ? 1.25 : 1.0;
+        data.scale += (targetScale - data.scale) * 0.1;
+        group.scale.setScalar(data.scale);
+      });
+
+      if (flyInComplete) {
+        currentRotationY += targetRotationSpeed;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function getClosestCardIndex() {
+      let closestIndex = 0;
+      let closestDist = Infinity;
+
+      cardGroups.forEach((group, i) => {
+        const dist = camera.position.distanceTo(group.position);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIndex = i;
+        }
+      });
+
+      return closestIndex;
+    }
+
+    Reveal.on('slidechanged', function(event) {
+      if (event.indexh === 1) {
+        flyStartTime = Date.now();
+        currentRotationY = 0;
+        targetRotationSpeed = 0;
+        initTOC();
+      }
+    });
+
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        if (Reveal) {
+          const indices = Reveal.getIndices ? Reveal.getIndices() : { h: 0 };
+          if (indices.h === 1) {
+            flyStartTime = Date.now();
+            currentRotationY = 0;
+            targetRotationSpeed = 0;
+            initTOC();
+          }
+        }
+      }, 600);
     });
   </script>
 </body>
