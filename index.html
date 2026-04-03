@@ -1,254 +1,655 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenClaw智能铁道机车探伤机器人系统</title>
   <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/reveal.css">
   <link rel="stylesheet" href="https://unpkg.com/reveal.js@5.1.0/dist/theme/black.css">
   <link rel="stylesheet" href="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.css">
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/animejs@3.2.2/lib/anime.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-
     :root {
-      --r-background-color: #0a0e27;
-      --r-main-font: 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
-      --r-heading-font: 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
-      --r-main-color: #e0e0e0;
-      --r-heading-color: #00d4ff;
-      --r-link-color: #00d4ff;
-      --r-main-size: 18px;
+      --primary-bg: #0a1628;
+      --accent-orange: #ed8936;
+      --accent-blue: #3182ce;
+      --text-white: #ffffff;
     }
-
-    * { box-sizing: border-box; }
-
     .reveal .slides { text-align: left; }
-
+    .reveal, .reveal .slides, .reveal .slides section {
+      height: 100% !important;
+      width: 100% !important;
+    }
     .reveal .slides section {
       height: 100%;
-      padding: 20px 40px;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      width: 100%;
+      padding: 0;
+      box-sizing: border-box;
       overflow: hidden;
-      transform-style: preserve-3d;
-      perspective: 1200px;
+      backface-visibility: hidden;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease !important;
     }
-
-    .reveal .slides section .bg-overlay {
+    .reveal .slides section.past {
+      transform: translateX(-100%) rotateY(-90deg) scale(0.8) !important;
+      opacity: 0 !important;
+    }
+    .reveal .slides section.present {
+      transform: rotateY(0deg) scale(1) !important;
+      opacity: 1 !important;
+    }
+    .reveal .slides section.future {
+      transform: translateX(100%) rotateY(90deg) scale(0.8) !important;
+      opacity: 0 !important;
+    }
+    .reveal .slides {
+      transform-style: preserve-3d;
+    }
+    .slide-bg {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background-size: cover;
       background-position: center;
-      opacity: 0.2;
       z-index: 0;
     }
-
-    .reveal .slides section .content-wrapper {
+    .slide-bg.square-ratio {
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+    .slide-content {
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      height: 100%;
+      padding: 2vh 3vw;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-title {
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1.5vh 2vw;
+      border-radius: 8px;
+      border-left: 5px solid var(--accent-orange);
+      margin-bottom: 1.5vh;
+      flex-shrink: 0;
+    }
+    .page-title h2 {
+      color: var(--accent-orange);
+      margin: 0;
+      font-size: 2.8vh;
+    }
+    .content-area {
+      display: flex;
+      flex: 1;
+      gap: 1vw;
+      overflow: hidden;
+    }
+    .text-col {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8vh;
+    }
+    .img-col {
+      flex: 0.8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5vh;
+    }
+    .img-col img {
+      max-width: 100%;
+      max-height: 30vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .content-box {
+      background: rgba(10, 22, 40, 0.93);
+      padding: 1.2vh 1.2vw;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-orange);
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation: breatheGlow 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+    }
+    .content-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(237, 137, 54, 0.15), transparent);
+      animation: sweepLight 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .content-box:hover {
+      animation: none;
+      transform: translateZ(25px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(237, 137, 54, 0.3), 0 0 30px rgba(237, 137, 54, 0.2);
+      border-color: rgba(237, 137, 54, 0.8);
+    }
+    @keyframes breatheGlow {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 20px rgba(237, 137, 54, 0.1);
+        border-color: rgba(237, 137, 54, 0.5);
+      }
+      50% {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 35px rgba(237, 137, 54, 0.25);
+        border-color: rgba(237, 137, 54, 0.8);
+      }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+    }
+    @keyframes sweepLight {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+    .content-box::before, .grid-item::before {
+      animation-delay: var(--sweep-delay, 0s) !important;
+    }
+    .content-box h3 {
+      color: var(--accent-orange);
+      margin: 0 0 0.6vh 0;
+      font-size: 2.8vh;
+      flex-shrink: 0;
+    }
+    .content-box p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 2.1vh;
+      line-height: 1.45;
+    }
+    .content-box ul {
+      margin: 0.4vh 0 0 1.2vw;
+      padding: 0;
+      color: var(--text-white);
+      font-size: 2vh;
+      line-height: 1.5;
+    }
+    .content-box li {
+      margin-bottom: 0.3vh;
+    }
+    .content-img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease;
+      animation: imgBreathe 3s ease-in-out infinite;
+    }
+    .content-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 50px rgba(237, 137, 54, 0.4), 0 0 30px rgba(237, 137, 54, 0.2);
+      animation: none;
+    }
+    @keyframes imgBreathe {
+      0%, 100% {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 15px rgba(237, 137, 54, 0.1);
+      }
+      50% {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 25px rgba(237, 137, 54, 0.2);
+      }
+    }
+    .highlight-text {
+      color: var(--accent-orange);
+      font-weight: bold;
+    }
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1vh 1vw;
+      flex: 1;
+    }
+    .grid-item {
+      background: rgba(10, 22, 40, 0.93);
+      padding: 1.5vh 1.2vw;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-orange);
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation: breatheGlow 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+    }
+    .grid-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(237, 137, 54, 0.15), transparent);
+      animation: sweepLight 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .grid-item:hover {
+      animation: none;
+      transform: translateZ(25px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(237, 137, 54, 0.3), 0 0 30px rgba(237, 137, 54, 0.2);
+      border-color: rgba(237, 137, 54, 0.8);
+    }
+    .grid-item img {
+      width: 26vh;
+      height: 26vh;
+      object-fit: contain;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .grid-item-text h4 {
+      color: var(--accent-orange);
+      margin: 0 0 0.6vh 0;
+      font-size: 3.5vh;
+    }
+    .grid-item-text p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 2.6vh;
+      line-height: 1.4;
+    }
+    .cover-content {
+      position: relative;
+      z-index: 1;
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
     }
-
-    .reveal .slides section .content-image {
+    .cover-title {
+      font-size: 4.5vh;
+      color: var(--text-white);
+      background: rgba(10, 22, 40, 0.95);
+      padding: 2.5vh 4vw;
+      border-radius: 12px;
+      border: 3px solid var(--accent-orange);
+      margin-bottom: 2vh;
+    }
+    .cover-subtitle {
+      font-size: 2.2vh;
+      color: var(--accent-orange);
+      margin-bottom: 2.5vh;
+    }
+    .cover-info {
+      font-size: 1.8vh;
+      color: var(--text-white);
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1.5vh 2.5vw;
+      border-radius: 8px;
+    }
+    .cover-img {
+      width: 28vh;
+      margin-bottom: 2.5vh;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .cover-scanline {
       position: absolute;
-      right: 2%; top: 15%;
-      width: 35%;
-      opacity: 0.38;
-      z-index: 1;
-      filter: drop-shadow(0 4px 20px rgba(0, 212, 255, 0.3));
-      transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 212, 255, 0.03) 2px,
+        rgba(0, 212, 255, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+      animation: scanlineMove 8s linear infinite;
     }
-
-    .reveal .slides section .content-image:hover {
-      transform: translateY(-10px) scale(1.05) rotateZ(-1deg);
-      filter: drop-shadow(0 20px 40px rgba(0, 212, 255, 0.5));
+    @keyframes scanlineMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100vh; }
+    }
+    .cover-radar {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vh;
+      height: 80vh;
+      z-index: 1;
+    }
+    .radar-sweep {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(237, 137, 54, 0.4) 30deg,
+        transparent 60deg
+      );
+      border-radius: 50%;
+      animation: radarSpin 4s linear infinite;
+    }
+    @keyframes radarSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(237, 137, 54, 0.3);
+      border-radius: 50%;
+      animation: radarPulse 2s ease-out infinite;
+    }
+    .radar-ring.ring1 { width: 30%; height: 30%; animation-delay: 0s; }
+    .radar-ring.ring2 { width: 60%; height: 60%; animation-delay: 0.5s; }
+    .radar-ring.ring3 { width: 90%; height: 90%; animation-delay: 1s; }
+    @keyframes radarPulse {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+    }
+    .cover-hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .hud-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.6), transparent);
+      height: 1px;
+      animation: hudScan 3s ease-in-out infinite;
+    }
+    .hud-line-1 { top: 20%; width: 40%; left: -10%; animation-delay: 0s; }
+    .hud-line-2 { top: 50%; width: 60%; left: -20%; animation-delay: 1s; }
+    .hud-line-3 { top: 80%; width: 50%; left: -10%; animation-delay: 2s; }
+    @keyframes hudScan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateX(200%); opacity: 0; }
+    }
+    .hud-corner {
+      position: absolute;
+      width: 6vh;
+      height: 6vh;
+      border: 2px solid var(--accent-orange);
       opacity: 0.6;
     }
-
-    .reveal .slides section h1 {
-      font-size: 2em; font-weight: 700;
-      color: #ffffff; margin-bottom: 0.2em;
-      text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-      line-height: 1.2;
+    .hud-corner.top-left { top: 3vh; left: 3vw; border-right: none; border-bottom: none; }
+    .hud-corner.top-right { top: 3vh; right: 3vw; border-left: none; border-bottom: none; }
+    .hud-corner.bottom-left { bottom: 3vh; left: 3vw; border-right: none; border-top: none; }
+    .hud-corner.bottom-right { bottom: 3vh; right: 3vw; border-left: none; border-top: none; }
+    #cover-section .cover-title {
+      animation: titleGlow 2s ease-in-out infinite alternate, titleSlideIn 1s ease-out;
     }
-
-    .reveal .slides section h2 {
-      font-size: 1.3em; font-weight: 700;
-      color: #00d4ff; margin-bottom: 0.3em;
-      text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-      line-height: 1.3;
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 10px rgba(237, 137, 54, 0.5), 0 0 20px rgba(237, 137, 54, 0.3); }
+      100% { text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.5), 0 0 60px rgba(237, 137, 54, 0.3); }
     }
-
-    .reveal .slides section h3 {
-      font-size: 1.1em; font-weight: 500;
-      color: #7eb8ff; margin-bottom: 0.3em;
-      line-height: 1.4;
+    @keyframes titleSlideIn {
+      0% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
     }
-
-    .reveal .slides section p {
-      font-size: 0.7em; line-height: 1.35;
-      color: #e0e0e0; margin-bottom: 0.4em;
+    #cover-section .cover-subtitle {
+      animation: subtitleFade 1s ease-out 0.3s both;
     }
-
-    .reveal .slides section ul {
-      font-size: 0.65em; line-height: 1.4;
-      color: #bdbdbd; margin-left: 1em;
+    @keyframes subtitleFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
     }
-
-    .reveal .slides section li { margin-bottom: 0.2em; }
-
-    .reveal .slides section .text-content {
-      width: 58%; font-size: 0.9em; line-height: 1.4;
+    #cover-section .cover-info {
+      animation: infoSlide 1s ease-out 0.6s both;
     }
-
-    .reveal .slides section .text-content p { font-size: 1em; }
-
-    .reveal .slides section .section-title {
-      text-align: center; padding: 20px;
+    @keyframes infoSlide {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
     }
-
-    .reveal .slides section .section-title h1 {
-      font-size: 2.2em; margin-bottom: 0.2em;
+    #cover-section .cover-img {
+      animation: logoFloat 3s ease-in-out infinite, logoIn 1s ease-out;
     }
-
-    .reveal .slides section .section-title h2 {
-      font-size: 1.6em; color: #00d4ff;
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
-
-    .reveal .slides section .toc-content {
-      font-size: 0.75em; line-height: 1.5;
-      color: #ffffff;
+    @keyframes logoIn {
+      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
-
-    .reveal .slides section .toc-content strong { color: #FFD700; }
-
-    .reveal .slides section .toc-content p {
-      margin-bottom: 6px;
-    }
-
-    .cover-content {
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      background: transparent;
-    }
-
-    .cover-content h1 {
-      font-size: 2.8em; margin-bottom: 0.3em;
-      text-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.5);
-    }
-
-    .cover-content h2 {
-      font-size: 1.5em; color: #7eb8ff;
-      text-shadow: 0 0 15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.5);
-    }
-
-    #cover-video {
+    .cover-hint {
       position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
-      object-fit: cover;
-      z-index: 0;
+      top: 2vh;
+      right: 2vw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8vh;
+      z-index: 10;
+      animation: hintGlow 2s ease-in-out infinite alternate;
     }
-
-    .reveal .slides section.cover-slide {
-      background: transparent;
+    @keyframes hintGlow {
+      0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+      100% { filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.9)); }
+    }
+    .hint-item {
+      font-size: 2vh;
+      color: #00d4ff;
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1vh 1.5vw;
+      border-radius: 8px;
+      border: 2px solid #00d4ff;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    .hint-item kbd {
+      background: rgba(237, 137, 54, 0.6);
+      border: 2px solid #ed8936;
+      border-radius: 5px;
+      padding: 0.3vh 0.8vw;
+      font-family: inherit;
+      color: #ff8c42;
+      font-size: 1.8vh;
+      font-weight: bold;
+    }
+    #ending-section .ending-title {
+      font-size: 8vh;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.6), 0 0 60px rgba(237, 137, 54, 0.4);
+      animation: endingGlow 1.5s ease-in-out infinite alternate, endingZoomIn 1s ease-out;
+      letter-spacing: 1vw;
+    }
+    @keyframes endingGlow {
+      0% { text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.6); transform: scale(1); }
+      100% { text-shadow: 0 0 40px rgba(237, 137, 54, 1), 0 0 80px rgba(237, 137, 54, 0.8), 0 0 120px rgba(237, 137, 54, 0.5); transform: scale(1.02); }
+    }
+    @keyframes endingZoomIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    #ending-section .ending-subtitle {
+      font-size: 2.5vh;
+      color: #00d4ff;
+      margin-top: 2vh;
+      animation: subtitleFade 1s ease-out 0.5s both;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+    @keyframes subtitleFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #ending-section .ending-info {
+      font-size: 2vh;
+      color: #e0e0e0;
+      margin-top: 3vh;
+      animation: infoFade 1s ease-out 1s both;
+      background: rgba(10, 22, 40, 0.9);
+      padding: 2vh 3vw;
+      border-radius: 12px;
+      border: 2px solid rgba(237, 137, 54, 0.5);
+    }
+    @keyframes infoFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #ending-section .ending-logo {
+      animation: logoFloat 3s ease-in-out infinite, logoIn 1.2s ease-out;
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+    @keyframes logoIn {
+      0% { transform: scale(0) rotate(-360deg); opacity: 0; }
+      60% { transform: scale(1.3) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .ending-particle-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
       overflow: hidden;
     }
-
-    .reveal .slides section.cover-slide .video-overlay {
+    .ending-particle {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: transparent;
-      z-index: 1;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, rgba(237, 137, 54, 0.9) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: particleRise 4s ease-out infinite;
     }
-
-    .reveal .slides section.cover-slide .cover-content {
+    @keyframes particleRise {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+    }
+    .user-content {
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    .highlight { color: #00d4ff; font-weight: 500; }
-
-    .text-small { font-size: 0.6em !important; line-height: 1.3 !important; }
-    .text-medium { font-size: 0.75em !important; line-height: 1.4 !important; }
-    .text-xsmall { font-size: 0.55em !important; line-height: 1.25 !important; }
-
-    .columns-2 { display: flex; gap: 30px; }
-    .columns-2 .col { flex: 1; }
-    .columns-3 { display: flex; gap: 20px; }
-    .columns-3 .col { flex: 1; }
-
-    .page-number {
-      position: absolute;
-      bottom: 15px; right: 20px;
-      font-size: 0.6em; color: #666;
-      z-index: 10;
+    .user-placeholder {
+      background: rgba(10, 22, 40, 0.95);
+      padding: 6vh 6vw;
+      border-radius: 12px;
+      border: 3px dashed var(--accent-orange);
+      text-align: center;
     }
-
-    .ending-content { text-align: center; }
-    .ending-content h1 { font-size: 3em; margin-bottom: 0.5em; }
-
-    .reveal .slides section .fragment {
-      opacity: 0; visibility: hidden;
+    .user-placeholder p {
+      color: var(--accent-orange);
+      font-size: 2.5vh;
+      margin: 0;
     }
-
-    .reveal .slides section .fragment.visible {
-      opacity: 1; visibility: visible;
+    .user-placeholder span {
+      color: var(--text-white);
+      font-size: 1.6vh;
+      display: block;
+      margin-top: 2vh;
+      line-height: 1.6;
     }
-
-    .reveal .progress { color: #00d4ff; height: 4px; }
-    .reveal .controls { color: #00d4ff; }
-
-    .bg-gradient-1 { background: linear-gradient(135deg, #0a0e27 0%, #1a237e 50%, #0d47a1 100%); }
-    .bg-gradient-2 { background: linear-gradient(135deg, #0a0e27 0%, #1b3a5f 50%, #0a2540 100%); }
-    .bg-gradient-3 { background: linear-gradient(135deg, #0a0e27 0%, #2d1b4e 50%, #1a0a2e 100%); }
-    .bg-gradient-4 { background: linear-gradient(135deg, #0a0e27 0%, #004d40 50%, #00695c 100%); }
-
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      padding: 0 2vw;
+      gap: 1vw;
+    }
+    .timeline-item {
+      flex: 1;
+      background: rgba(10, 22, 40, 0.95);
+      padding: 2vh 1.5vw;
+      border-radius: 8px;
+      border-bottom: 5px solid var(--accent-orange);
+      text-align: center;
+    }
+    .timeline-item h4 {
+      color: var(--accent-orange);
+      margin: 0 0 0.8vh 0;
+      font-size: 2vh;
+    }
+    .timeline-item p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 1.4vh;
+      line-height: 1.4;
+    }
+    .timeline-arrow {
+      font-size: 4vh;
+      color: var(--accent-orange);
+      flex-shrink: 0;
+    }
+    .small-img-row {
+      display: flex;
+      gap: 0.8vw;
+      justify-content: center;
+    }
+    .small-img-row img {
+      max-width: 48%;
+      max-height: 55vh;
+    }
     .text-box {
-      border: 1px solid rgba(0, 212, 255, 0.3);
+      border: 1px solid rgba(237, 137, 54, 0.3);
       border-radius: 12px;
       padding: 12px 16px;
       margin-bottom: 8px;
-      background: rgba(10, 14, 39, 0.7);
+      background: rgba(10, 22, 40, 0.7);
       backdrop-filter: blur(8px);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1), inset 0 0 15px rgba(0, 212, 255, 0.05);
+      box-shadow: 0 0 20px rgba(237, 137, 54, 0.1), inset 0 0 15px rgba(237, 137, 54, 0.05);
       transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
       transform-style: preserve-3d;
     }
-
     .text-box:hover {
       transform: translateZ(30px) scale(1.02);
-      box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2), 0 0 40px rgba(0, 212, 255, 0.1);
-      border-color: rgba(0, 212, 255, 0.6);
+      box-shadow: 0 20px 60px rgba(237, 137, 54, 0.2), 0 0 40px rgba(237, 137, 54, 0.1);
+      border-color: rgba(237, 137, 54, 0.6);
     }
-
     @keyframes breatheGlow {
       0%, 100% {
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.15), inset 0 0 15px rgba(0, 212, 255, 0.05);
-        border-color: rgba(0, 212, 255, 0.3);
+        box-shadow: 0 0 20px rgba(237, 137, 54, 0.15), inset 0 0 15px rgba(237, 137, 54, 0.05);
+        border-color: rgba(237, 137, 54, 0.3);
       }
       50% {
-        box-shadow: 0 0 35px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1);
-        border-color: rgba(0, 212, 255, 0.5);
+        box-shadow: 0 0 35px rgba(237, 137, 54, 0.3), inset 0 0 20px rgba(237, 137, 54, 0.1);
+        border-color: rgba(237, 137, 54, 0.5);
       }
     }
-
     .text-box.animate-in {
       animation: boxAssemble 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, breatheGlow 3s ease-in-out infinite;
     }
-
     .text-box.animate-out {
       animation: boxScatter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-
     @keyframes boxAssemble {
       0% {
         opacity: 0;
@@ -266,7 +667,6 @@
         transform: translateX(0) translateY(0) rotateY(0) rotateX(0) scale(1);
       }
     }
-
     @keyframes boxScatter {
       0% {
         opacity: 1;
@@ -277,15 +677,12 @@
         transform: translateX(400px) translateY(200px) rotateY(60deg) rotateX(-30deg) scale(0.1);
       }
     }
-
     .content-image.animate-in {
       animation: imageSlideIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
-
     .content-image.animate-out {
       animation: imageSlideOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-
     @keyframes imageSlideIn {
       0% {
         opacity: 0;
@@ -303,7 +700,6 @@
         transform: translateX(0) rotateY(0) scale(1);
       }
     }
-
     @keyframes imageSlideOut {
       0% {
         opacity: 0.38;
@@ -314,83 +710,10 @@
         transform: translateX(-600px) rotateY(-60deg) scale(0.1);
       }
     }
-
-    .particle-burst {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0; left: 0;
-      pointer-events: none;
+    .reveal .slides section {
+      perspective: 1200px;
       overflow: hidden;
     }
-
-    .particle-burst::before,
-    .particle-burst::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 212, 255, 0.9) 0%, transparent 70%);
-      animation: particleBurst 0.6s ease-out forwards;
-    }
-
-    .particle-burst::after {
-      animation-delay: 0.08s;
-      width: 15px; height: 15px;
-      background: radial-gradient(circle, rgba(126, 184, 255, 0.7) 0%, transparent 70%);
-    }
-
-    @keyframes particleBurst {
-      0% { transform: scale(0) translate(-50%, -50%); opacity: 1; }
-      100% { transform: scale(4) translate(-50%, -50%); opacity: 0; }
-    }
-
-    @keyframes starBurst {
-      0% { transform: scale(0) rotate(0deg); opacity: 1; }
-      50% { transform: scale(2.5) rotate(180deg); opacity: 0.7; }
-      100% { transform: scale(0) rotate(360deg); opacity: 0; }
-    }
-
-    .star-burst {
-      position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
-      pointer-events: none;
-    }
-
-    .star-burst::before {
-      content: '✦';
-      position: absolute;
-      top: 50%; left: 50%;
-      font-size: 2.5em;
-      color: #00d4ff;
-      text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
-      animation: starBurst 0.6s ease-out forwards;
-    }
-
-    @keyframes float3d {
-      0%, 100% { transform: translateY(0px) rotateX(0deg); }
-      50% { transform: translateY(-10px) rotateX(2deg); }
-    }
-
-    .float-animation {
-      animation: float3d 5s ease-in-out infinite;
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1); }
-      50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.3), 0 0 120px rgba(0, 212, 255, 0.1); }
-    }
-
-    .glow-pulse {
-      animation: glowPulse 2s ease-in-out infinite;
-    }
-
-    .reveal .slides section {
-      transition: transform 0.15s ease-out;
-    }
-
     #toc-canvas {
       position: absolute;
       top: 0;
@@ -399,18 +722,12 @@
       height: 100%;
       z-index: 1;
     }
-
-    #toc-canvas:active {
-      cursor: default;
-    }
-
-    #toc-section .content-wrapper {
-      position: relative;
-      z-index: 10;
-    }
-
     #toc-section {
       overflow: visible !important;
+    }
+    #toc-section .slide-content {
+      position: relative;
+      z-index: 10;
     }
   </style>
 </head>
@@ -418,749 +735,569 @@
   <div class="reveal">
     <div class="slides">
 
-      <section class="cover-slide" data-background-video="outputs/cover-loop.mp4" data-background-video-loop data-background-video-muted data-autoplay>
-        <div class="video-overlay"></div>
+      <!-- Slide 1: 封面 -->
+      <section id="cover-section">
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-01-bg.png');"></div>
+        <div class="cover-scanline"></div>
+        <div class="cover-radar">
+          <div class="radar-sweep"></div>
+          <div class="radar-ring ring1"></div>
+          <div class="radar-ring ring2"></div>
+          <div class="radar-ring ring3"></div>
+        </div>
+        <div class="cover-hud">
+          <div class="hud-line hud-line-1"></div>
+          <div class="hud-line hud-line-2"></div>
+          <div class="hud-line hud-line-3"></div>
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+        </div>
         <div class="cover-content">
-          <h1>OpenClaw智能铁道机车探伤机器人系统</h1>
-          <h2>AI革命从数字走向物理世界</h2>
+          <img src="images/slide-01-content_image.png" class="cover-img">
+          <div class="cover-title" data-appearance>OpenClaw智能铁道机车探伤机器人系统</div>
+          <div class="cover-subtitle" data-appearance>AI视觉 + 红外 + 激光雷达三位一体检测系统</div>
+          <div class="cover-info" data-appearance>
+            参赛赛道：职教赛道 | 参赛组别：创意组 | 项目负责人：王政杰
+          </div>
         </div>
-        <div class="page-number">1 / 50</div>
+        <div class="cover-hint">
+          <div class="hint-item">按 <kbd>F11</kbd> 全屏</div>
+          <div class="hint-item">键盘 <kbd>←</kbd> <kbd>→</kbd> 或 <kbd>空格</kbd> 切页</div>
+        </div>
       </section>
 
-      <section id="toc-section" style="background-image: url('outputs/images/slide-02.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-02.png');"></div>
+      <!-- Slide 2: 目录 -->
+      <section id="toc-section" style="background-image: url('images/slide-02-bg.png');">
         <canvas id="toc-canvas"></canvas>
-        <div class="content-wrapper" style="pointer-events: none;">
-          <h2 data-appearance="fade-in" style="text-align: center; margin-bottom: 30px;">目录</h2>
+        <div class="slide-content" style="pointer-events: none;">
+          <h2 style="text-align: center; color: #ed8936; font-size: 3vh; margin-bottom: 2vh; text-shadow: 0 0 20px rgba(237, 137, 54, 0.5);">目 录</h2>
         </div>
-        <div class="page-number">2 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-03.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-03.png');"></div>
-        <img class="content-image" src="outputs/images/slide-03.png" alt="第一章配图">
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第一章</h1>
-          <h2>系统概述：具身智能的铁路运维新范式</h2>
-        </div>
-        <div class="page-number">3 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-04.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-04.png');"></div>
-        <img class="content-image" src="outputs/images/slide-04.png" alt="系统简介配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">1.1 系统简介：AI突破数字边界，进入物理世界</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>想象一下，如果AI能够跳出电脑屏幕，直接与物理世界互动会怎样？OpenClaw智能铁道机车探伤机器人系统正在将这一变为现实！</p>
-            <p>这是一款革命性的铁路设备智能检测系统，融合了AI视觉、红外和激光雷达三位一体技术，通过多传感器融合，对铁道机车底部关键部位进行全方位、高精度缺陷检测，确保铁路运输安全。其核心创新在于采用了<span class="highlight">OpenClaw具身智能控制中枢架构</span>，实现了AI从"数字世界"走向"物理世界"的重大突破。</p>
+      <!-- Slide 3: 项目概述 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-02-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>一、项目概述：具身智能的铁路运维新范式</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🎯 什么是OpenClaw探伤机器人？</h3>
+                <p>这是一款革命性的铁路设备智能检测系统，融合了<span class="highlight-text">AI视觉、红外和激光雷达三位一体</span>技术，通过多传感器融合，对铁道机车底部关键部位进行全方位、高精度缺陷检测，确保铁路运输安全。</p>
+              </div>
+              <div class="content-box">
+                <h3>🔥 核心创新：AI从数字走向物理世界</h3>
+                <p>我们将OpenClaw"龙虾"智能编程工具<strong>植根于机器人主板</strong>，为AI装上了"脚"（移动执行系统）和"眼睛"（传感器系统），实现了真正的<strong>具身智能</strong>。传统AI"困在电脑里"，我们的系统让AI<strong>直接感知和改变物理世界</strong>！</p>
+              </div>
+              <div class="content-box">
+                <h3>💰 商业价值与市场</h3>
+                <p>15万/套工业版，检测效率提升70%，每次检测从10分钟缩短至3分钟。全国2.25万台机车，年检修市场300亿+。投资回收期3-4年，年节约人工成本约45万元。</p>
+              </div>
+              <div class="content-box">
+                <h3>🌟 项目定位</h3>
+                <p>面向铁路运维、机车检修等场景的下一代智能检测解决方案，以<strong>具身智能、智能诊断、从数字走向物理</strong>为核心竞争优势，提供本地具身智能的完整技术路线。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-02-content_image.png" class="content-img">
+            </div>
           </div>
         </div>
-        <div class="page-number">4 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-05.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-05.png');"></div>
-        <img class="content-image" src="outputs/images/slide-05.png" alt="核心创新配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">核心创新：OpenClaw具身智能技术——赋予AI真正的"身体"</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>您是否听说过最近爆火的"龙虾"智能编程工具？OpenClaw正是这项革命性技术的杰出应用！我们没有将其局限在虚拟世界，而是创新性地将其<span class="highlight">植根于机器人主板</span>，为AI装上了"脚"（移动执行系统）和"眼睛"（传感器系统），实现了真正的具身智能。</p>
-            <p>这就像什么？就像给了AI一副真实的"身体"，让它能够直接感知和改变物理世界！与传统系统"AI模型困在电脑里"截然不同，OpenClaw实现了<span class="highlight">AI从数字世界走向物理世界</span>的跨越，让AI不再是被动执行命令的工具，而是能够<span class="highlight">自主决策、自主反应</span>的智能体。</p>
+      <!-- Slide 3: 行业痛点 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-03-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>二、行业痛点：传统检测的四大难题</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="images/slide-03-content_image.png">
+              <div class="grid-item-text">
+                <h4>⚠️ 误判多</h4>
+                <p>传统人工检测误报率高达5%，造成大量无效停机检修。而AI智能检测可降至0.3%，大幅减少误报带来的时间和经济损失。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-03-content_image_2.png">
+              <div class="grid-item-text">
+                <h4>⚠️ 易漏检</h4>
+                <p>机车底部隐蔽位置众多，人工难以全面覆盖。螺栓松动、裂纹等隐患容易被忽略，遗留安全隐患，易引发安全事故。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-03-content_image_3.png">
+              <div class="grid-item-text">
+                <h4>⏱️ 效率低</h4>
+                <p>单次人工检测需10分钟以上，需要多人配合。机器人检测仅需3分钟，效率提升超200%，可大幅缩短检修时间。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-03-content_image_4.png">
+              <div class="grid-item-text">
+                <h4>💸 成本高</h4>
+                <p>人力成本持续上涨，专业检测人才稀缺。检测设备依赖进口，检修费用居高不下，铁路运维负担沉重。</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">5 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-06.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-06.png');"></div>
-        <img class="content-image" src="outputs/images/slide-06.png" alt="云端本地处理配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">云端与本地处理</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>无论是云端还是本地处理，OpenClaw都能实现自主决策和反应，但处理方式有所不同：雏形版大部分数据交由云端处理，而工业版则实现了所有数据的本地处理，这代表了机器人控制技术的重大突破，是AI具身智能应用领域的革命性创新。</p>
+      <!-- Slide 4: 核心技术 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-04-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>三、核心技术：OpenClaw具身智能控制中枢</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🧠 OpenClaw智能控制中枢</h3>
+                <p>基于<strong>Jetson Orin NX 16GB</strong>主控单元，集成OpenClaw智能编程IDE和决策引擎，实现<strong>本地AI决策</strong>。100 TOPS AI算力，支持实时推理。-40°C至+70°C宽温工作范围，IP67工业级防护。</p>
+              </div>
+              <div class="content-box">
+                <h3>👁️ 多传感器感知系统</h3>
+                <p>三传感器融合，全方位感知检测环境：</p>
+                <ul>
+                  <li><strong>双目视觉</strong>：2个工业相机，捕捉高清缺陷图像，识别表面裂纹、磨损等</li>
+                  <li><strong>红外热成像</strong>：检测温度异常，识别热轴故障、制动抱死等</li>
+                  <li><strong>激光雷达</strong>：180°扫描，±2cm测距精度，构建三维点云</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🔄 智能决策闭环</h3>
+                <p>感知→分析→执行持续优化。本地处理数据不上云，<strong>毫秒级响应</strong>，<strong>指令执行成功率99%+</strong>。YOLOv8s检测算法+专家知识库，智能判断热轴故障、制动抱死、闸瓦偏磨等。</p>
+              </div>
+              <div class="content-box">
+                <h3>📈 持续学习进化</h3>
+                <p>故障案例持续积累，AI模型不断优化。检测精度随使用时长提升，环境适应能力强，可识别新型故障模式。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-04-content_image.png" class="content-img">
+              <img src="images/slide-04-content_image_2.png" class="content-img">
+            </div>
           </div>
         </div>
-        <div class="page-number">6 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-07.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
-        <img class="content-image" src="outputs/images/slide-07.png" alt="系统定位配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">1.2 系统定位：重新定义铁路智能检测</h2>
-          <div class="text-content text-medium" data-appearance="fade-in">
-            <ul>
-              <li>面向铁路运维、机车检修等场景的<span class="highlight">下一代智能检测解决方案</span></li>
-              <li>以<span class="highlight">具身智能、自主决策、从数字走向物理</span>为核心竞争优势</li>
-              <li>提供从云端AI到本地具身智能的完整技术路线</li>
-              <li>差异化定位：基于OpenClaw具身智能控制中枢的<span class="highlight">"具身智能"检测系统</span></li>
-            </ul>
+      <!-- Slide 5: 工作原理-检测流程 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-05-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>四、工作原理 — 智能检测流程（1/2）</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🤖 第一步：自动行进至检测区域</h3>
+                <p>机器人沿地沟轨道<strong>自动移动</strong>，借助IMU姿态补偿和角度编码器精确控制，缓缓行进至检测区域。OpenClaw控制系统根据预设路径智能规划行进速度和平稳度。</p>
+              </div>
+              <div class="content-box">
+                <h3>👁️ 第二步：三传感器同步扫描</h3>
+                <p>当机器人到达检测区域时，双目工业摄像头同时启动捕捉高清图像，红外探测装置检测温度分布，激光雷达进行<strong>180°持续扫描</strong>，收集成千上万个数据点，形成精确三维点云图。</p>
+              </div>
+              <div class="content-box">
+                <h3>📡 第三步：实时数据采集与传输</h3>
+                <p>所有图像、温度、距离数据<strong>实时传输</strong>至OpenClaw控制中枢。三类数据同步采集、相互印证，为后续智能分析提供完整数据支撑。数据传输延迟小于10ms。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-05-content_image.png" class="content-img">
+              <div class="small-img-row">
+                <img src="images/slide-05-content_image_2.png" class="content-img" style="max-height: 22vh;">
+                <img src="images/slide-05-content_image_3.png" class="content-img" style="max-height: 22vh;">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">7 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-07.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-07.png');"></div>
-        <img class="content-image" src="outputs/images/slide-07.png" alt="工作环境配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">1.3 工作环境与基本功能</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">工作环境：</span>机车底部地沟</p>
-            <p><span class="highlight">主要功能：</span>通过多传感器融合实现机车底部故障检测</p>
-            <p><span class="highlight">检测方式：</span>采用视觉、红外和激光雷达三重融合检测技术</p>
-            <p><span class="highlight">操作模式：</span>OpenClaw自主移动检测与远程监控相结合</p>
+      <!-- Slide 6: 工作原理-诊断输出 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('images/slide-06-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>四、工作原理 — 智能诊断输出（2/2）</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🔄 第四步：多源数据融合分析</h3>
+                <p>OpenClaw将三类关键数据进行精确对齐和融合分析：摄像头图像分析结果、激光雷达三维结构图，红外温度分布信息。<strong>交叉验证故障性质</strong>，避免单一传感器误报。</p>
+              </div>
+              <div class="content-box">
+                <h3>🧠 第五步：AI智能判断与诊断</h3>
+                <p>基于<strong>YOLOv8s检测算法</strong>和专家知识库，OpenClaw智能判断故障类型，如：热轴故障（温度异常升高）、制动抱死（摩擦过热）、闸瓦偏磨（厚度不均）、电气连接松动（局部发热）等，并提供针对性解决方案。</p>
+              </div>
+              <div class="content-box">
+                <h3>📋 第六步：自动生成检测报告</h3>
+                <p>根据故障类型和严重程度，<strong>自动生成检修建议</strong>和优先级排序。检测报告实时上报，包含故障位置、类型、建议措施。支持历史数据查询和趋势分析，为预防性维护提供数据支撑。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-06-content_image_2.png" class="content-img">
+              <div class="small-img-row">
+                <img src="images/slide-06-content_image_3.png" class="content-img" style="max-height: 20vh;">
+                <img src="images/slide-06-content_image_4.png" class="content-img" style="max-height: 20vh;">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">8 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-09.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-09.png');"></div>
-        <img class="content-image" src="outputs/images/slide-09.png" alt="第二章配图">
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第二章</h1>
-          <h2>系统架构设计：具身智能的技术基础</h2>
-        </div>
-        <div class="page-number">9 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-10.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-10.png');"></div>
-        <img class="content-image" src="outputs/images/slide-10.png" alt="核心控制系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">2.1.1 核心控制系统：OpenClaw智能控制中枢</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">OpenClaw具身智能主板：</span></p>
-            <ul>
-              <li>基于树莓派5/Jetson Orin NX的主控单元</li>
-              <li>集成OpenClaw智能编程IDE和决策引擎</li>
-              <li><span class="highlight">本地AI处理核心：</span>搭载嵌入式AI大模型，实现本地智能决策</li>
-              <li><span class="highlight">自主决策模块：</span>不是简单执行程序，而是自主分析和反应</li>
-              <li>本地缓存和预处理关键数据</li>
-              <li><span class="highlight">具身智能硬件接口：</span>为AI模型提供与物理世界交互的接口</li>
-            </ul>
+      <!-- Slide 7: 政策背景 -->
+      <section>
+        <div class="slide-bg" style="background-color: #0a1628;"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>五、政策背景 — 国家政策大力支持</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>📜 《"十四五"铁路科技创新规划》</h3>
+                <p>明确提出开展<strong>智能化掘进、架桥、养护机器人</strong>关键技术研发，推动铁路运维智能化升级。铁路机器人技术正式纳入国家科技重点支持方向。</p>
+                <ul>
+                  <li>重点任务：研发智能化检测、运维机器人</li>
+                  <li>目标：实现铁路运维<strong>少人化、智能化</strong></li>
+                  <li>时间节点：2025年实现关键技术突破</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>📡 《数字交通"十四五"发展规划》</h3>
+                <p>推动高速铁路<strong>智能化升级改造</strong>，推进下一代列控系统、智能行车等前沿技术研发。政策加码，铁路智能化万亿级市场加速释放！</p>
+                <ul>
+                  <li>核心方向：数字化、智能化双轮驱动</li>
+                  <li>重点工程：智能高铁、智慧铁路建设</li>
+                  <li>投资规模：年均铁路投资超8000亿元</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🎯 政策信号：市场窗口期已打开</h3>
+                <p>两大规划形成政策合力，铁路智能化从"可选"变"必选"。<strong>检修机器人</strong>作为铁路安全守护者，正是政策鼓励发展的重点方向。</p>
+                <ul>
+                  <li>政策红利：税收优惠、研发补贴</li>
+                  <li>市场机遇：铁路智能化改造需求爆发</li>
+                  <li>竞争格局：国内外企业纷纷布局</li>
+                </ul>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/1af3adc5110fe8b5000543aeb84464cb.png" class="content-img" style="max-height: 33vh;">
+              <img src="images/84b6d159f9a7d37b4e6e925afd210b51.png" class="content-img" style="max-height: 33vh;">
+              <img src="images/slide-07-content_image.png" class="content-img" style="max-height: 33vh;">
+            </div>
           </div>
         </div>
-        <div class="page-number">10 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-11.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-11.png');"></div>
-        <img class="content-image" src="outputs/images/slide-11.png" alt="移动执行系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">移动执行系统（AI的"脚"）</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">电机驱动模块：</span>控制机器人行走（启停、转向、速度）</p>
-            <p><span class="highlight">舵机驱动系统：</span>控制三个传感器（视觉、红外、激光雷达）的俯仰和旋转</p>
-            <p><span class="highlight">精密机械结构：</span>确保传感器稳定性和检测精度</p>
+      <!-- Slide 8: 行业背景 -->
+      <section>
+        <div class="slide-bg" style="background-color: #0a1628;"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>六、行业背景</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🚂 中国铁路规模：全球第一！</h3>
+                <p>全国铁路营业里程达<strong>16.2万公里</strong>，其中高铁<strong>4.8万公里</strong>，稳居世界第一！全国铁路机车拥有量<strong>2.25万台</strong>，其中内燃机车0.78万台，电力机车1.47万台，铁路网络覆盖全国每一个角落。</p>
+                <ul>
+                  <li>年旅客发送量：<strong>40亿人次</strong></li>
+                  <li>年货物发送量：<strong>50亿吨</strong></li>
+                  <li>铁路密度：每百平方公里<strong>1.7公里</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>⚠️ 检修压力：安全与效率的双重挑战</h3>
+                <p>铁路提速了，列车跑得更快了，但对安全的要求也更高了。每台机车每月至少检修2-4次，每次耗时数小时。全国2.25万台机车，每天有数万次检修在进行，人工检测任务繁重。</p>
+                <ul>
+                  <li>每次检测耗时：<strong>10分钟以上</strong></li>
+                  <li>人工误报率：<strong>5%</strong>（漏检风险高）</li>
+                  <li>专业人才缺口：<strong>数十万人</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🤖 智能化浪潮：万亿市场正在爆发</h3>
+                <p>《"十四五"铁路科技创新规划》明确提出：推动铁路智能化升级，开展智能检测、运维机器人研发。政策利好，资本涌入，铁路智能化万亿级市场正在爆发！</p>
+                <ul>
+                  <li>检修机器人市场：<strong>年增12.4%</strong></li>
+                  <li>智能化改造投资：<strong>数千亿元</strong></li>
+                  <li>机器人替代空间：<strong>90%</strong>的人工检测</li>
+                </ul>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-09-content_image.png" class="content-img">
+              <img src="images/slide-09-content_image_3.png" class="content-img">
+            </div>
           </div>
         </div>
-        <div class="page-number">11 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-12.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-12.png');"></div>
-        <img class="content-image" src="outputs/images/slide-12.png" alt="测距系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">2.1.2 传感器系统（AI的"眼睛"）— 测距系统</h2>
-          <div class="text-content text-medium" data-appearance="fade-in">
-            <p><span class="highlight">测距系统（AI的"空间感知器官"）：</span></p>
-            <ul>
-              <li>激光雷达模块，就像AI的触须和耳朵，感知空间距离</li>
-              <li>高精度测距和建图能力，让AI能够"听见"和"触摸"周围环境</li>
-              <li>支持复杂环境感知和避障，为AI提供立体空间意识</li>
-            </ul>
+      <!-- Slide 9: 市场分析 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('images/slide-09-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>七、市场分析</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>📈 铁路检修市场有多大？</h3>
+                <p>你知道吗？全国有<strong>2.25万台</strong>铁路机车，每台每年检修费用高达<strong>数十万元</strong>，整个铁路检修市场年规模超过<strong>300亿元</strong>！而且随着列车提速和智能化升级，这个数字还在快速增长。</p>
+                <ul>
+                  <li>全球检修机器人市场：<strong>4.5亿美元</strong>（2024年）</li>
+                  <li>预计年增<strong>12.4%</strong>，2032年破10亿美元</li>
+                  <li>中国铁路年固定投资超<strong>8500亿元</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🤖 机器人能替代多少人工检测？</h3>
+                <p>目前90%以上的铁路检修工作仍靠人工完成。人工检测存在效率低、误报高、漏检风险大等问题。我们的机器人<strong>一台能顶3个人</strong>，不知疲倦、24小时不停工，误报率只有0.3%（人工是5%），每次检测从10分钟缩短到3分钟！</p>
+                <ul>
+                  <li>检测效率提升<strong>70%</strong>以上</li>
+                  <li>AI误报率0.3%，人工误报5%</li>
+                  <li>1台机器人 = 3名检测员工作量</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>💰 买一台机器人多久回本？</h3>
+                <p>一台机器人15万元，年节约人工成本45万元，<strong>不到1年就能回本</strong>！之后每年净赚30多万元，而且机器人还能24小时值班、节假日不休，这笔账怎么算都划算！</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-09-content_image.png" class="content-img">
+              <img src="images/slide-09-content_image_3.png" class="content-img">
+            </div>
           </div>
         </div>
-        <div class="page-number">12 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-13.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-13.png');"></div>
-        <img class="content-image" src="outputs/images/slide-13.png" alt="视觉系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">视觉系统（AI的"眼睛"）</h2>
-          <div class="text-content text-medium" data-appearance="fade-in">
-            <ul>
-              <li>CSI接口连接工业摄像头，就像AI的瞳孔</li>
-              <li>基于OpenCV和深度学习实现图像识别，让AI能够"看见"世界</li>
-              <li>支持高速图像采集和预处理，提供清晰的视觉信息</li>
-            </ul>
+      <!-- Slide 10: 目标客户 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('images/slide-10-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>八、目标客户 — 谁能用我们的机器人？</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="images/slide-10-content_image.png">
+              <div class="grid-item-text">
+                <h4>🚂 铁路局机务段</h4>
+                <p>全国18个铁路局（北京、上海、武汉、成都、沈阳、广州等）都有机务段，负责机车日常检修。每段管理数十台机车，每天检测任务繁重。他们是<strong>直接采购决策者</strong>，买机器人就像给工人配新工具一样自然。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-10-content_image_2.png">
+              <div class="grid-item-text">
+                <h4>🚇 地铁运营公司</h4>
+                <p>地铁每天运客数百万人次，安全检测是重中之重！地铁公司资金充足，对智能化改造<strong>接受度高、付费意愿强</strong>。而且地铁隧道环境固定，非常适合机器人检测！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-10-content_image_3.png">
+              <div class="grid-item-text">
+                <h4>🔧 铁路检修服务商</h4>
+                <p>神州高铁等上市公司，专业做铁路检修服务。他们<strong>采购机器人来提升服务竞争力</strong>，一台机器人能接更多活、赚更多钱。这类客户<strong>决策快、复购率高</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-11-content_image.png">
+              <div class="grid-item-text">
+                <h4>🤝 技术对接进展</h4>
+                <p>已与多家机务段和地铁公司进行技术对接，<strong>需求反馈积极</strong>。客户最关心的是"检测准不准"和"能用多久"，我们的98%+检测精度和本地AI处理正是他们的痛点解决方案！</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">13 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-14.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-14.png');"></div>
-        <img class="content-image" src="outputs/images/slide-14.png" alt="热成像系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">热成像系统（AI的"热感知器官"）</h2>
-          <div class="text-content text-medium" data-appearance="fade-in">
-            <ul>
-              <li>红外探测模块，就像AI的皮肤神经末梢，能感知温度变化</li>
-              <li>高精度温度采集和补偿算法，让AI具有"触觉"般的温度感知</li>
-              <li>支持实时热成像分析和异常检测，帮助AI感知环境的"冷暖"</li>
-            </ul>
+      <!-- Slide 11: 项目优势 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('images/slide-11-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>九、项目优势 — 我们的机器人有什么不一样？</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="images/slide-11-content_image.png">
+              <div class="grid-item-text">
+                <h4>🤖 具身智能突破（独家！）</h4>
+                <p>别人还在卖"自动化设备"，我们已经实现了<strong>真正的AI具身智能</strong>！机器人不是简单执行程序，而是真正"理解"检测任务，能智能应对各种情况。这就像从"功能机"到"智能机"的跨越，是<strong>降维打击</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-11-content_image_2.png">
+              <div class="grid-item-text">
+                <h4>🔗 三传感器融合（更全面！）</h4>
+                <p>双目视觉看外观、红外测温度、激光雷达测形状——<strong>三种传感器交叉验证</strong>，比人眼看得更准！单一传感器可能误判，三种传感器一起判断，<strong>故障识别准确率98%+</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-11-content_image_3.png">
+              <div class="grid-item-text">
+                <h4>🔒 本地AI处理（更安全！）</h4>
+                <p>数据<strong>不出设备</strong>！铁路检修数据是机密，上传到云端有泄露风险。我们的机器人所有数据本地处理，不依赖网络，即使断网也能正常工作。<strong>铁路安全无小事</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="images/slide-11-content_image_4.png">
+              <div class="grid-item-text">
+                <h4>📈 持续学习进化（更聪明！）</h4>
+                <p>机器人会<strong>越用越聪明</strong>！每检测一次就学习一次，故障案例不断积累，AI模型持续优化。检测时间越长，准确率越高，这是传统设备做不到的！</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">14 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-15.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-15.png');"></div>
-        <img class="content-image" src="outputs/images/slide-15.png" alt="姿态与定位系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">2.1.3 姿态与定位系统</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">姿态补偿系统：</span></p>
-            <ul>
-              <li>IMU姿态补偿模块，实时检测设备姿态</li>
-              <li>高精度姿态解算和补偿算法</li>
-              <li>确保检测数据准确性和一致性</li>
-            </ul>
-            <p><span class="highlight">位置定位系统：</span></p>
-            <ul>
-              <li>角度编码器，精确记录检测位置和角度</li>
-              <li>支持绝对位置和相对位置检测</li>
-              <li>提供高分辨率位置反馈</li>
-            </ul>
+      <!-- Slide 12: 实施计划 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('images/slide-12-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>十、实施计划 — 分阶段落地路径</h2></div>
+          <div class="content-area" style="flex-direction: column; gap: 1vh;">
+            <div style="display: flex; gap: 1vw; width: 100%;">
+              <div style="flex: 0.45; display: flex; flex-direction: column; gap: 1vh;">
+                <img src="images/slide-12-content_image_2.png" class="content-box" style="width: 100%; border-radius: 8px;">
+                <div class="content-box" style="background: rgba(10, 22, 40, 0.85); padding: 1vh; border-radius: 8px;">
+                  <h3 style="color: #ff8c42; margin: 0 0 0.5vh 0; font-size: 0.9em;">👥 团队构成</h3>
+                  <div style="display: flex; gap: 1vw; font-size: 0.7em; color: #e0e0e0; flex-wrap: wrap;">
+                    <div><strong>算法组</strong>：4人</div>
+                    <div><strong>硬件组</strong>：3人</div>
+                    <div><strong>交付组</strong>：3人</div>
+                    <div><strong>商务组</strong>：2人</div>
+                  </div>
+                </div>
+              </div>
+              <div style="flex: 0.55; display: flex; flex-direction: column; gap: 1vh;">
+                <div class="content-box">
+                  <h3>📊 项目里程碑</h3>
+                  <ul>
+                    <li><strong>M3</strong>：完成原理样机研制</li>
+                    <li><strong>M6</strong>：首个试点机务段上线</li>
+                    <li><strong>M9</strong>：产品定型，拿到首笔订单</li>
+                    <li><strong>M12</strong>：完成3家以上试点</li>
+                    <li><strong>M18</strong>：开启规模化推广</li>
+                    <li><strong>M24</strong>：覆盖5+铁路局</li>
+                  </ul>
+                </div>
+                <div class="content-box">
+                  <h3>⚠️ 关键风险与对策</h3>
+                  <ul>
+                    <li><strong>技术风险</strong>：传感器精度不达标 → 选型冗余，多源备份</li>
+                    <li><strong>落地风险</strong>：现场环境复杂 → 提前踩点，定制适配</li>
+                    <li><strong>市场风险</strong>：决策周期长 → 借力试点，形成口碑</li>
+                  </ul>
+                </div>
+              </div>
+              <div style="flex: 0.55;">
+                <img src="images/slide-12-content_image.png" class="content-box" style="width: 100%; max-height: 35vh; object-fit: contain; border-radius: 8px;">
+              </div>
+            </div>
+            <div style="display: flex; gap: 1vw; width: 100%;">
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #ff8c42; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #ff8c42; margin: 0 0 0.5vh 0; font-size: 0.95em;">🚀 第一阶段：原型开发</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：3个月 | 投入：45万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>核心功能验证与算法开发</li>
+                  <li>传感器融合算法调试</li>
+                  <li>AI模型训练与优化</li>
+                  <li>完成原理样机制作</li>
+                </ul>
+              </div>
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #4a9eff; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #4a9eff; margin: 0 0 0.5vh 0; font-size: 0.95em;">🏭 第二阶段：试点部署</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：6个月 | 投入：80万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>机务段实地测试运行</li>
+                  <li>产品迭代优化完善</li>
+                  <li>形成标杆案例</li>
+                  <li>获取用户反馈改进</li>
+                </ul>
+              </div>
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #00d4aa; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #00d4aa; margin: 0 0 0.5vh 0; font-size: 0.95em;">📢 第三阶段：规模推广</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：12个月 | 投入：70万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>全国铁路局推广覆盖</li>
+                  <li>建立销售渠道网络</li>
+                  <li>形成规模化效益</li>
+                  <li>探索地铁等新市场</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="page-number">15 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-16.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-16.png');"></div>
-        <img class="content-image" src="outputs/images/slide-16.png" alt="软件系统架构配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">2.2 软件系统架构：OpenClaw智能核心</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">自主决策引擎：</span></p>
-            <ul>
-              <li><span class="highlight">嵌入式AI大模型：</span>集成轻量级Claude"龙虾"等先进模型，实现本地智能处理</li>
-              <li><span class="highlight">感知-决策-执行闭环：</span>实时感知环境、分析并做出决策，直接控制硬件执行</li>
-              <li><span class="highlight">自主学习能力：</span>通过持续运行积累经验，不断优化决策和控制策略</li>
-              <li><span class="highlight">环境适应能力：</span>根据实时环境状态动态调整行为参数</li>
-            </ul>
+      <!-- Slide 13: 财务与愿景 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('images/slide-13-bg.png');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>十一、财务与愿景</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>💰 成本结构明细</h3>
+                <ul>
+                  <li>双目工业相机×2：1.5万元</li>
+                  <li>激光雷达×1：2万元</li>
+                  <li>红外热像仪×1：2.5万元</li>
+                  <li>主控单元（Jetson Orin NX）：1万元</li>
+                  <li>移动底盘+机械结构：3.5万元</li>
+                  <li>其他传感器+线缆：2万元</li>
+                  <li>专业AI软件+模型开发：2.5万元</li>
+                  <li><strong>总计：约15万元/套</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>📊 投资回报分析</h3>
+                <ul>
+                  <li>年节约人工成本约<strong>45万元</strong>（1台=3人工作量）</li>
+                  <li>检测效率提升<strong>70%</strong></li>
+                  <li>故障提前发现减少损失</li>
+                  <li>设备寿命延长效益</li>
+                  <li>投资回收期：<strong>3-4年</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🌟 愿景与使命</h3>
+                <p>成为<strong>铁路智能运维标准制定者</strong>，推动AI从数字世界走向物理世界，提升铁路运输安全，降低人工检测风险，为中国铁路智能化贡献力量。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="images/slide-13-content_image.png" class="content-img">
+              <img src="images/slide-13-content_image_2.png" class="content-img">
+              <img src="images/slide-13-content_image_3.png" class="content-img">
+            </div>
           </div>
         </div>
-        <div class="page-number">16 / 50</div>
       </section>
 
-      <section style="background-image: url('outputs/images/slide-17.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-17.png');"></div>
-        <img class="content-image" src="outputs/images/slide-17.png" alt="智能编程IDE配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">智能编程IDE功能</h2>
-          <div class="text-content text-medium" data-appearance="fade-in">
-            <ul>
-              <li><span class="highlight">自主代码生成：</span>根据环境数据，动态生成并执行控制代码</li>
-              <li><span class="highlight">智能决策引擎：</span>基于感知数据，进行实时分析和决策</li>
-              <li><span class="highlight">自适应学习：</span>通过持续运行不断优化控制策略和代码逻辑</li>
-              <li><span class="highlight">自我进化能力：</span>根据运行结果和反馈，自动调整和优化代码行为</li>
-            </ul>
+      <!-- Slide 14: 结束页 -->
+      <section id="ending-section">
+        <div class="slide-bg" style="background-image: url('images/slide-14-bg.png');"></div>
+        <div class="cover-scanline"></div>
+        <div class="cover-radar">
+          <div class="radar-sweep"></div>
+          <div class="radar-ring ring1"></div>
+          <div class="radar-ring ring2"></div>
+          <div class="radar-ring ring3"></div>
+        </div>
+        <div class="cover-hud">
+          <div class="hud-line hud-line-1"></div>
+          <div class="hud-line hud-line-2"></div>
+          <div class="hud-line hud-line-3"></div>
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+        </div>
+        <div class="cover-content">
+          <img src="images/slide-14-content_image.png" class="cover-img ending-logo" style="width: 22vh;">
+          <div class="ending-title" data-appearance>感谢观看</div>
+          <div class="ending-subtitle" data-appearance>OpenClaw智能铁道机车探伤机器人系统</div>
+          <div class="ending-info" data-appearance>
+            <strong>项目负责人：王政杰</strong><br>
+            让我们一起推动AI从数字世界走向物理世界！
           </div>
         </div>
-        <div class="page-number">17 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-18.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-18.png');"></div>
-        <img class="content-image" src="outputs/images/slide-18.png" alt="第三章配图">
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第三章</h1>
-          <h2>系统工作流程：OpenClaw自主智能的工作方式</h2>
-        </div>
-        <div class="page-number">18 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-19.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-19.png');"></div>
-        <img class="content-image" src="outputs/images/slide-19.png" alt="检测扫描配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.1.1 智能检测区域扫描与故障识别</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>当机器人到达机车底部的第一块检测区域时，OpenClaw智能控制中枢<span class="highlight">自主决定</span>启动最佳检测序列，而不是简单执行预设程序。</p>
-            <p>首先，CSI摄像头和红外探测装置同时对该区域进行全方位扫描。CSI摄像头捕捉大量高清图像，OpenClaw的<span class="highlight">本地AI模型</span>实时分析这些图像，将其与内置的故障特征库进行比对，<span class="highlight">自主判断</span>是否存在松动脱落的螺栓、断裂的开口销，磨损的车轮踏面和破损的线缆绝缘层等问题。</p>
-          </div>
-        </div>
-        <div class="page-number">19 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-20.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-20.png');"></div>
-        <img class="content-image" src="outputs/images/slide-20.png" alt="红外温度检测配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">红外温度检测</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>同时，红外探测装置检测该区域的温度分布，OpenClaw<span class="highlight">自主分析</span>这些温度数据，识别热轴故障、制动抱死、闸瓦偏磨等温度异常问题。</p>
-          </div>
-        </div>
-        <div class="page-number">20 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-21.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-21.png');"></div>
-        <img class="content-image" src="outputs/images/slide-21.png" alt="三维建模配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.1.2 三维环境建模与数据融合</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>在CSI摄像头完成扫描后，所有图像数据会立即传输给OpenClaw控制系统。OpenClaw基于内置的大模型数据库，将这些图像与该区域健康状态下的标准图像进行智能对比分析，准确总结出存在的各种明显故障。</p>
-            <p>几乎同一时间，机器人开始移动，OpenClaw<span class="highlight">自主控制</span>移动装置，借助IMU姿态补偿和角度编码器的精确控制，沿着检测区域缓缓前行。激光雷达左右摆动进行180°持续扫描，收集成千上万个数据点，形成精确的三维点云图，为机车底部区域提供详细"内部结构"视图。</p>
-          </div>
-        </div>
-        <div class="page-number">21 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-22.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-22.png');"></div>
-        <img class="content-image" src="outputs/images/slide-22.png" alt="多源数据融合配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.1.3 多源数据融合分析：智能交叉验证</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw将三类关键数据进行精确对齐和融合分析：CSI图像分析的故障结果、激光雷达的三维结构图，以及红外探测的温度分布信息。</p>
-            <p>对于红外探测装置发现的温度异常点，系统会在三维图中精确定位该位置，并结合CSI图像分析结果，交叉验证故障性质。例如，如果红外探测发现某处异常发热，而图像分析显示该位置有电气连接松动，OpenClaw可以<span class="highlight">自主判断</span>这可能是由于接触电阻增大导致的热故障。</p>
-          </div>
-        </div>
-        <div class="page-number">22 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-23.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-23.png');"></div>
-        <img class="content-image" src="outputs/images/slide-23.png" alt="智能决策配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.1.4 智能决策与结果输出：自主诊断与应对</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>当上述步骤未发现明显故障时，系统会进入"深度体检"阶段。红外探测装置会对该区域进行更细致的温度分布分析，寻找潜在问题，如热轴故障、制动系统异常或电气系统过热等。</p>
-            <p>OpenClaw将所有传感器数据进行综合分析，基于内置大模型数据库和专家知识库，对发现的异常做出准确诊断，并提供针对性的解决方案。更关键的是，OpenClaw不仅能发现问题，还能<span class="highlight">自主决定最佳应对措施</span>，根据故障类型和严重程度，调整检测策略、优化移动路径，甚至调整传感器参数。</p>
-          </div>
-        </div>
-        <div class="page-number">23 / 50</div>
-      </section>
-
-      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-24.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-24.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.2.1 传感器数据流向</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">数据采集阶段：</span></p>
-            <ul>
-              <li>各传感器按照设定频率采集环境数据</li>
-              <li>数据通过ADC转换和初步滤波</li>
-              <li>附加时间戳和状态信息</li>
-            </ul>
-            <p><span class="highlight">数据预处理阶段：</span></p>
-            <ul>
-              <li>OpenClaw对接收数据进行格式化和标准化</li>
-              <li>进行去噪、滤波和特征提取</li>
-              <li>数据对齐和同步处理</li>
-            </ul>
-            <p><span class="highlight">智能分析阶段：</span></p>
-            <ul>
-              <li>本地AI模型进行初步分析和判断</li>
-              <li>决定本地处理或上传云端</li>
-              <li>数据压缩和打包准备传输</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">24 / 50</div>
-      </section>
-
-      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-25.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-25.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.2.2 云端数据流向</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">数据上传阶段：</span></p>
-            <ul>
-              <li>上传预处理后的数据</li>
-              <li>采用优先级和压缩算法优化传输</li>
-              <li>支持断点续传和重传机制</li>
-            </ul>
-            <p><span class="highlight">云端分析阶段：</span></p>
-            <ul>
-              <li>云端AI模型对数据进行深度分析</li>
-              <li>识别缺陷和异常情况</li>
-              <li>生成检测报告和控制建议</li>
-            </ul>
-            <p><span class="highlight">结果返回阶段：</span></p>
-            <ul>
-              <li>分析结果返回OpenClaw</li>
-              <li>采用结构化数据格式</li>
-              <li>包含置信度和建议操作</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">25 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-26.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-26.png');"></div>
-        <img class="content-image" src="outputs/images/slide-26.png" alt="控制代码生成配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">3.2.3 控制代码生成与执行：从智能决策到物理行动</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">智能解析阶段：</span>OpenClaw解析云端返回的分析结果，结合当前环境和系统状态，确定需要执行的具体操作。</p>
-            <p><span class="highlight">代码生成阶段：</span>根据控制需求生成相应代码，选择合适的控制算法和参数，优化代码以适应当前环境。</p>
-            <p><span class="highlight">代码执行阶段：</span>生成的代码被即时编译并执行，控制指令发送至硬件驱动系统，监控执行状态和结果。</p>
-            <p><span class="highlight">反馈优化阶段：</span>采集执行结果和系统状态，评估控制效果和代码性能，必要时调整和优化代码。</p>
-          </div>
-        </div>
-        <div class="page-number">26 / 50</div>
-      </section>
-
-      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-27.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-27.png');"></div>
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第四章</h1>
-          <h2>技术亮点：OpenClaw具身智能的核心优势</h2>
-        </div>
-        <div class="page-number">27 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-28.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-28.png');"></div>
-        <img class="content-image" src="outputs/images/slide-28.png" alt="自主决策配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">4.1 自主决策能力：从被动执行到主动思考</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw最大的技术亮点在于其<span class="highlight">自主决策能力</span>。不同于传统的机器人系统只能按照预设程序执行，OpenClaw能够：</p>
-            <ul>
-              <li><span class="highlight">实时分析环境：</span>基于多传感器数据，实时理解工作环境和状态</li>
-              <li><span class="highlight">自主制定计划：</span>根据检测任务和当前状况，自主制定最优检测路径和方法</li>
-              <li><span class="highlight">动态调整策略：</span>根据检测进展和发现的问题，动态调整检测策略和参数</li>
-              <li><span class="highlight">应对突发情况：</span>遇到障碍物、环境变化或异常情况时，能够自主应对和调整</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">28 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-29.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-29.png');"></div>
-        <img class="content-image" src="outputs/images/slide-29.png" alt="本地化AI配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">4.2 本地化AI处理：突破云端处理的局限</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw采用<span class="highlight">本地化AI处理架构</span>，将AI模型直接运行在机器人主板上，带来了显著优势：</p>
-            <ul>
-              <li><span class="highlight">超低延迟：</span>决策和行动延迟降至毫秒级，远低于云端处理模式</li>
-              <li><span class="highlight">高可靠性：</span>不依赖网络连接，即使在网络中断时也能正常工作</li>
-              <li><span class="highlight">数据安全：</span>敏感数据在本地处理，不经过云端，提高数据安全性</li>
-              <li><span class="highlight">实时学习：</span>本地积累的经验可以实时用于优化决策模型</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">29 / 50</div>
-      </section>
-
-      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-30.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-30.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">4.3 多模态融合感知：全方位理解环境</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw能够融合多种传感器数据，形成对环境的全方位理解：</p>
-            <ul>
-              <li><span class="highlight">视觉感知：</span>高分辨率视觉识别，能够检测各种表面缺陷</li>
-              <li><span class="highlight">温度感知：</span>红外热成像，能够发现温度异常</li>
-              <li><span class="highlight">距离感知：</span>激光雷达，能够精确测距和建图</li>
-              <li><span class="highlight">姿态感知：</span>IMU，能够了解自身姿态和状态</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">30 / 50</div>
-      </section>
-
-      <section class="bg-gradient-4" style="background-image: url('outputs/images/slide-31.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-31.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">4.4 自主学习能力：持续进化的智能</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw具有<span class="highlight">自主学习能力</span>，能够从经验中学习和改进：</p>
-            <ul>
-              <li><span class="highlight">故障模式学习：</span>通过积累检测案例，不断丰富和完善故障识别能力</li>
-              <li><span class="highlight">环境适应：</span>适应不同的车型、线路和环境条件</li>
-              <li><span class="highlight">策略优化：</span>根据检测效果，不断优化检测路径和方法</li>
-              <li><span class="highlight">错误自修正：</span>当某种方法效果不佳时，能够自主调整和尝试新方法</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">31 / 50</div>
-      </section>
-
-      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-32.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-32.png');"></div>
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第五章</h1>
-          <h2>系统局限性分析与改进方向</h2>
-        </div>
-        <div class="page-number">32 / 50</div>
-      </section>
-
-      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-33.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-33.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">5.1 分析处理能力局限性</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">云端依赖性问题：</span>数据交由云端大模型处理而非专门的故障案例数据库，导致故障判断和解决方案不够准确。</p>
-            <p><span class="highlight">改进方向：</span>建立专门的铁路故障案例数据库，开发针对机车底部检测的专用AI模型，结合专家系统提高判断准确性，增强本地处理能力。</p>
-          </div>
-        </div>
-        <div class="page-number">33 / 50</div>
-      </section>
-
-      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-34.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-34.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">5.2 硬件性能局限性</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">工业级标准差距：</span>硬件达不到工业水平要求，耐环境能力、稳定性、寿命等方面存在不足。</p>
-            <p><span class="highlight">改进方向：</span>采用工业级组件和设计，加强机械结构设计和散热系统，提高电磁兼容性和抗干扰能力。</p>
-          </div>
-        </div>
-        <div class="page-number">34 / 50</div>
-      </section>
-
-      <section class="bg-gradient-1" style="background-image: url('outputs/images/slide-35.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-35.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">5.3 算法与软件局限性</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">AI算法精度问题：</span>AI检测算法精度有待提升，对复杂背景和光照条件下的识别能力有限。</p>
-            <p><span class="highlight">改进方向：</span>增加训练数据量和多样性，优化算法模型结构，开发针对特定缺陷的专用算法。</p>
-          </div>
-        </div>
-        <div class="page-number">35 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-36.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-36.png');"></div>
-        <img class="content-image" src="outputs/images/slide-36.png" alt="系统集成局限性配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">5.4 系统集成与兼容性局限性</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">与现有系统集成困难：</span>与铁路现有检修系统集成存在障碍，数据格式和通信协议不统一。</p>
-            <p><span class="highlight">改进方向：</span>开发标准化数据接口，支持多种通信协议和数据格式，与现有系统建立数据转换机制。</p>
-          </div>
-        </div>
-        <div class="page-number">36 / 50</div>
-      </section>
-
-      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-37.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-37.png');"></div>
-        <div class="content-wrapper section-title" data-appearance="fade-in">
-          <h1>第六章</h1>
-          <h2>工业级升级方案：迈向更高性能的具身智能</h2>
-        </div>
-        <div class="page-number">37 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-38.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-38.png');"></div>
-        <img class="content-image" src="outputs/images/slide-38.png" alt="工业级传感器配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.1.1 工业级传感器应用</h2>
-          <div class="text-content text-xsmall" data-appearance="fade-in">
-            <p><span class="highlight">高分辨率工业相机：</span>华睿科技A5B57MU200，2500万像素，30fps；高帧率和低噪声设计；支持多种触发和同步模式；工作温度范围：-40°C至+70°C；防护等级：IP67</p>
-            <p><span class="highlight">红外热成像相机：</span>海康威视DV-RS32，640×512热分辨率；高精度温度测量能力（±0.5°C）；宽温范围和抗干扰设计；非接触温度检测，远距离测量</p>
-            <p><span class="highlight">高性能激光雷达：</span>镭神智能CX128S2，128线，测距精度±2cm；高密度点云采集；强抗干扰能力和远距探测；工作温度范围：-40°C至+70°C</p>
-          </div>
-        </div>
-        <div class="page-number">38 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-39.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-39.png');"></div>
-        <img class="content-image" src="outputs/images/slide-39.png" alt="增强型执行系统配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.1.2 增强型执行系统</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">OpenClaw Pro智能控制中枢：</span></p>
-            <ul>
-              <li>基于Jetson Orin NX 16GB平台，提供100 TOPS AI算力</li>
-              <li>集成OpenClaw智能编程IDE增强版</li>
-              <li>支持更复杂的代码生成和AI推理</li>
-              <li>工作温度范围：-40°C至+70°C</li>
-            </ul>
-            <p><span class="highlight">高功率执行系统：</span></p>
-            <ul>
-              <li>大扭矩电机驱动，适应各种铁路环境</li>
-              <li>精密机械臂，实现多角度灵活检测</li>
-              <li>增强型稳定系统，确保检测精度</li>
-              <li>防护等级：IP67</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">39 / 50</div>
-      </section>
-
-      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-40.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-40.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.1.3 多传感器阵列设计</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">多视觉系统：</span>增加至3-5个不同角度的摄像头；实现多区域同时检测；提高检测覆盖率和redundancy</p>
-            <p><span class="highlight">多激光雷达：</span>采用2-4个激光雷达形成阵列；实现全方位环境感知；提高测量的精度和可靠性</p>
-            <p><span class="highlight">辅助传感器：</span>增加超声波传感器近距离检测；添加应变片检测结构应力；集成更多环境传感器</p>
-          </div>
-        </div>
-        <div class="page-number">40 / 50</div>
-      </section>
-
-      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-41.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-41.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.2.1 工业级软件架构</h2>
-          <div class="text-content text-xsmall" data-appearance="fade-in">
-            <p><span class="highlight">分层架构设计：</span>设备抽象层（统一设备接口，隐藏硬件细节）；数据处理层（多传感器数据对齐和同步）；服务管理层（设备状态管理，任务调度）；API接口层（标准化RESTful API接口）</p>
-            <p><span class="highlight">实时数据处理：</span>多线程处理架构；OpenCL并行计算加速；TensorRT引擎优化AI推理；GPU加速计算优化</p>
-            <p><span class="highlight">专业数据库系统：</span>铁路故障专用案例数据库；故障模式识别和预警系统；历史数据分析和趋势预测</p>
-          </div>
-        </div>
-        <div class="page-number">41 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-42.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-42.png');"></div>
-        <img class="content-image" src="outputs/images/slide-42.png" alt="AI算法升级配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.2.2 AI算法升级</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">改进型YOLOv8s算法：</span>针对铁路缺陷检测优化的网络结构；增强对小缺陷和低对比度缺陷的检测能力；提高复杂背景下的检测精度；轻量化模型设计，适应边缘设备</p>
-            <p><span class="highlight">多传感器融合算法：</span>基于卡尔曼滤波的数据融合；多源数据的不确定性量化；自适应融合权重调整；融合结果的一致性检查</p>
-            <p><span class="highlight">专业故障诊断专家系统：</span>铁路故障诊断知识库；故障树推理机制；基于案例的推理系统；故障解决方案推荐</p>
-          </div>
-        </div>
-        <div class="page-number">42 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-43.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-43.png');"></div>
-        <img class="content-image" src="outputs/images/slide-43.png" alt="性能指标配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.3.1 关键性能指标提升</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">检测精度：</span>从目前的85-90%提升至99%以上；通过多传感器融合和专业AI模型实现</p>
-            <p><span class="highlight">处理速度：</span>从目前的5-10fps提升至30fps以上；通过边缘计算和硬件加速实现</p>
-            <p><span class="highlight">环境适应性：</span>工作温度范围从-20°C至+50°C扩展至-40°C至+70°C；通过工业级组件和热管理设计实现</p>
-            <p><span class="highlight">防护等级：</span>从IP54提升至IP67；通过密封设计和特殊材料实现</p>
-          </div>
-        </div>
-        <div class="page-number">43 / 50</div>
-      </section>
-
-      <section class="bg-gradient-2" style="background-image: url('outputs/images/slide-44.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-44.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.3.2 自主能力提升</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">自主决策率：</span>从目前的70%提升至95%以上；通过增强型OpenClaw Pro实现</p>
-            <p><span class="highlight">学习能力：</span>从有限的固定模板提升至持续学习；通过在线学习和经验积累实现</p>
-            <p><span class="highlight">适应性：</span>增强对不同车型和环境的适应能力；通过自适应参数调整和自组织实现</p>
-          </div>
-        </div>
-        <div class="page-number">44 / 50</div>
-      </section>
-
-      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-45.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-45.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.4.1 升级成本估算</h2>
-          <div class="text-content text-xsmall" data-appearance="fade-in">
-            <p><span class="highlight">硬件成本：</span></p>
-            <ul>
-              <li>工业级传感器和组件成本：约80,000元/套</li>
-              <li>增强型执行系统成本：约40,000元/套</li>
-              <li>边缘计算平台成本：约25,000元/套</li>
-              <li>机械结构和防护设计成本：约15,000元/套</li>
-              <li>其他辅助系统成本：约5,000元/套</li>
-              <li><strong>总硬件成本：约165,000元/套</strong></li>
-            </ul>
-            <p><span class="highlight">软件成本：</span>专业AI模型开发成本：约30,000元/套；<strong>总软件成本：约30,000元/套</strong></p>
-            <p><strong>总升级成本：约195,000元/套</strong></p>
-          </div>
-        </div>
-        <div class="page-number">45 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-46.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-46.png');"></div>
-        <img class="content-image" src="outputs/images/slide-46.png" alt="效益分析配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">6.4.2 效益分析</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">直接经济效益：</span></p>
-            <ul>
-              <li>检测效率提升：每次检测时间从10分钟缩短至3分钟，节省70%时间</li>
-              <li>人力成本节约：减少人工检测需求，每次检测节约约2人小时</li>
-              <li>故障提前发现：减少因故障导致的列车延误和维修成本</li>
-              <li>设备寿命延长：精准检测和预防性维护延长设备寿命</li>
-            </ul>
-            <p><span class="highlight">间接经济效益：</span></p>
-            <ul>
-              <li>提高铁路运输安全性和可靠性</li>
-              <li>提升检修工作效率和质量</li>
-              <li>降低人工检测的安全风险</li>
-              <li>积累故障数据和经验，优化维护策略</li>
-            </ul>
-          </div>
-        </div>
-        <div class="page-number">46 / 50</div>
-      </section>
-
-      <section class="bg-gradient-3" style="background-image: url('outputs/images/slide-47.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-47.png');"></div>
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">投资回报分析</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>假设每次人工检测成本约200元，机器人检测成本约50元，每次节约150元</p>
-            <p>每天检测10趟列车，每年约300个工作日，总节约成本约<span class="highlight">135万元</span></p>
-            <p>投资回收期约<span class="highlight">1.4年</span>，之后开始净收益</p>
-          </div>
-        </div>
-        <div class="page-number">47 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-49.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-49.png');"></div>
-        <img class="content-image" src="outputs/images/slide-49.png" alt="结论配图">
-        <div class="content-wrapper">
-          <h2 data-appearance="fade-in">结论</h2>
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p>OpenClaw智能铁道机车探伤机器人系统代表了AI从"数字世界"走向"物理世界"的重大突破，是具身智能技术在铁路运维领域的创新应用。通过将OpenClaw"龙虾"智能编程工具部署在机器人主板上，我们实现了AI从被动执行程序到自主决策、自主反应的转变。</p>
-            <p><span class="highlight">突破性的技术架构：</span>OpenClaw+机器人的组合实现了本地化AI处理，突破了传统云端处理的局限，提供了超低延迟、高可靠性的智能决策能力。这种"从数字世界走向物理世界"的技术革新，标志着人工智能应用方式的重大转变。</p>
-            <p><span class="highlight">全方位的感知能力：</span>通过视觉、红外、激光雷达等多传感器的融合，OpenClaw能够全方位理解检测环境，准确识别各种故障。</p>
-          </div>
-        </div>
-        <div class="page-number">48 / 50</div>
-      </section>
-
-      <section style="background-image: url('outputs/images/slide-49.png');">
-        <div class="bg-overlay" style="background-image: url('outputs/images/slide-49.png');"></div>
-        <img class="content-image" src="outputs/images/slide-49.png" alt="未来展望配图">
-        <div class="content-wrapper">
-          <div class="text-content text-small" data-appearance="fade-in">
-            <p><span class="highlight">自主决策能力：</span>不同于传统的自动化系统，OpenClaw能够根据实时环境自主调整检测策略，应对各种复杂情况。</p>
-            <p><span class="highlight">持续学习进化：</span>OpenClaw具有自主学习能力，能够从经验中学习，不断优化检测算法和决策策略。</p>
-            <p>未来，随着OpenClaw技术的不断发展和完善，智能铁道机车探伤机器人系统将在铁路运维中发挥越来越重要的作用，为铁路运输安全提供更加可靠、高效的保障，同时也将推动具身智能技术在更多领域的应用和发展。我们相信，OpenClaw系统将继续引领AI从数字世界走向物理世界的技术潮流，开创智能机器人应用的新纪元。</p>
-          </div>
-        </div>
-        <div class="page-number">49 / 50</div>
-      </section>
-
-      <section class="bg-gradient-4">
-        <div class="content-wrapper ending-content" data-appearance="fade-in">
-          <h1>谢谢观看</h1>
-          <h2>OpenClaw智能铁道机车探伤机器人系统</h2>
-          <h3>AI革命 · 从数字走向物理世界</h3>
-          <p style="margin-top: 40px; font-size: 0.9em; color: #7eb8ff;">Web PPT 制作人：机车车辆25-5王政杰</p>
-          <p style="font-size: 0.9em; color: #7eb8ff;">项目负责人：机车车辆25-5王政杰</p>
-          <p style="font-size: 0.9em; color: #7eb8ff;">指导老师：祝江亭</p>
-        </div>
-        <div class="page-number">50 / 50</div>
+        <div class="ending-particle-container" id="ending-particles"></div>
       </section>
 
     </div>
@@ -1168,170 +1305,25 @@
 
   <script src="https://unpkg.com/reveal.js@5.1.0/dist/reveal.js"></script>
   <script src="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.js"></script>
-  <script src="https://unpkg.com/animejs@3.2.2/lib/anime.min.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: 'slide',
-      controls: true,
-      progress: true,
-      center: false,
-      plugins: [ Appearance ]
-    });
-
-    Reveal.on('ready', function(event) {
-      anime({
-        targets: event.currentSlide.querySelectorAll('[data-appearance]'),
-        opacity: [0, 1],
-        translateZ: [50, 0],
-        translateY: [20, 0],
-        rotateX: [-15, 0],
-        duration: 900,
-        easing: 'easeOutQuad'
-      });
-
-      anime({
-        targets: event.currentSlide.querySelectorAll('.text-box'),
-        opacity: [0, 1],
-        translateZ: [-30, 0],
-        scale: [0.9, 1],
-        rotateY: [-8, 0],
-        duration: 800,
-        easing: 'easeOutCubic',
-        delay: anime.stagger(80, {grid: [1, 3], from: 'center'})
-      });
-    });
-
-    Reveal.on('slidechanged', function(event) {
-      var currentSection = event.currentSlide;
-      var previousSection = event.previousSlide;
-
-      if (event.indexh === 0) {
-        var coverSection = document.querySelector('.cover-slide');
-        var videoEl = coverSection ? coverSection.querySelector('video') : null;
-        if (videoEl) {
-          videoEl.currentTime = 0;
-          videoEl.play();
-        }
-      }
-
-      if (previousSection) {
-        var oldBoxes = previousSection.querySelectorAll('.text-box');
-        var oldImages = previousSection.querySelectorAll('.content-image');
-        oldBoxes.forEach(function(box) {
-          box.classList.remove('animate-in');
-          box.classList.add('animate-out');
-        });
-        oldImages.forEach(function(img) {
-          img.classList.remove('animate-in');
-          img.classList.add('animate-out');
-        });
-      }
-
-      if (currentSection) {
-        var burstContainer = document.createElement('div');
-        burstContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000;';
-        burstContainer.innerHTML = '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4em;color:#00d4ff;text-shadow:0 0 30px #00d4ff,0 0 60px #00d4ff,0 0 90px #00d4ff;animation:starBurst 0.7s ease-out forwards;">✦</div>';
-        document.body.appendChild(burstContainer);
-        setTimeout(function() { if (burstContainer.parentNode) burstContainer.parentNode.removeChild(burstContainer); }, 800);
-
-        var textBoxes = currentSection.querySelectorAll('.text-box');
-        var contentImages = currentSection.querySelectorAll('.content-image');
-
-        textBoxes.forEach(function(box, index) {
-          box.style.opacity = '0';
-          box.classList.remove('animate-out');
-          setTimeout(function() {
-            box.classList.add('animate-in');
-          }, 100 + index * 100);
-        });
-
-        contentImages.forEach(function(img, index) {
-          img.style.opacity = '0';
-          img.classList.remove('animate-out');
-          setTimeout(function() {
-            img.classList.add('animate-in');
-          }, 200 + index * 120);
-        });
-
-        anime({
-          targets: currentSection.querySelectorAll('[data-appearance]'),
-          opacity: [0, 1],
-          translateZ: [50, 0],
-          translateY: [30, 0],
-          rotateX: [-20, 0],
-          duration: 800,
-          easing: 'easeOutQuad',
-          delay: anime.stagger(60)
-        });
-      }
-    });
-
-    Reveal.on('fragmentshown', function(event) {
-      anime({
-        targets: event.fragment,
-        scale: [0.7, 1],
-        opacity: [0, 1],
-        translateZ: [40, 0],
-        rotateX: [-10, 0],
-        duration: 500,
-        easing: 'easeOutCubic'
-      });
-
-      var burst = document.createElement('div');
-      burst.className = 'particle-burst';
-      event.fragment.style.position = 'relative';
-      event.fragment.appendChild(burst);
-      setTimeout(function() { if (burst.parentNode) burst.parentNode.removeChild(burst); }, 800);
-    });
-
-    document.addEventListener('mousemove', function(e) {
-      var slides = document.querySelectorAll('.reveal .slides section');
-      slides.forEach(function(slide) {
-        var rect = slide.getBoundingClientRect();
-        if (e.clientX >= rect.left && e.clientX <= rect.right &&
-            e.clientY >= rect.top && e.clientY <= rect.bottom) {
-          var centerX = rect.left + rect.width / 2;
-          var centerY = rect.top + rect.height / 2;
-          var rotateY = ((e.clientX - centerX) / rect.width) * 6;
-          var rotateX = ((centerY - e.clientY) / rect.height) * 4;
-          slide.style.transform = 'rotateY(' + rotateY + 'deg) rotateX(' + rotateX + 'deg) perspective(1200px)';
-        }
-      });
-    });
-
-    Reveal.on('slideunselected', function(event) {
-      if (event.currentSlide) {
-        event.currentSlide.style.transform = '';
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.reveal .slides section .text-content p, .reveal .slides section .text-content ul').forEach(function(el) {
-        if (!el.classList.contains('text-box')) {
-          el.classList.add('text-box');
-        }
-      });
-    });
-  </script>
-
   <script>
     const tocData = [
-      { num: '一', title: '系统概述', desc: '具身智能的铁路运维新范式', slide: 3 },
-      { num: '二', title: '系统架构设计', desc: '具身智能的技术基础', slide: 9 },
-      { num: '三', title: '系统工作流程', desc: 'OpenClaw自主智能的工作方式', slide: 18 },
-      { num: '四', title: '技术亮点', desc: 'OpenClaw具身智能的核心优势', slide: 27 },
-      { num: '五', title: '系统局限性分析', desc: '与改进方向', slide: 32 },
-      { num: '六', title: '工业级升级方案', desc: '迈向更高性能的具身智能', slide: 37 },
-      { num: '七', title: '成本与效益分析', desc: '', slide: 45 }
+      { num: '一', title: '项目概述', desc: '具身智能的铁路运维新范式', slide: 3 },
+      { num: '二', title: '工作原理', desc: '三传感器融合检测流程', slide: 6 },
+      { num: '三', title: '政策背景', desc: '国家政策大力支持', slide: 8 },
+      { num: '四', title: '行业背景', desc: '万亿级铁路运维市场', slide: 9 },
+      { num: '五', title: '市场分析', desc: '目标客户与竞争优势', slide: 10 },
+      { num: '六', title: '目标客户', desc: '铁路局机务段', slide: 11 },
+      { num: '七', title: '财务与愿景', desc: '成本估算与发展愿景', slide: 14 }
     ];
 
     let scene, camera, renderer, cardMeshes = [], cardGroups = [];
     let flyInComplete = false;
     let currentRotationY = 0;
-    let flyStartTime = 0;
     let targetRotationSpeed = 0;
     let mouseInCenterCard = false;
+    let mouseInTocSection = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
     let tocAnimationId = null;
 
     function initTOC() {
@@ -1347,7 +1339,6 @@
       currentRotationY = 0;
       targetRotationSpeed = 0;
       mouseInCenterCard = false;
-      flyStartTime = Date.now();
 
       if (scene) {
         renderer.dispose();
@@ -1364,7 +1355,6 @@
       }
 
       scene = new THREE.Scene();
-
       const tocSection = document.getElementById('toc-section');
       const tocWidth = tocSection ? tocSection.clientWidth : window.innerWidth;
       const tocHeight = tocSection ? tocSection.clientHeight : window.innerHeight;
@@ -1382,7 +1372,6 @@
       cardGroups = [];
 
       const radius = 4.0;
-      const tiltAngle = 0;
 
       tocData.forEach((item, i) => {
         const angle = (i / tocData.length) * Math.PI * 2;
@@ -1406,14 +1395,14 @@
         ctx.fillRect(0, 0, 700, 400);
 
         const borderGrad = ctx.createLinearGradient(0, 0, 700, 400);
-        borderGrad.addColorStop(0, '#00d4ff');
-        borderGrad.addColorStop(0.5, '#7eb8ff');
-        borderGrad.addColorStop(1, '#00d4ff');
+        borderGrad.addColorStop(0, '#ed8936');
+        borderGrad.addColorStop(0.5, '#f6ad55');
+        borderGrad.addColorStop(1, '#ed8936');
         ctx.strokeStyle = borderGrad;
         ctx.lineWidth = 6;
         ctx.strokeRect(8, 8, 684, 384);
 
-        ctx.fillStyle = 'rgba(0, 212, 255, 0.08)';
+        ctx.fillStyle = 'rgba(237, 137, 54, 0.08)';
         ctx.fillRect(15, 15, 670, 370);
 
         const numGrad = ctx.createLinearGradient(0, 0, 0, 120);
@@ -1428,21 +1417,21 @@
         ctx.font = 'bold 52px sans-serif';
         ctx.fillText(item.title, 400, 100);
 
-        ctx.fillStyle = '#7eb8ff';
+        ctx.fillStyle = '#f6ad55';
         ctx.font = 'bold 36px sans-serif';
         ctx.fillText(item.desc || '', 400, 160);
 
-        ctx.strokeStyle = 'rgba(0, 212, 255, 0.5)';
+        ctx.strokeStyle = 'rgba(237, 137, 54, 0.5)';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(200, 190);
         ctx.lineTo(600, 190);
         ctx.stroke();
 
-        ctx.fillStyle = 'rgba(0, 212, 255, 0.12)';
+        ctx.fillStyle = 'rgba(237, 137, 54, 0.12)';
         ctx.fillRect(20, 210, 660, 160);
 
-        ctx.fillStyle = '#00d4ff';
+        ctx.fillStyle = '#ed8936';
         ctx.font = 'bold 26px sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('OpenClaw 智能铁道机车探伤机器人', 40, 260);
@@ -1469,7 +1458,7 @@
         group.add(card);
 
         const borderGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(cardWidth + 0.05, cardHeight + 0.05, 0.02));
-        const borderMat = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.3 });
+        const borderMat = new THREE.LineBasicMaterial({ color: 0xed8936, transparent: true, opacity: 0.3 });
         const border = new THREE.LineSegments(borderGeom, borderMat);
         group.add(border);
 
@@ -1486,8 +1475,6 @@
           scale: 0.3,
           startScale: 0.3,
           isClosest: false,
-          cardWidth: 280,
-          cardHeight: 160,
           startOpacity: 0.3
         };
         group.scale.setScalar(0.3);
@@ -1507,7 +1494,7 @@
       }
       particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       const particlesMat = new THREE.PointsMaterial({
-        color: 0x00d4ff,
+        color: 0xed8936,
         size: 0.03,
         transparent: true,
         opacity: 0.4
@@ -1516,8 +1503,6 @@
       scene.add(particles);
 
       flyInComplete = false;
-      flyStartTime = Date.now();
-      currentRotationY = 0;
 
       const canvas2d = document.getElementById('toc-canvas');
       canvas2d.removeEventListener('mousemove', onTOCMouseMove);
@@ -1531,6 +1516,16 @@
     }
 
     function onTOCMouseMove(e) {
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      
+      const tocSection = document.getElementById('toc-section');
+      if (tocSection) {
+        const rect = tocSection.getBoundingClientRect();
+        mouseInTocSection = e.clientX >= rect.left && e.clientX <= rect.right && 
+                           e.clientY >= rect.top && e.clientY <= rect.bottom;
+      }
+      
       if (!flyInComplete) return;
 
       const rect = e.target.getBoundingClientRect();
@@ -1624,21 +1619,22 @@
 
         cardGroups.forEach((group, i) => {
           const data = group.userData;
-          const elapsed = now - flyStartTime - data.flyDelay;
+          const elapsed = now - (window.flyStartTime || now) - data.flyDelay;
 
           if (elapsed < 0) {
             allComplete = false;
             return;
           }
 
-          const duration = 600;
+          const duration = 800;
           const progress = Math.min(elapsed / duration, 1);
           const easedProgress = easeOutBack(progress);
 
-          group.position.x = data.startX + (data.finalX - data.startX) * easedProgress;
+          const explodeProgress = easedProgress;
+          group.position.x = data.finalX * (1 - explodeProgress);
           const finalY = 3.5 * (1 - ((Math.cos(data.finalAngle) + 1) * 0.5)) - 1.2;
-          group.position.y = data.startY + (finalY - data.startY) * easedProgress;
-          group.position.z = data.startZ + (data.finalZ - data.startZ) * easedProgress;
+          group.position.y = finalY * (1 - explodeProgress) + 5 * explodeProgress;
+          group.position.z = data.finalZ * (1 - explodeProgress) - 5 * explodeProgress;
 
           const currentScale = data.startScale + (1.0 - data.startScale) * easedProgress;
           group.scale.setScalar(currentScale);
@@ -1655,7 +1651,7 @@
 
         if (allComplete) {
           flyInComplete = true;
-          flyStartTime = now;
+          window.flyStartTime = now;
           cardGroups.forEach(group => {
             group.scale.setScalar(1.0);
             group.userData.scale = 1.0;
@@ -1677,7 +1673,8 @@
 
         const tiltFactor = (Math.cos(baseAngle) + 1) * 0.5;
         const yOffset = 3.5 * (1 - tiltFactor);
-        group.position.y = yOffset - 1.2;
+        const floatOffset = flyInComplete ? Math.sin(now * 0.001 + i * 0.5) * 0.15 : 0;
+        group.position.y = yOffset - 1.2 + floatOffset;
 
         group.lookAt(camera.position.x * 0.5, camera.position.y * 0.5, camera.position.z);
 
@@ -1691,10 +1688,26 @@
         const targetScale = isClosest ? 1.25 : 1.0;
         data.scale += (targetScale - data.scale) * 0.1;
         group.scale.setScalar(data.scale);
+
+        if (flyInComplete && group.children[1] && group.children[1].material) {
+          const glowIntensity = 0.4 + Math.sin(now * 0.003 + i * 0.5) * 0.3;
+          group.children[1].material.opacity = glowIntensity;
+        }
       });
 
       if (flyInComplete) {
         currentRotationY += targetRotationSpeed;
+      }
+
+      const tocSection = document.getElementById('toc-section');
+      if (tocSection && mouseInTocSection) {
+        const rect = tocSection.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateY = ((lastMouseX - centerX) / rect.width) * 8;
+        const rotateX = ((centerY - lastMouseY) / rect.height) * 5;
+        scene.rotation.x = rotateX * 0.02;
+        scene.rotation.y = rotateY * 0.02;
       }
 
       renderer.render(scene, camera);
@@ -1715,21 +1728,161 @@
       return closestIndex;
     }
 
+    Reveal.initialize({
+      hash: true,
+      transition: 'convex',
+      transitionSpeed: 'slow',
+      controls: true,
+      progress: true,
+      center: false,
+      width: '100%',
+      height: '100%',
+      margin: 0,
+      minScale: 1,
+      plugins: [ Appearance ]
+    });
+  
     Reveal.on('slidechanged', function(event) {
+      anime({
+        targets: event.currentSlide.querySelectorAll('[data-appearance]'),
+        opacity: [0, 1],
+        translateZ: [50, 0],
+        translateY: [20, 0],
+        rotateX: [-15, 0],
+        duration: 900,
+        easing: 'easeOutQuad'
+      });
+
+      anime({
+        targets: event.currentSlide.querySelectorAll('.content-box, .grid-item'),
+        opacity: [0, 1],
+        translateZ: [-30, 0],
+        scale: [0.9, 1],
+        rotateY: [-8, 0],
+        duration: 800,
+        easing: 'easeOutCubic',
+        delay: anime.stagger(80, {grid: [1, 3], from: 'center'})
+      });
+
       if (event.indexh === 1) {
-        flyStartTime = Date.now();
+        window.flyStartTime = Date.now();
         currentRotationY = 0;
         targetRotationSpeed = 0;
         initTOC();
+        setTimeout(createParticleBurst, 300);
+      }
+
+      if (event.indexh === 13) {
+        createEndingParticles();
       }
     });
 
+    function createEndingParticles() {
+      const container = document.getElementById('ending-particles');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'ending-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 4 + 's';
+        particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+        const size = 3 + Math.random() * 8;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        container.appendChild(particle);
+      }
+    }
+
+    function createParticleBurst() {
+      const burstContainer = document.createElement('div');
+      burstContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000;overflow:hidden;';
+      
+      for (let i = 0; i < 60; i++) {
+        const size = 4 + Math.random() * 12;
+        const particle = document.createElement('div');
+        particle.style.cssText = `position:absolute;top:50%;left:50%;width:${size}px;height:${size}px;background:radial-gradient(circle, rgba(237,137,54,${0.6 + Math.random() * 0.4}) 0%, transparent 70%);border-radius:50%;animation:particleFly${i} ${0.6 + Math.random() * 0.4}s ease-out forwards;`;
+        
+        const angle = (Math.random() * Math.PI * 2);
+        const distance = 200 + Math.random() * 250;
+        const delay = Math.random() * 0.15;
+        const keyframes = `@keyframes particleFly${i} {0%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0);opacity:0;}}`;
+        
+        let style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        particle.style.animationDelay = `${delay}s`;
+        burstContainer.appendChild(particle);
+      }
+      
+      document.body.appendChild(burstContainer);
+      setTimeout(() => burstContainer.remove(), 1200);
+    }
+
+    Reveal.on('fragmentshown', function(event) {
+      anime({
+        targets: event.fragment,
+        scale: [0.7, 1],
+        opacity: [0, 1],
+        translateZ: [40, 0],
+        rotateX: [-10, 0],
+        duration: 500,
+        easing: 'easeOutCubic'
+      });
+    });
+
+    let mouseX = 0, mouseY = 0;
+    let magnetItems = [];
+
+    function initMagnetEffect() {
+      magnetItems = document.querySelectorAll('.content-box, .grid-item, .content-img');
+
+      magnetItems.forEach((item, index) => {
+        item.style.transition = 'transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease';
+        item.style.transformStyle = 'preserve-3d';
+        item.style.willChange = 'transform';
+        const delay = Math.random() * 2;
+        item.style.setProperty('--sweep-delay', `${delay}s`);
+      });
+
+      document.querySelectorAll('.content-box, .grid-item').forEach((item, index) => {
+        const delay = Math.random() * 2;
+        item.style.setProperty('--sweep-delay', `${delay}s`);
+        const style = document.createElement('style');
+        style.textContent = `.content-box:nth-child(${index + 1})::before, .grid-item:nth-child(${index + 1})::before { animation-delay: ${delay}s !important; }`;
+        document.head.appendChild(style);
+      });
+
+      document.addEventListener('mousemove', onParallaxMouseMove);
+    }
+
+    function onParallaxMouseMove(e) {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const rotateX = (e.clientY - centerY) / centerY * 10;
+      const rotateY = (centerX - e.clientX) / centerX * 10;
+
+      magnetItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const itemCenterX = rect.left + rect.width / 2;
+        const itemCenterY = rect.top + rect.height / 2;
+        const distX = (itemCenterX - e.clientX) / 300;
+        const distY = (itemCenterY - e.clientY) / 300;
+        const rotateXItem = rotateX + distY * 5;
+        const rotateYItem = rotateY + distX * 5;
+        item.style.transform = `perspective(1000px) rotateX(${rotateXItem}deg) rotateY(${rotateYItem}deg) scale(1.02)`;
+        item.style.boxShadow = `${-distX * 10}px ${-distY * 10}px 30px rgba(237, 137, 54, 0.3)`;
+      });
+    }
+
     window.addEventListener('load', function() {
+      setTimeout(initMagnetEffect, 500);
       setTimeout(function() {
         if (Reveal) {
           const indices = Reveal.getIndices ? Reveal.getIndices() : { h: 0 };
           if (indices.h === 1) {
-            flyStartTime = Date.now();
+            window.flyStartTime = Date.now();
             currentRotationY = 0;
             targetRotationSpeed = 0;
             initTOC();
@@ -1737,6 +1890,29 @@
         }
       }, 600);
     });
+
+    function adjustBackgroundSize() {
+      const slides = document.querySelectorAll('.slide-bg');
+      slides.forEach(bg => {
+        const img = new Image();
+        img.onload = function() {
+          const ratio = img.width / img.height;
+          const windowRatio = window.innerWidth / window.innerHeight;
+          if (Math.abs(ratio - windowRatio) > 0.1) {
+            bg.classList.add('square-ratio');
+          } else {
+            bg.classList.remove('square-ratio');
+          }
+        };
+        const match = bg.style.backgroundImage.match(/url\(['"]?(.+?)['"]?\)/);
+        if (match) {
+          img.src = match[1];
+        }
+      });
+    }
+
+    window.addEventListener('load', adjustBackgroundSize);
+    window.addEventListener('resize', adjustBackgroundSize);
   </script>
 </body>
 </html>
