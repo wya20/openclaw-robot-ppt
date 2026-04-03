@@ -9,3 +9,1910 @@
   <link rel="stylesheet" href="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.css">
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
   <script src="https://unpkg.com/animejs@3.2.2/lib/anime.min.js"></script>
+  <style>
+    :root {
+      --primary-bg: #0a1628;
+      --accent-orange: #ed8936;
+      --accent-blue: #3182ce;
+      --text-white: #ffffff;
+    }
+    .reveal .slides { text-align: left; }
+    .reveal, .reveal .slides, .reveal .slides section {
+      height: 100% !important;
+      width: 100% !important;
+    }
+    .reveal .slides section {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      backface-visibility: hidden;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease !important;
+    }
+    .reveal .slides section.past {
+      transform: translateX(-100%) rotateY(-90deg) scale(0.8) !important;
+      opacity: 0 !important;
+    }
+    .reveal .slides section.present {
+      transform: rotateY(0deg) scale(1) !important;
+      opacity: 1 !important;
+    }
+    .reveal .slides section.future {
+      transform: translateX(100%) rotateY(90deg) scale(0.8) !important;
+      opacity: 0 !important;
+    }
+    .reveal .slides {
+      transform-style: preserve-3d;
+    }
+    .slide-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .slide-bg.square-ratio {
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+    .slide-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      padding: 2vh 3vw;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-title {
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1.5vh 2vw;
+      border-radius: 8px;
+      border-left: 5px solid var(--accent-orange);
+      margin-bottom: 1.5vh;
+      flex-shrink: 0;
+    }
+    .page-title h2 {
+      color: var(--accent-orange);
+      margin: 0;
+      font-size: 2.8vh;
+    }
+    .content-area {
+      display: flex;
+      flex: 1;
+      gap: 1vw;
+      overflow: hidden;
+    }
+    .text-col {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8vh;
+    }
+    .img-col {
+      flex: 0.8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5vh;
+    }
+    .img-col img {
+      max-width: 100%;
+      max-height: 30vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .content-box {
+      background: rgba(10, 22, 40, 0.93);
+      padding: 1.2vh 1.2vw;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-orange);
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation: breatheGlow 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+    }
+    .content-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(237, 137, 54, 0.15), transparent);
+      animation: sweepLight 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .content-box:hover {
+      animation: none;
+      transform: translateZ(25px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(237, 137, 54, 0.3), 0 0 30px rgba(237, 137, 54, 0.2);
+      border-color: rgba(237, 137, 54, 0.8);
+    }
+    @keyframes breatheGlow {
+      0%, 100% {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 20px rgba(237, 137, 54, 0.1);
+        border-color: rgba(237, 137, 54, 0.5);
+      }
+      50% {
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 35px rgba(237, 137, 54, 0.25);
+        border-color: rgba(237, 137, 54, 0.8);
+      }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.01); }
+    }
+    @keyframes sweepLight {
+      0% { left: -100%; }
+      50%, 100% { left: 100%; }
+    }
+    .content-box::before, .grid-item::before {
+      animation-delay: var(--sweep-delay, 0s) !important;
+    }
+    .content-box h3 {
+      color: var(--accent-orange);
+      margin: 0 0 0.6vh 0;
+      font-size: 2.8vh;
+      flex-shrink: 0;
+    }
+    .content-box p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 2.1vh;
+      line-height: 1.45;
+    }
+    .content-box ul {
+      margin: 0.4vh 0 0 1.2vw;
+      padding: 0;
+      color: var(--text-white);
+      font-size: 2vh;
+      line-height: 1.5;
+    }
+    .content-box li {
+      margin-bottom: 0.3vh;
+    }
+    .content-img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease;
+      animation: imgBreathe 3s ease-in-out infinite;
+    }
+    .content-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 50px rgba(237, 137, 54, 0.4), 0 0 30px rgba(237, 137, 54, 0.2);
+      animation: none;
+    }
+    @keyframes imgBreathe {
+      0%, 100% {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 15px rgba(237, 137, 54, 0.1);
+      }
+      50% {
+        box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 25px rgba(237, 137, 54, 0.2);
+      }
+    }
+    .highlight-text {
+      color: var(--accent-orange);
+      font-weight: bold;
+    }
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1vh 1vw;
+      flex: 1;
+    }
+    .grid-item {
+      background: rgba(10, 22, 40, 0.93);
+      padding: 1.5vh 1.2vw;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent-orange);
+      display: flex;
+      align-items: center;
+      gap: 1vw;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  box-shadow 0.4s ease,
+                  border-color 0.3s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      animation: breatheGlow 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+    }
+    .grid-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(237, 137, 54, 0.15), transparent);
+      animation: sweepLight 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .grid-item:hover {
+      animation: none;
+      transform: translateZ(25px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(237, 137, 54, 0.3), 0 0 30px rgba(237, 137, 54, 0.2);
+      border-color: rgba(237, 137, 54, 0.8);
+    }
+    .grid-item img {
+      width: 26vh;
+      height: 26vh;
+      object-fit: contain;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .grid-item-text h4 {
+      color: var(--accent-orange);
+      margin: 0 0 0.6vh 0;
+      font-size: 3.5vh;
+    }
+    .grid-item-text p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 2.6vh;
+      line-height: 1.4;
+    }
+    .cover-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .cover-title {
+      font-size: 4.5vh;
+      color: var(--text-white);
+      background: rgba(10, 22, 40, 0.95);
+      padding: 2.5vh 4vw;
+      border-radius: 12px;
+      border: 3px solid var(--accent-orange);
+      margin-bottom: 2vh;
+    }
+    .cover-subtitle {
+      font-size: 2.2vh;
+      color: var(--accent-orange);
+      margin-bottom: 2.5vh;
+    }
+    .cover-info {
+      font-size: 1.8vh;
+      color: var(--text-white);
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1.5vh 2.5vw;
+      border-radius: 8px;
+    }
+    .cover-img {
+      width: 28vh;
+      margin-bottom: 2.5vh;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .cover-scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 212, 255, 0.03) 2px,
+        rgba(0, 212, 255, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+      animation: scanlineMove 8s linear infinite;
+    }
+    @keyframes scanlineMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100vh; }
+    }
+    .cover-radar {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80vh;
+      height: 80vh;
+      z-index: 1;
+    }
+    .radar-sweep {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(237, 137, 54, 0.4) 30deg,
+        transparent 60deg
+      );
+      border-radius: 50%;
+      animation: radarSpin 4s linear infinite;
+    }
+    @keyframes radarSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .radar-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(237, 137, 54, 0.3);
+      border-radius: 50%;
+      animation: radarPulse 2s ease-out infinite;
+    }
+    .radar-ring.ring1 { width: 30%; height: 30%; animation-delay: 0s; }
+    .radar-ring.ring2 { width: 60%; height: 60%; animation-delay: 0.5s; }
+    .radar-ring.ring3 { width: 90%; height: 90%; animation-delay: 1s; }
+    @keyframes radarPulse {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); }
+    }
+    .cover-hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .hud-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.6), transparent);
+      height: 1px;
+      animation: hudScan 3s ease-in-out infinite;
+    }
+    .hud-line-1 { top: 20%; width: 40%; left: -10%; animation-delay: 0s; }
+    .hud-line-2 { top: 50%; width: 60%; left: -20%; animation-delay: 1s; }
+    .hud-line-3 { top: 80%; width: 50%; left: -10%; animation-delay: 2s; }
+    @keyframes hudScan {
+      0% { transform: translateX(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateX(200%); opacity: 0; }
+    }
+    .hud-corner {
+      position: absolute;
+      width: 6vh;
+      height: 6vh;
+      border: 2px solid var(--accent-orange);
+      opacity: 0.6;
+    }
+    .hud-corner.top-left { top: 3vh; left: 3vw; border-right: none; border-bottom: none; }
+    .hud-corner.top-right { top: 3vh; right: 3vw; border-left: none; border-bottom: none; }
+    .hud-corner.bottom-left { bottom: 3vh; left: 3vw; border-right: none; border-top: none; }
+    .hud-corner.bottom-right { bottom: 3vh; right: 3vw; border-left: none; border-top: none; }
+    #cover-section .cover-title {
+      animation: titleGlow 2s ease-in-out infinite alternate, titleSlideIn 1s ease-out;
+    }
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 10px rgba(237, 137, 54, 0.5), 0 0 20px rgba(237, 137, 54, 0.3); }
+      100% { text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.5), 0 0 60px rgba(237, 137, 54, 0.3); }
+    }
+    @keyframes titleSlideIn {
+      0% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    #cover-section .cover-subtitle {
+      animation: subtitleFade 1s ease-out 0.3s both;
+    }
+    @keyframes subtitleFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #cover-section .cover-info {
+      animation: infoSlide 1s ease-out 0.6s both;
+    }
+    @keyframes infoSlide {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #cover-section .cover-img {
+      animation: logoFloat 3s ease-in-out infinite, logoIn 1s ease-out;
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes logoIn {
+      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .cover-hint {
+      position: absolute;
+      top: 2vh;
+      right: 2vw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8vh;
+      z-index: 10;
+      animation: hintGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes hintGlow {
+      0% { filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.5)); }
+      100% { filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.9)); }
+    }
+    .hint-item {
+      font-size: 2vh;
+      color: #00d4ff;
+      background: rgba(10, 22, 40, 0.95);
+      padding: 1vh 1.5vw;
+      border-radius: 8px;
+      border: 2px solid #00d4ff;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+    .hint-item kbd {
+      background: rgba(237, 137, 54, 0.6);
+      border: 2px solid #ed8936;
+      border-radius: 5px;
+      padding: 0.3vh 0.8vw;
+      font-family: inherit;
+      color: #ff8c42;
+      font-size: 1.8vh;
+      font-weight: bold;
+    }
+    #ending-section .ending-title {
+      font-size: 8vh;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.6), 0 0 60px rgba(237, 137, 54, 0.4);
+      animation: endingGlow 1.5s ease-in-out infinite alternate, endingZoomIn 1s ease-out;
+      letter-spacing: 1vw;
+    }
+    @keyframes endingGlow {
+      0% { text-shadow: 0 0 20px rgba(237, 137, 54, 0.8), 0 0 40px rgba(237, 137, 54, 0.6); transform: scale(1); }
+      100% { text-shadow: 0 0 40px rgba(237, 137, 54, 1), 0 0 80px rgba(237, 137, 54, 0.8), 0 0 120px rgba(237, 137, 54, 0.5); transform: scale(1.02); }
+    }
+    @keyframes endingZoomIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    #ending-section .ending-subtitle {
+      font-size: 2.5vh;
+      color: #00d4ff;
+      margin-top: 2vh;
+      animation: subtitleFade 1s ease-out 0.5s both;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+    @keyframes subtitleFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #ending-section .ending-info {
+      font-size: 2vh;
+      color: #e0e0e0;
+      margin-top: 3vh;
+      animation: infoFade 1s ease-out 1s both;
+      background: rgba(10, 22, 40, 0.9);
+      padding: 2vh 3vw;
+      border-radius: 12px;
+      border: 2px solid rgba(237, 137, 54, 0.5);
+    }
+    @keyframes infoFade {
+      0% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    #ending-section .ending-logo {
+      animation: logoFloat 3s ease-in-out infinite, logoIn 1.2s ease-out;
+    }
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+    @keyframes logoIn {
+      0% { transform: scale(0) rotate(-360deg); opacity: 0; }
+      60% { transform: scale(1.3) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .ending-particle-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+      overflow: hidden;
+    }
+    .ending-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, rgba(237, 137, 54, 0.9) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: particleRise 4s ease-out infinite;
+    }
+    @keyframes particleRise {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+    }
+    .user-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .user-placeholder {
+      background: rgba(10, 22, 40, 0.95);
+      padding: 6vh 6vw;
+      border-radius: 12px;
+      border: 3px dashed var(--accent-orange);
+      text-align: center;
+    }
+    .user-placeholder p {
+      color: var(--accent-orange);
+      font-size: 2.5vh;
+      margin: 0;
+    }
+    .user-placeholder span {
+      color: var(--text-white);
+      font-size: 1.6vh;
+      display: block;
+      margin-top: 2vh;
+      line-height: 1.6;
+    }
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      padding: 0 2vw;
+      gap: 1vw;
+    }
+    .timeline-item {
+      flex: 1;
+      background: rgba(10, 22, 40, 0.95);
+      padding: 2vh 1.5vw;
+      border-radius: 8px;
+      border-bottom: 5px solid var(--accent-orange);
+      text-align: center;
+    }
+    .timeline-item h4 {
+      color: var(--accent-orange);
+      margin: 0 0 0.8vh 0;
+      font-size: 2vh;
+    }
+    .timeline-item p {
+      color: var(--text-white);
+      margin: 0;
+      font-size: 1.4vh;
+      line-height: 1.4;
+    }
+    .timeline-arrow {
+      font-size: 4vh;
+      color: var(--accent-orange);
+      flex-shrink: 0;
+    }
+    .small-img-row {
+      display: flex;
+      gap: 0.8vw;
+      justify-content: center;
+    }
+    .small-img-row img {
+      max-width: 48%;
+      max-height: 55vh;
+    }
+    .text-box {
+      border: 1px solid rgba(237, 137, 54, 0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      background: rgba(10, 22, 40, 0.7);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(237, 137, 54, 0.1), inset 0 0 15px rgba(237, 137, 54, 0.05);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+    }
+    .text-box:hover {
+      transform: translateZ(30px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(237, 137, 54, 0.2), 0 0 40px rgba(237, 137, 54, 0.1);
+      border-color: rgba(237, 137, 54, 0.6);
+    }
+    @keyframes breatheGlow {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(237, 137, 54, 0.15), inset 0 0 15px rgba(237, 137, 54, 0.05);
+        border-color: rgba(237, 137, 54, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(237, 137, 54, 0.3), inset 0 0 20px rgba(237, 137, 54, 0.1);
+        border-color: rgba(237, 137, 54, 0.5);
+      }
+    }
+    .text-box.animate-in {
+      animation: boxAssemble 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, breatheGlow 3s ease-in-out infinite;
+    }
+    .text-box.animate-out {
+      animation: boxScatter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes boxAssemble {
+      0% {
+        opacity: 0;
+        transform: translateX(-400px) translateY(-200px) rotateY(-60deg) rotateX(30deg) scale(0.1);
+      }
+      40% {
+        opacity: 1;
+        transform: translateX(30px) translateY(15px) rotateY(10deg) rotateX(-5deg) scale(1.08);
+      }
+      70% {
+        transform: translateX(-10px) translateY(-5px) rotateY(-3deg) rotateX(2deg) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotateY(0) rotateX(0) scale(1);
+      }
+    }
+    @keyframes boxScatter {
+      0% {
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotateY(0) rotateX(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(400px) translateY(200px) rotateY(60deg) rotateX(-30deg) scale(0.1);
+      }
+    }
+    .content-image.animate-in {
+      animation: imageSlideIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .content-image.animate-out {
+      animation: imageSlideOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes imageSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(600px) rotateY(-90deg) scale(0.05);
+      }
+      50% {
+        opacity: 0.7;
+        transform: translateX(-30px) rotateY(15deg) scale(1.1);
+      }
+      75% {
+        transform: translateX(10px) rotateY(-5deg) scale(1.03);
+      }
+      100% {
+        opacity: 0.38;
+        transform: translateX(0) rotateY(0) scale(1);
+      }
+    }
+    @keyframes imageSlideOut {
+      0% {
+        opacity: 0.38;
+        transform: translateX(0) rotateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-600px) rotateY(-60deg) scale(0.1);
+      }
+    }
+    .reveal .slides section {
+      perspective: 1200px;
+      overflow: hidden;
+    }
+    #toc-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    #toc-section {
+      overflow: visible !important;
+    }
+    #toc-section .slide-content {
+      position: relative;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: 封面 -->
+      <section id="cover-section">
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-01-bg.jpg');"></div>
+        <div class="cover-scanline"></div>
+        <div class="cover-radar">
+          <div class="radar-sweep"></div>
+          <div class="radar-ring ring1"></div>
+          <div class="radar-ring ring2"></div>
+          <div class="radar-ring ring3"></div>
+        </div>
+        <div class="cover-hud">
+          <div class="hud-line hud-line-1"></div>
+          <div class="hud-line hud-line-2"></div>
+          <div class="hud-line hud-line-3"></div>
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+        </div>
+        <div class="cover-content">
+          <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-01-content_image.jpg" class="cover-img">
+          <div class="cover-title" data-appearance>OpenClaw智能铁道机车探伤机器人系统</div>
+          <div class="cover-subtitle" data-appearance>AI视觉 + 红外 + 激光雷达三位一体检测系统</div>
+          <div class="cover-info" data-appearance>
+            参赛赛道：职教赛道 | 参赛组别：创意组 | 项目负责人：王政杰
+          </div>
+        </div>
+        <div class="cover-hint">
+          <div class="hint-item">按 <kbd>F11</kbd> 全屏</div>
+          <div class="hint-item">键盘 <kbd>←</kbd> <kbd>→</kbd> 或 <kbd>空格</kbd> 切页</div>
+        </div>
+      </section>
+
+      <!-- Slide 2: 目录 -->
+      <section id="toc-section" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-02-bg.jpg');">
+        <canvas id="toc-canvas"></canvas>
+        <div class="slide-content" style="pointer-events: none;">
+          <h2 style="text-align: center; color: #ed8936; font-size: 3vh; margin-bottom: 2vh; text-shadow: 0 0 20px rgba(237, 137, 54, 0.5);">目 录</h2>
+        </div>
+      </section>
+
+      <!-- Slide 3: 项目概述 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-02-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>一、项目概述：具身智能的铁路运维新范式</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🎯 什么是OpenClaw探伤机器人？</h3>
+                <p>这是一款革命性的铁路设备智能检测系统，融合了<span class="highlight-text">AI视觉、红外和激光雷达三位一体</span>技术，通过多传感器融合，对铁道机车底部关键部位进行全方位、高精度缺陷检测，确保铁路运输安全。</p>
+              </div>
+              <div class="content-box">
+                <h3>🔥 核心创新：AI从数字走向物理世界</h3>
+                <p>我们将OpenClaw"龙虾"智能编程工具<strong>植根于机器人主板</strong>，为AI装上了"脚"（移动执行系统）和"眼睛"（传感器系统），实现了真正的<strong>具身智能</strong>。传统AI"困在电脑里"，我们的系统让AI<strong>直接感知和改变物理世界</strong>！</p>
+              </div>
+              <div class="content-box">
+                <h3>💰 商业价值与市场</h3>
+                <p>15万/套工业版，检测效率提升70%，每次检测从10分钟缩短至3分钟。全国2.25万台机车，年检修市场300亿+。投资回收期3-4年，年节约人工成本约45万元。</p>
+              </div>
+              <div class="content-box">
+                <h3>🌟 项目定位</h3>
+                <p>面向铁路运维、机车检修等场景的下一代智能检测解决方案，以<strong>具身智能、智能诊断、从数字走向物理</strong>为核心竞争优势，提供本地具身智能的完整技术路线。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-02-content_image.jpg" class="content-img">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: 行业痛点 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-03-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>二、行业痛点：传统检测的四大难题</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-03-content_image.jpg">
+              <div class="grid-item-text">
+                <h4>⚠️ 误判多</h4>
+                <p>传统人工检测误报率高达5%，造成大量无效停机检修。而AI智能检测可降至0.3%，大幅减少误报带来的时间和经济损失。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-03-content_image_2.jpg">
+              <div class="grid-item-text">
+                <h4>⚠️ 易漏检</h4>
+                <p>机车底部隐蔽位置众多，人工难以全面覆盖。螺栓松动、裂纹等隐患容易被忽略，遗留安全隐患，易引发安全事故。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-03-content_image_3.jpg">
+              <div class="grid-item-text">
+                <h4>⏱️ 效率低</h4>
+                <p>单次人工检测需10分钟以上，需要多人配合。机器人检测仅需3分钟，效率提升超200%，可大幅缩短检修时间。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-03-content_image_4.jpg">
+              <div class="grid-item-text">
+                <h4>💸 成本高</h4>
+                <p>人力成本持续上涨，专业检测人才稀缺。检测设备依赖进口，检修费用居高不下，铁路运维负担沉重。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: 核心技术 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-04-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>三、核心技术：OpenClaw具身智能控制中枢</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🧠 OpenClaw智能控制中枢</h3>
+                <p>基于<strong>Jetson Orin NX 16GB</strong>主控单元，集成OpenClaw智能编程IDE和决策引擎，实现<strong>本地AI决策</strong>。100 TOPS AI算力，支持实时推理。-40°C至+70°C宽温工作范围，IP67工业级防护。</p>
+              </div>
+              <div class="content-box">
+                <h3>👁️ 多传感器感知系统</h3>
+                <p>三传感器融合，全方位感知检测环境：</p>
+                <ul>
+                  <li><strong>双目视觉</strong>：2个工业相机，捕捉高清缺陷图像，识别表面裂纹、磨损等</li>
+                  <li><strong>红外热成像</strong>：检测温度异常，识别热轴故障、制动抱死等</li>
+                  <li><strong>激光雷达</strong>：180°扫描，±2cm测距精度，构建三维点云</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🔄 智能决策闭环</h3>
+                <p>感知→分析→执行持续优化。本地处理数据不上云，<strong>毫秒级响应</strong>，<strong>指令执行成功率99%+</strong>。YOLOv8s检测算法+专家知识库，智能判断热轴故障、制动抱死、闸瓦偏磨等。</p>
+              </div>
+              <div class="content-box">
+                <h3>📈 持续学习进化</h3>
+                <p>故障案例持续积累，AI模型不断优化。检测精度随使用时长提升，环境适应能力强，可识别新型故障模式。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-04-content_image.jpg" class="content-img">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-04-content_image_2.jpg" class="content-img">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: 工作原理-检测流程 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-05-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>四、工作原理 — 智能检测流程（1/2）</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🤖 第一步：自动行进至检测区域</h3>
+                <p>机器人沿地沟轨道<strong>自动移动</strong>，借助IMU姿态补偿和角度编码器精确控制，缓缓行进至检测区域。OpenClaw控制系统根据预设路径智能规划行进速度和平稳度。</p>
+              </div>
+              <div class="content-box">
+                <h3>👁️ 第二步：三传感器同步扫描</h3>
+                <p>当机器人到达检测区域时，双目工业摄像头同时启动捕捉高清图像，红外探测装置检测温度分布，激光雷达进行<strong>180°持续扫描</strong>，收集成千上万个数据点，形成精确三维点云图。</p>
+              </div>
+              <div class="content-box">
+                <h3>📡 第三步：实时数据采集与传输</h3>
+                <p>所有图像、温度、距离数据<strong>实时传输</strong>至OpenClaw控制中枢。三类数据同步采集、相互印证，为后续智能分析提供完整数据支撑。数据传输延迟小于10ms。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-05-content_image.jpg" class="content-img">
+              <div class="small-img-row">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-05-content_image_2.jpg" class="content-img" style="max-height: 22vh;">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-05-content_image_3.jpg" class="content-img" style="max-height: 22vh;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: 工作原理-诊断输出 -->
+      <section>
+        <div class="slide-bg square-ratio" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-06-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>四、工作原理 — 智能诊断输出（2/2）</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🔄 第四步：多源数据融合分析</h3>
+                <p>OpenClaw将三类关键数据进行精确对齐和融合分析：摄像头图像分析结果、激光雷达三维结构图、红外温度分布信息。<strong>交叉验证故障性质</strong>，避免单一传感器误报。</p>
+              </div>
+              <div class="content-box">
+                <h3>🧠 第五步：AI智能判断与诊断</h3>
+                <p>基于<strong>YOLOv8s检测算法</strong>和专家知识库，OpenClaw智能判断故障类型，如：热轴故障（温度异常升高）、制动抱死（摩擦过热）、闸瓦偏磨（厚度不均）、电气连接松动（局部发热）等，并提供针对性解决方案。</p>
+              </div>
+              <div class="content-box">
+                <h3>📋 第六步：自动生成检测报告</h3>
+                <p>根据故障类型和严重程度，<strong>自动生成检修建议</strong>和优先级排序。检测报告实时上报，包含故障位置、类型、建议措施。支持历史数据查询和趋势分析，为预防性维护提供数据支撑。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-06-content_image_2.jpg" class="content-img">
+              <div class="small-img-row">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-06-content_image_3.jpg" class="content-img" style="max-height: 20vh;">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-06-content_image_4.jpg" class="content-img" style="max-height: 20vh;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7: 政策背景 -->
+      <section>
+        <div class="slide-bg" style="background-color: #0a1628;"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>五、政策背景 — 国家政策大力支持</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>📜 《"十四五"铁路科技创新规划》</h3>
+                <p>明确提出开展<strong>智能化掘进、架桥、养护机器人</strong>关键技术研发，推动铁路运维智能化升级。铁路机器人技术正式纳入国家科技重点支持方向。</p>
+                <ul>
+                  <li>重点任务：研发智能化检测、运维机器人</li>
+                  <li>目标：实现铁路运维<strong>少人化、智能化</strong></li>
+                  <li>时间节点：2025年实现关键技术突破</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>📡 《数字交通"十四五"发展规划》</h3>
+                <p>推动高速铁路<strong>智能化升级改造</strong>，推进下一代列控系统、智能行车等前沿技术研发。政策加码，铁路智能化万亿级市场加速释放！</p>
+                <ul>
+                  <li>核心方向：数字化、智能化双轮驱动</li>
+                  <li>重点工程：智能高铁、智慧铁路建设</li>
+                  <li>投资规模：年均铁路投资超8000亿元</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🎯 政策信号：市场窗口期已打开</h3>
+                <p>两大规划形成政策合力，铁路智能化从"可选"变"必选"。<strong>检修机器人</strong>作为铁路安全守护者，正是政策鼓励发展的重点方向。</p>
+                <ul>
+                  <li>政策红利：税收优惠、研发补贴</li>
+                  <li>市场机遇：铁路智能化改造需求爆发</li>
+                  <li>竞争格局：国内外企业纷纷布局</li>
+                </ul>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/1af3adc5110fe8b5000543aeb84464cb.jpg" class="content-img" style="max-height: 33vh;">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/84b6d159f9a7d37b4e6e925afd210b51.jpg" class="content-img" style="max-height: 33vh;">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-07-content_image.jpg" class="content-img" style="max-height: 33vh;">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 8: 行业背景 -->
+      <section>
+        <div class="slide-bg" style="background-color: #0a1628;"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>六、行业背景</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>🚂 中国铁路规模：全球第一！</h3>
+                <p>全国铁路营业里程达<strong>16.2万公里</strong>，其中高铁<strong>4.8万公里</strong>，稳居世界第一！全国铁路机车拥有量<strong>2.25万台</strong>，其中内燃机车0.78万台，电力机车1.47万台，铁路网络覆盖全国每一个角落。</p>
+                <ul>
+                  <li>年旅客发送量：<strong>40亿人次</strong></li>
+                  <li>年货物发送量：<strong>50亿吨</strong></li>
+                  <li>铁路密度：每百平方公里<strong>1.7公里</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>⚠️ 检修压力：安全与效率的双重挑战</h3>
+                <p>铁路提速了，列车跑得更快了，但对安全的要求也更高了。每台机车每月至少检修2-4次，每次耗时数小时。全国2.25万台机车，每天有数万次检修在进行，人工检测任务繁重。</p>
+                <ul>
+                  <li>每次检测耗时：<strong>10分钟以上</strong></li>
+                  <li>人工误报率：<strong>5%</strong>（漏检风险高）</li>
+                  <li>专业人才缺口：<strong>数十万人</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🤖 智能化浪潮：万亿市场正在爆发</h3>
+                <p>《"十四五"铁路科技创新规划》明确提出：推动铁路智能化升级，开展智能检测、运维机器人研发。政策利好，资本涌入，铁路智能化万亿级市场正在爆发！</p>
+                <ul>
+                  <li>检修机器人市场：<strong>年增12.4%</strong></li>
+                  <li>智能化改造投资：<strong>数千亿元</strong></li>
+                  <li>机器人替代空间：<strong>90%</strong>的人工检测</li>
+                </ul>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-09-content_image.jpg" class="content-img">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-09-content_image_3.jpg" class="content-img">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9: 市场分析 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-09-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>七、市场分析</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>📈 铁路检修市场有多大？</h3>
+                <p>你知道吗？全国有<strong>2.25万台</strong>铁路机车，每台每年检修费用高达<strong>数十万元</strong>，整个铁路检修市场年规模超过<strong>300亿元</strong>！而且随着列车提速和智能化升级，这个数字还在快速增长。</p>
+                <ul>
+                  <li>全球检修机器人市场：<strong>4.5亿美元</strong>（2024年）</li>
+                  <li>预计年增<strong>12.4%</strong>，2032年破10亿美元</li>
+                  <li>中国铁路年固定投资超<strong>8500亿元</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🤖 机器人能替代多少人工检测？</h3>
+                <p>目前90%以上的铁路检修工作仍靠人工完成。人工检测存在效率低、误报高、漏检风险大等问题。我们的机器人<strong>一台能顶3个人</strong>，不知疲倦、24小时不停工，误报率只有0.3%（人工是5%），每次检测从10分钟缩短到3分钟！</p>
+                <ul>
+                  <li>检测效率提升<strong>70%</strong>以上</li>
+                  <li>AI误报率0.3%，人工误报5%</li>
+                  <li>1台机器人 = 3名检测员工作量</li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>💰 买一台机器人多久回本？</h3>
+                <p>一台机器人15万元，年节约人工成本45万元，<strong>不到1年就能回本</strong>！之后每年净赚30多万元，而且机器人还能24小时值班、节假日不休，这笔账怎么算都划算！</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-09-content_image.jpg" class="content-img">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-09-content_image_3.jpg" class="content-img">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: 目标客户 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-10-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>八、目标客户 — 谁能用我们的机器人？</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-10-content_image.jpg">
+              <div class="grid-item-text">
+                <h4>🚂 铁路局机务段</h4>
+                <p>全国18个铁路局（北京、上海、武汉、成都、沈阳、广州等）都有机务段，负责机车日常检修。每段管理数十台机车，每天检测任务繁重。他们是<strong>直接采购决策者</strong>，买机器人就像给工人配新工具一样自然。</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-10-content_image_2.jpg">
+              <div class="grid-item-text">
+                <h4>🚇 地铁运营公司</h4>
+                <p>地铁每天运客数百万人次，安全检测是重中之重！地铁公司资金充足，对智能化改造<strong>接受度高、付费意愿强</strong>。而且地铁隧道环境固定，非常适合机器人检测！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-10-content_image_3.jpg">
+              <div class="grid-item-text">
+                <h4>🔧 铁路检修服务商</h4>
+                <p>神州高铁等上市公司，专业做铁路检修服务。他们<strong>采购机器人来提升服务竞争力</strong>，一台机器人能接更多活、赚更多钱。这类客户<strong>决策快、复购率高</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-content_image.jpg">
+              <div class="grid-item-text">
+                <h4>🤝 技术对接进展</h4>
+                <p>已与多家机务段和地铁公司进行技术对接，<strong>需求反馈积极</strong>。客户最关心的是"检测准不准"和"能用多久"，我们的98%+检测精度和本地AI处理正是他们的痛点解决方案！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 11: 项目优势 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>九、项目优势 — 我们的机器人有什么不一样？</h2></div>
+          <div class="grid-2x2">
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-content_image.jpg">
+              <div class="grid-item-text">
+                <h4>🤖 具身智能突破（独家！）</h4>
+                <p>别人还在卖"自动化设备"，我们已经实现了<strong>真正的AI具身智能</strong>！机器人不是简单执行程序，而是真正"理解"检测任务，能智能应对各种情况。这就像从"功能机"到"智能机"的跨越，是<strong>降维打击</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-content_image_2.jpg">
+              <div class="grid-item-text">
+                <h4>🔗 三传感器融合（更全面！）</h4>
+                <p>双目视觉看外观、红外测温度、激光雷达测形状——<strong>三种传感器交叉验证</strong>，比人眼看得更准！单一传感器可能误判，三种传感器一起判断，<strong>故障识别准确率98%+</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-content_image_3.jpg">
+              <div class="grid-item-text">
+                <h4>🔒 本地AI处理（更安全！）</h4>
+                <p>数据<strong>不出设备</strong>！铁路检修数据是机密，上传到云端有泄露风险。我们的机器人所有数据本地处理，不依赖网络，即使断网也能正常工作。<strong>铁路安全无小事</strong>！</p>
+              </div>
+            </div>
+            <div class="grid-item">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-11-content_image_4.jpg">
+              <div class="grid-item-text">
+                <h4>📈 持续学习进化（更聪明！）</h4>
+                <p>机器人会<strong>越用越聪明</strong>！每检测一次就学习一次，故障案例不断积累，AI模型持续优化。检测时间越长，准确率越高，这是传统设备做不到的！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 12: 实施计划 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-12-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>十、实施计划 — 分阶段落地路径</h2></div>
+          <div class="content-area" style="flex-direction: column; gap: 1vh;">
+            <div style="display: flex; gap: 1vw; width: 100%;">
+              <div style="flex: 0.45; display: flex; flex-direction: column; gap: 1vh;">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-12-content_image_2.jpg" class="content-box" style="width: 100%; border-radius: 8px;">
+                <div class="content-box" style="background: rgba(10, 22, 40, 0.85); padding: 1vh; border-radius: 8px;">
+                  <h3 style="color: #ff8c42; margin: 0 0 0.5vh 0; font-size: 0.9em;">👥 团队构成</h3>
+                  <div style="display: flex; gap: 1vw; font-size: 0.7em; color: #e0e0e0; flex-wrap: wrap;">
+                    <div><strong>算法组</strong>：4人</div>
+                    <div><strong>硬件组</strong>：3人</div>
+                    <div><strong>交付组</strong>：3人</div>
+                    <div><strong>商务组</strong>：2人</div>
+                  </div>
+                </div>
+              </div>
+              <div style="flex: 0.55; display: flex; flex-direction: column; gap: 1vh;">
+                <div class="content-box">
+                  <h3>📊 项目里程碑</h3>
+                  <ul>
+                    <li><strong>M3</strong>：完成原理样机研制</li>
+                    <li><strong>M6</strong>：首个试点机务段上线</li>
+                    <li><strong>M9</strong>：产品定型，拿到首笔订单</li>
+                    <li><strong>M12</strong>：完成3家以上试点</li>
+                    <li><strong>M18</strong>：开启规模化推广</li>
+                    <li><strong>M24</strong>：覆盖5+铁路局</li>
+                  </ul>
+                </div>
+                <div class="content-box">
+                  <h3>⚠️ 关键风险与对策</h3>
+                  <ul>
+                    <li><strong>技术风险</strong>：传感器精度不达标 → 选型冗余，多源备份</li>
+                    <li><strong>落地风险</strong>：现场环境复杂 → 提前踩点，定制适配</li>
+                    <li><strong>市场风险</strong>：决策周期长 → 借力试点，形成口碑</li>
+                  </ul>
+                </div>
+              </div>
+              <div style="flex: 0.55;">
+                <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-12-content_image.jpg" class="content-box" style="width: 100%; max-height: 35vh; object-fit: contain; border-radius: 8px;">
+              </div>
+            </div>
+            <div style="display: flex; gap: 1vw; width: 100%;">
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #ff8c42; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #ff8c42; margin: 0 0 0.5vh 0; font-size: 0.95em;">🚀 第一阶段：原型开发</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：3个月 | 投入：45万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>核心功能验证与算法开发</li>
+                  <li>传感器融合算法调试</li>
+                  <li>AI模型训练与优化</li>
+                  <li>完成原理样机制作</li>
+                </ul>
+              </div>
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #4a9eff; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #4a9eff; margin: 0 0 0.5vh 0; font-size: 0.95em;">🏭 第二阶段：试点部署</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：6个月 | 投入：80万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>机务段实地测试运行</li>
+                  <li>产品迭代优化完善</li>
+                  <li>形成标杆案例</li>
+                  <li>获取用户反馈改进</li>
+                </ul>
+              </div>
+              <div class="content-box" style="flex: 1; background: rgba(10, 22, 40, 0.9); border: 1px solid #00d4aa; padding: 1.2vh; border-radius: 8px;">
+                <h4 style="color: #00d4aa; margin: 0 0 0.5vh 0; font-size: 0.95em;">📢 第三阶段：规模推广</h4>
+                <p style="margin: 0 0 0.5vh 0; font-size: 0.75em; color: #e0e0e0;"><strong>周期：12个月 | 投入：70万</strong></p>
+                <ul style="margin: 0; font-size: 0.7em; color: #ccc;">
+                  <li>全国铁路局推广覆盖</li>
+                  <li>建立销售渠道网络</li>
+                  <li>形成规模化效益</li>
+                  <li>探索地铁等新市场</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 13: 财务与愿景 -->
+      <section>
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-13-bg.jpg');"></div>
+        <div class="slide-content">
+          <div class="page-title"><h2>十一、财务与愿景</h2></div>
+          <div class="content-area">
+            <div class="text-col">
+              <div class="content-box">
+                <h3>💰 成本结构明细</h3>
+                <ul>
+                  <li>双目工业相机×2：1.5万元</li>
+                  <li>激光雷达×1：2万元</li>
+                  <li>红外热像仪×1：2.5万元</li>
+                  <li>主控单元（Jetson Orin NX）：1万元</li>
+                  <li>移动底盘+机械结构：3.5万元</li>
+                  <li>其他传感器+线缆：2万元</li>
+                  <li>专业AI软件+模型开发：2.5万元</li>
+                  <li><strong>总计：约15万元/套</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>📊 投资回报分析</h3>
+                <ul>
+                  <li>年节约人工成本约<strong>45万元</strong>（1台=3人工作量）</li>
+                  <li>检测效率提升<strong>70%</strong></li>
+                  <li>故障提前发现减少损失</li>
+                  <li>设备寿命延长效益</li>
+                  <li>投资回收期：<strong>3-4年</strong></li>
+                </ul>
+              </div>
+              <div class="content-box">
+                <h3>🌟 愿景与使命</h3>
+                <p>成为<strong>铁路智能运维标准制定者</strong>，推动AI从数字世界走向物理世界，提升铁路运输安全，降低人工检测风险，为中国铁路智能化贡献力量。</p>
+              </div>
+            </div>
+            <div class="img-col">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-13-content_image.jpg" class="content-img">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-13-content_image_2.jpg" class="content-img">
+              <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-13-content_image_3.jpg" class="content-img">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 14: 结束页 -->
+      <section id="ending-section">
+        <div class="slide-bg" style="background-image: url('https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-14-bg.jpg');"></div>
+        <div class="cover-scanline"></div>
+        <div class="cover-radar">
+          <div class="radar-sweep"></div>
+          <div class="radar-ring ring1"></div>
+          <div class="radar-ring ring2"></div>
+          <div class="radar-ring ring3"></div>
+        </div>
+        <div class="cover-hud">
+          <div class="hud-line hud-line-1"></div>
+          <div class="hud-line hud-line-2"></div>
+          <div class="hud-line hud-line-3"></div>
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+        </div>
+        <div class="cover-content">
+          <img src="https://raw.githubusercontent.com/wya20/openclaw-robot-ppt/main/images/slide-14-content_image.jpg" class="cover-img ending-logo" style="width: 22vh;">
+          <div class="ending-title" data-appearance>感谢观看</div>
+          <div class="ending-subtitle" data-appearance>OpenClaw智能铁道机车探伤机器人系统</div>
+          <div class="ending-info" data-appearance>
+            <strong>项目负责人：王政杰</strong><br>
+            让我们一起推动AI从数字世界走向物理世界！
+          </div>
+        </div>
+        <div class="ending-particle-container" id="ending-particles"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://unpkg.com/reveal.js-appearance@1.4.0/plugin/appearance/appearance.js"></script>
+  <script>
+    const tocData = [
+      { num: '一', title: '项目概述', desc: '具身智能的铁路运维新范式', slide: 3 },
+      { num: '二', title: '工作原理', desc: '三传感器融合检测流程', slide: 6 },
+      { num: '三', title: '政策背景', desc: '国家政策大力支持', slide: 8 },
+      { num: '四', title: '行业背景', desc: '万亿级铁路运维市场', slide: 9 },
+      { num: '五', title: '市场分析', desc: '目标客户与竞争优势', slide: 10 },
+      { num: '六', title: '目标客户', desc: '铁路局机务段', slide: 11 },
+      { num: '七', title: '财务与愿景', desc: '成本估算与发展愿景', slide: 14 }
+    ];
+
+    let scene, camera, renderer, cardMeshes = [], cardGroups = [];
+    let flyInComplete = false;
+    let currentRotationY = 0;
+    let targetRotationSpeed = 0;
+    let mouseInCenterCard = false;
+    let mouseInTocSection = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let tocAnimationId = null;
+
+    function initTOC() {
+      const canvas = document.getElementById('toc-canvas');
+      if (!canvas) return;
+
+      if (tocAnimationId) {
+        cancelAnimationFrame(tocAnimationId);
+        tocAnimationId = null;
+      }
+
+      flyInComplete = false;
+      currentRotationY = 0;
+      targetRotationSpeed = 0;
+      mouseInCenterCard = false;
+
+      if (scene) {
+        renderer.dispose();
+        while(scene.children.length > 0) {
+          const obj = scene.children[0];
+          if (obj.geometry) obj.geometry.dispose();
+          if (obj.material) {
+            if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
+            else obj.material.dispose();
+          }
+          scene.remove(obj);
+        }
+        scene = null;
+      }
+
+      scene = new THREE.Scene();
+      const tocSection = document.getElementById('toc-section');
+      const tocWidth = tocSection ? tocSection.clientWidth : window.innerWidth;
+      const tocHeight = tocSection ? tocSection.clientHeight : window.innerHeight;
+
+      const aspect = tocWidth / tocHeight;
+      camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+      camera.position.set(0, 0, 10);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(tocWidth, tocHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      cardMeshes = [];
+      cardGroups = [];
+
+      const radius = 4.0;
+
+      tocData.forEach((item, i) => {
+        const angle = (i / tocData.length) * Math.PI * 2;
+        const x = Math.sin(angle) * radius;
+        const z = Math.cos(angle) * radius;
+
+        const group = new THREE.Group();
+        group.position.set(x, 0, z);
+
+        const cardWidth = 3.0;
+        const cardHeight = 1.8;
+
+        const cardGeom = new THREE.PlaneGeometry(cardWidth, cardHeight);
+
+        const canvas2d = document.createElement('canvas');
+        canvas2d.width = 700;
+        canvas2d.height = 400;
+        const ctx = canvas2d.getContext('2d');
+
+        ctx.fillStyle = 'rgba(10, 22, 40, 0.95)';
+        ctx.fillRect(0, 0, 700, 400);
+
+        const borderGrad = ctx.createLinearGradient(0, 0, 700, 400);
+        borderGrad.addColorStop(0, '#ed8936');
+        borderGrad.addColorStop(0.5, '#f6ad55');
+        borderGrad.addColorStop(1, '#ed8936');
+        ctx.strokeStyle = borderGrad;
+        ctx.lineWidth = 6;
+        ctx.strokeRect(8, 8, 684, 384);
+
+        ctx.fillStyle = 'rgba(237, 137, 54, 0.08)';
+        ctx.fillRect(15, 15, 670, 370);
+
+        const numGrad = ctx.createLinearGradient(0, 0, 0, 120);
+        numGrad.addColorStop(0, '#FFD700');
+        numGrad.addColorStop(1, '#FFA500');
+        ctx.fillStyle = numGrad;
+        ctx.font = 'bold 100px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(item.num, 100, 120);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px sans-serif';
+        ctx.fillText(item.title, 400, 100);
+
+        ctx.fillStyle = '#f6ad55';
+        ctx.font = 'bold 36px sans-serif';
+        ctx.fillText(item.desc || '', 400, 160);
+
+        ctx.strokeStyle = 'rgba(237, 137, 54, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(200, 190);
+        ctx.lineTo(600, 190);
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(237, 137, 54, 0.12)';
+        ctx.fillRect(20, 210, 660, 160);
+
+        ctx.fillStyle = '#ed8936';
+        ctx.font = 'bold 26px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('OpenClaw 智能铁道机车探伤机器人', 40, 260);
+
+        ctx.fillStyle = '#bdbdbd';
+        ctx.font = '24px sans-serif';
+        ctx.fillText('具身智能 · 自主决策 · 从数字走向物理', 40, 305);
+
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('点击进入 >>', 650, 355);
+
+        const texture = new THREE.CanvasTexture(canvas2d);
+        const cardMat = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.FrontSide,
+          transparent: true,
+          opacity: 0.3
+        });
+        const card = new THREE.Mesh(cardGeom, cardMat);
+        card.userData.startOpacity = 0.3;
+        card.userData.currentOpacity = 0.3;
+        group.add(card);
+
+        const borderGeom = new THREE.EdgesGeometry(new THREE.BoxGeometry(cardWidth + 0.05, cardHeight + 0.05, 0.02));
+        const borderMat = new THREE.LineBasicMaterial({ color: 0xed8936, transparent: true, opacity: 0.3 });
+        const border = new THREE.LineSegments(borderGeom, borderMat);
+        group.add(border);
+
+        group.userData = {
+          index: i,
+          slide: item.slide,
+          finalAngle: angle,
+          finalX: x,
+          finalZ: z,
+          startX: -8,
+          startY: 5,
+          startZ: -5,
+          flyDelay: i * 100,
+          scale: 0.3,
+          startScale: 0.3,
+          isClosest: false,
+          startOpacity: 0.3
+        };
+        group.scale.setScalar(0.3);
+
+        cardMeshes.push(card);
+        cardGroups.push(group);
+        scene.add(group);
+      });
+
+      const particlesGeom = new THREE.BufferGeometry();
+      const particleCount = 400;
+      const positions = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 20;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      }
+      particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      const particlesMat = new THREE.PointsMaterial({
+        color: 0xed8936,
+        size: 0.03,
+        transparent: true,
+        opacity: 0.4
+      });
+      const particles = new THREE.Points(particlesGeom, particlesMat);
+      scene.add(particles);
+
+      flyInComplete = false;
+
+      const canvas2d = document.getElementById('toc-canvas');
+      canvas2d.removeEventListener('mousemove', onTOCMouseMove);
+      canvas2d.removeEventListener('click', onTOCClick);
+      window.removeEventListener('resize', onTOCResize);
+      canvas2d.addEventListener('mousemove', onTOCMouseMove);
+      canvas2d.addEventListener('click', onTOCClick);
+      window.addEventListener('resize', onTOCResize);
+
+      animateTOC();
+    }
+
+    function onTOCMouseMove(e) {
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      
+      const tocSection = document.getElementById('toc-section');
+      if (tocSection) {
+        const rect = tocSection.getBoundingClientRect();
+        mouseInTocSection = e.clientX >= rect.left && e.clientX <= rect.right && 
+                           e.clientY >= rect.top && e.clientY <= rect.bottom;
+      }
+      
+      if (!flyInComplete) return;
+
+      const rect = e.target.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const screenCenterX = rect.width / 2;
+
+      const closestIndex = getClosestCardIndex();
+      const closestGroup = cardGroups[closestIndex];
+
+      if (!closestGroup) return;
+
+      const cardScreenPos = worldToScreen(closestGroup.position);
+      if (!cardScreenPos) return;
+
+      const scaleFactor = renderer.domElement.width / rect.width;
+      const cardLeft = cardScreenPos.x / scaleFactor - 200;
+      const cardRight = cardScreenPos.x / scaleFactor + 200;
+
+      mouseInCenterCard = mouseX >= cardLeft && mouseX <= cardRight;
+
+      if (mouseInCenterCard) {
+        targetRotationSpeed = 0;
+      } else {
+        const distanceFromCenter = mouseX - screenCenterX;
+        const normalizedDist = Math.abs(distanceFromCenter) / (rect.width * 0.5);
+        const maxSpeed = 0.04;
+        const speed = Math.atan(normalizedDist * 3) / (Math.PI / 2) * maxSpeed;
+        targetRotationSpeed = Math.sign(distanceFromCenter) * speed;
+      }
+    }
+
+    function worldToScreen(position) {
+      if (!camera || !renderer) return null;
+      const vector = position.clone();
+      vector.project(camera);
+      const canvas = renderer.domElement;
+      return {
+        x: (vector.x * 0.5 + 0.5) * canvas.width,
+        y: (-vector.y * 0.5 + 0.5) * canvas.height
+      };
+    }
+
+    function onTOCClick(e) {
+      if (!flyInComplete) return;
+
+      const rect = e.target.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        -((e.clientY - rect.top) / rect.height) * 2 + 1
+      );
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(cardMeshes);
+      if (intersects.length > 0) {
+        const clickedMesh = intersects[0].object;
+        const clickedGroup = clickedMesh.parent;
+        const slideIndex = clickedGroup.userData.slide - 1;
+        if (Reveal && typeof Reveal.slide === 'function') {
+          Reveal.slide(slideIndex, 0, 0);
+        }
+      }
+    }
+
+    function onTOCResize() {
+      const canvas = document.getElementById('toc-canvas');
+      const tocSection = document.getElementById('toc-section');
+      if (!canvas || !camera || !renderer || !tocSection) return;
+      const tocWidth = tocSection.clientWidth;
+      const tocHeight = tocSection.clientHeight;
+      camera.aspect = tocWidth / tocHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(tocWidth, tocHeight);
+    }
+
+    function easeOutBack(x) {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function animateTOC() {
+      if (!scene || !renderer) return;
+      tocAnimationId = requestAnimationFrame(animateTOC);
+
+      const now = Date.now();
+
+      if (!flyInComplete) {
+        let allComplete = true;
+
+        cardGroups.forEach((group, i) => {
+          const data = group.userData;
+          const elapsed = now - (window.flyStartTime || now) - data.flyDelay;
+
+          if (elapsed < 0) {
+            allComplete = false;
+            return;
+          }
+
+          const duration = 800;
+          const progress = Math.min(elapsed / duration, 1);
+          const easedProgress = easeOutBack(progress);
+
+          const explodeProgress = easedProgress;
+          group.position.x = data.finalX * (1 - explodeProgress);
+          const finalY = 3.5 * (1 - ((Math.cos(data.finalAngle) + 1) * 0.5)) - 1.2;
+          group.position.y = finalY * (1 - explodeProgress) + 5 * explodeProgress;
+          group.position.z = data.finalZ * (1 - explodeProgress) - 5 * explodeProgress;
+
+          const currentScale = data.startScale + (1.0 - data.startScale) * easedProgress;
+          group.scale.setScalar(currentScale);
+
+          const currentOpacity = data.startOpacity + (1.0 - data.startOpacity) * easedProgress;
+          group.children.forEach(child => {
+            if (child.material) {
+              child.material.opacity = currentOpacity;
+            }
+          });
+
+          if (progress < 1) allComplete = false;
+        });
+
+        if (allComplete) {
+          flyInComplete = true;
+          window.flyStartTime = now;
+          cardGroups.forEach(group => {
+            group.scale.setScalar(1.0);
+            group.userData.scale = 1.0;
+            group.children.forEach(child => {
+              if (child.material) {
+                child.material.opacity = 1.0;
+              }
+            });
+          });
+        }
+      }
+
+      cardGroups.forEach((group, i) => {
+        const data = group.userData;
+        const baseAngle = data.finalAngle + currentRotationY;
+
+        group.position.x = Math.sin(baseAngle) * 4.0;
+        group.position.z = Math.cos(baseAngle) * 4.0;
+
+        const tiltFactor = (Math.cos(baseAngle) + 1) * 0.5;
+        const yOffset = 3.5 * (1 - tiltFactor);
+        const floatOffset = flyInComplete ? Math.sin(now * 0.001 + i * 0.5) * 0.15 : 0;
+        group.position.y = yOffset - 1.2 + floatOffset;
+
+        group.lookAt(camera.position.x * 0.5, camera.position.y * 0.5, camera.position.z);
+
+        const worldAngle = baseAngle % (Math.PI * 2);
+        const normalizedAngle = worldAngle < 0 ? worldAngle + Math.PI * 2 : worldAngle;
+        const distFromCamera = Math.abs(Math.sin(normalizedAngle));
+
+        const isClosest = distFromCamera < 0.3 && i === getClosestCardIndex();
+        data.isClosest = isClosest;
+
+        const targetScale = isClosest ? 1.25 : 1.0;
+        data.scale += (targetScale - data.scale) * 0.1;
+        group.scale.setScalar(data.scale);
+
+        if (flyInComplete && group.children[1] && group.children[1].material) {
+          const glowIntensity = 0.4 + Math.sin(now * 0.003 + i * 0.5) * 0.3;
+          group.children[1].material.opacity = glowIntensity;
+        }
+      });
+
+      if (flyInComplete) {
+        currentRotationY += targetRotationSpeed;
+      }
+
+      const tocSection = document.getElementById('toc-section');
+      if (tocSection && mouseInTocSection) {
+        const rect = tocSection.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const rotateY = ((lastMouseX - centerX) / rect.width) * 8;
+        const rotateX = ((centerY - lastMouseY) / rect.height) * 5;
+        scene.rotation.x = rotateX * 0.02;
+        scene.rotation.y = rotateY * 0.02;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function getClosestCardIndex() {
+      let closestIndex = 0;
+      let closestDist = Infinity;
+
+      cardGroups.forEach((group, i) => {
+        const dist = camera.position.distanceTo(group.position);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIndex = i;
+        }
+      });
+
+      return closestIndex;
+    }
+
+    Reveal.initialize({
+      hash: true,
+      transition: 'convex',
+      transitionSpeed: 'slow',
+      controls: true,
+      progress: true,
+      center: false,
+      width: '100%',
+      height: '100%',
+      margin: 0,
+      minScale: 1,
+      plugins: [ Appearance ]
+    });
+  
+    Reveal.on('slidechanged', function(event) {
+      anime({
+        targets: event.currentSlide.querySelectorAll('[data-appearance]'),
+        opacity: [0, 1],
+        translateZ: [50, 0],
+        translateY: [20, 0],
+        rotateX: [-15, 0],
+        duration: 900,
+        easing: 'easeOutQuad'
+      });
+
+      anime({
+        targets: event.currentSlide.querySelectorAll('.content-box, .grid-item'),
+        opacity: [0, 1],
+        translateZ: [-30, 0],
+        scale: [0.9, 1],
+        rotateY: [-8, 0],
+        duration: 800,
+        easing: 'easeOutCubic',
+        delay: anime.stagger(80, {grid: [1, 3], from: 'center'})
+      });
+
+      if (event.indexh === 1) {
+        window.flyStartTime = Date.now();
+        currentRotationY = 0;
+        targetRotationSpeed = 0;
+        initTOC();
+        setTimeout(createParticleBurst, 300);
+      }
+
+      if (event.indexh === 13) {
+        createEndingParticles();
+      }
+    });
+
+    function createEndingParticles() {
+      const container = document.getElementById('ending-particles');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'ending-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 4 + 's';
+        particle.style.animationDuration = (3 + Math.random() * 3) + 's';
+        const size = 3 + Math.random() * 8;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        container.appendChild(particle);
+      }
+    }
+
+    function createParticleBurst() {
+      const burstContainer = document.createElement('div');
+      burstContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1000;overflow:hidden;';
+      
+      for (let i = 0; i < 60; i++) {
+        const size = 4 + Math.random() * 12;
+        const particle = document.createElement('div');
+        particle.style.cssText = `position:absolute;top:50%;left:50%;width:${size}px;height:${size}px;background:radial-gradient(circle, rgba(237,137,54,${0.6 + Math.random() * 0.4}) 0%, transparent 70%);border-radius:50%;animation:particleFly${i} ${0.6 + Math.random() * 0.4}s ease-out forwards;`;
+        
+        const angle = (Math.random() * Math.PI * 2);
+        const distance = 200 + Math.random() * 250;
+        const delay = Math.random() * 0.15;
+        const keyframes = `@keyframes particleFly${i} {0%{transform:translate(-50%,-50%) scale(1);opacity:1;}100%{transform:translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0);opacity:0;}}`;
+        
+        let style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        particle.style.animationDelay = `${delay}s`;
+        burstContainer.appendChild(particle);
+      }
+      
+      document.body.appendChild(burstContainer);
+      setTimeout(() => burstContainer.remove(), 1200);
+    }
+
+    Reveal.on('fragmentshown', function(event) {
+      anime({
+        targets: event.fragment,
+        scale: [0.7, 1],
+        opacity: [0, 1],
+        translateZ: [40, 0],
+        rotateX: [-10, 0],
+        duration: 500,
+        easing: 'easeOutCubic'
+      });
+    });
+
+    let mouseX = 0, mouseY = 0;
+    let magnetItems = [];
+
+    function initMagnetEffect() {
+      magnetItems = document.querySelectorAll('.content-box, .grid-item, .content-img');
+
+      magnetItems.forEach((item, index) => {
+        item.style.transition = 'transform 0.15s ease-out, box-shadow 0.3s ease, border-color 0.3s ease';
+        item.style.transformStyle = 'preserve-3d';
+        item.style.willChange = 'transform';
+        const delay = Math.random() * 2;
+        item.style.setProperty('--sweep-delay', `${delay}s`);
+      });
+
+      document.querySelectorAll('.content-box, .grid-item').forEach((item, index) => {
+        const delay = Math.random() * 2;
+        item.style.setProperty('--sweep-delay', `${delay}s`);
+        const style = document.createElement('style');
+        style.textContent = `.content-box:nth-child(${index + 1})::before, .grid-item:nth-child(${index + 1})::before { animation-delay: ${delay}s !important; }`;
+        document.head.appendChild(style);
+      });
+
+      document.addEventListener('mousemove', onParallaxMouseMove);
+    }
+
+    function onParallaxMouseMove(e) {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      const rotateX = (e.clientY - centerY) / centerY * 10;
+      const rotateY = (centerX - e.clientX) / centerX * 10;
+
+      magnetItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const itemCenterX = rect.left + rect.width / 2;
+        const itemCenterY = rect.top + rect.height / 2;
+        const distX = (itemCenterX - e.clientX) / 300;
+        const distY = (itemCenterY - e.clientY) / 300;
+        const rotateXItem = rotateX + distY * 5;
+        const rotateYItem = rotateY + distX * 5;
+        item.style.transform = `perspective(1000px) rotateX(${rotateXItem}deg) rotateY(${rotateYItem}deg) scale(1.02)`;
+        item.style.boxShadow = `${-distX * 10}px ${-distY * 10}px 30px rgba(237, 137, 54, 0.3)`;
+      });
+    }
+
+    window.addEventListener('load', function() {
+      setTimeout(initMagnetEffect, 500);
+      setTimeout(function() {
+        if (Reveal) {
+          const indices = Reveal.getIndices ? Reveal.getIndices() : { h: 0 };
+          if (indices.h === 1) {
+            window.flyStartTime = Date.now();
+            currentRotationY = 0;
+            targetRotationSpeed = 0;
+            initTOC();
+          }
+        }
+      }, 600);
+    });
+
+    function adjustBackgroundSize() {
+      const slides = document.querySelectorAll('.slide-bg');
+      slides.forEach(bg => {
+        const img = new Image();
+        img.onload = function() {
+          const ratio = img.width / img.height;
+          const windowRatio = window.innerWidth / window.innerHeight;
+          if (Math.abs(ratio - windowRatio) > 0.1) {
+            bg.classList.add('square-ratio');
+          } else {
+            bg.classList.remove('square-ratio');
+          }
+        };
+        const match = bg.style.backgroundImage.match(/url\(['"]?(.+?)['"]?\)/);
+        if (match) {
+          img.src = match[1];
+        }
+      });
+    }
+
+    window.addEventListener('load', adjustBackgroundSize);
+    window.addEventListener('resize', adjustBackgroundSize);
+  </script>
+</body>
+</html>
